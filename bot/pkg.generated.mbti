@@ -1,0 +1,109 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "tonyfettes/telegram/bot"
+
+import(
+  "moonbitlang/core/encoding/utf8"
+  "moonbitlang/core/json"
+)
+
+// Values
+
+// Errors
+pub(all) suberror TelegramError {
+  HttpError(code~ : Int, body~ : String)
+  ApiError(code~ : Int, description~ : String)
+  InvalidUtf8(@utf8.Malformed)
+  InvalidJson(@json.ParseError)
+  InvalidResponse(Json)
+  InvalidResult(Json, @json.JsonDecodeError)
+  ParseError(message~ : String)
+}
+
+// Types and methods
+pub struct Bot {
+  token : String
+  base_url : String
+}
+pub async fn Bot::get_me(Self) -> User raise TelegramError
+pub async fn Bot::get_updates(Self, offset? : Int, limit? : Int, timeout? : Int, allowed_updates? : Array[String]) -> Array[Update] raise TelegramError
+pub fn Bot::new(token~ : String, base_url? : String) -> Self
+pub async fn Bot::send_message(Self, chat_id~ : Int64, text~ : String, parse_mode? : String, disable_notification? : Bool, reply_to_message_id? : Int) -> Message raise TelegramError
+
+pub(all) struct Chat {
+  id : Int64
+  type_ : ChatType
+  title : String?
+  username : String?
+  first_name : String?
+  last_name : String?
+}
+pub impl Eq for Chat
+pub impl Show for Chat
+pub impl ToJson for Chat
+pub impl @json.FromJson for Chat
+
+pub(all) enum ChatType {
+  Private
+  Group
+  Supergroup
+  Channel
+}
+pub impl Eq for ChatType
+pub impl Show for ChatType
+pub impl ToJson for ChatType
+pub impl @json.FromJson for ChatType
+
+pub(all) struct Message {
+  message_id : Int
+  from : User?
+  date : Int
+  chat : Chat
+  text : String?
+  entities : Array[MessageEntity]?
+  reply_to_message : Message?
+}
+pub impl Eq for Message
+pub impl Show for Message
+pub impl ToJson for Message
+pub impl @json.FromJson for Message
+
+pub(all) struct MessageEntity {
+  type_ : String
+  offset : Int
+  length : Int
+  url : String?
+  user : User?
+  language : String?
+}
+pub impl Eq for MessageEntity
+pub impl Show for MessageEntity
+pub impl ToJson for MessageEntity
+pub impl @json.FromJson for MessageEntity
+
+pub(all) struct Update {
+  update_id : Int
+  message : Message?
+  edited_message : Message?
+}
+pub impl Eq for Update
+pub impl Show for Update
+pub impl ToJson for Update
+pub impl @json.FromJson for Update
+
+pub(all) struct User {
+  id : Int64
+  is_bot : Bool
+  first_name : String
+  last_name : String?
+  username : String?
+  language_code : String?
+}
+pub impl Eq for User
+pub impl Show for User
+pub impl ToJson for User
+pub impl @json.FromJson for User
+
+// Type aliases
+
+// Traits
+
