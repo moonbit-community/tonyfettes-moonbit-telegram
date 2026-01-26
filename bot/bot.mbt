@@ -68,22 +68,22 @@ pub async fn Bot::send_message(
 ) -> Message raise TelegramError {
   let url = self.api_url("sendMessage")
   let body : Map[String, Json] = {
-    "chat_id": chat_id.to_json(),
-    "text": text.to_json(),
+    "chat_id": @json.to_json(chat_id),
+    "text": @json.to_json(text),
   }
   if parse_mode is Some(v) {
-    body["parse_mode"] = v.to_json()
+    body["parse_mode"] = @json.to_json(v)
   }
   if disable_notification is Some(v) {
-    body["disable_notification"] = v.to_json()
+    body["disable_notification"] = @json.to_json(v)
   }
   if reply_to_message_id is Some(v) {
-    body["reply_to_message_id"] = v.to_json()
+    body["reply_to_message_id"] = @json.to_json(v)
   }
   if reply_markup is Some(v) {
-    body["reply_markup"] = v.to_json()
+    body["reply_markup"] = @json.to_json(v)
   }
-  let (response, data) = @http.post(url, body.to_json(), headers={
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
     "Content-Type": "application/json",
   }) catch {
     err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
@@ -108,18 +108,18 @@ pub async fn Bot::get_updates(
   let url = self.api_url("getUpdates")
   let body : Map[String, Json] = {}
   if offset is Some(v) {
-    body["offset"] = v.to_json()
+    body["offset"] = @json.to_json(v)
   }
   if limit is Some(v) {
-    body["limit"] = v.to_json()
+    body["limit"] = @json.to_json(v)
   }
   if timeout is Some(v) {
-    body["timeout"] = v.to_json()
+    body["timeout"] = @json.to_json(v)
   }
   if allowed_updates is Some(v) {
-    body["allowed_updates"] = v.to_json()
+    body["allowed_updates"] = @json.to_json(v)
   }
-  let (response, data) = @http.post(url, body.to_json(), headers={
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
     "Content-Type": "application/json",
   }) catch {
     err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
@@ -144,17 +144,17 @@ pub async fn Bot::copy_message(
 ) -> MessageId raise TelegramError {
   let url = self.api_url("copyMessage")
   let body : Map[String, Json] = {
-    "chat_id": chat_id.to_json(),
-    "from_chat_id": from_chat_id.to_json(),
-    "message_id": message_id.to_json(),
+    "chat_id": @json.to_json(chat_id),
+    "from_chat_id": @json.to_json(from_chat_id),
+    "message_id": @json.to_json(message_id),
   }
   if disable_notification is Some(v) {
-    body["disable_notification"] = v.to_json()
+    body["disable_notification"] = @json.to_json(v)
   }
   if reply_markup is Some(v) {
-    body["reply_markup"] = v.to_json()
+    body["reply_markup"] = @json.to_json(v)
   }
-  let (response, data) = @http.post(url, body.to_json(), headers={
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
     "Content-Type": "application/json",
   }) catch {
     err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
@@ -179,17 +179,17 @@ pub async fn Bot::edit_message_text(
 ) -> Message raise TelegramError {
   let url = self.api_url("editMessageText")
   let body : Map[String, Json] = {
-    "chat_id": chat_id.to_json(),
-    "message_id": message_id.to_json(),
-    "text": text.to_json(),
+    "chat_id": @json.to_json(chat_id),
+    "message_id": @json.to_json(message_id),
+    "text": @json.to_json(text),
   }
   if parse_mode is Some(v) {
-    body["parse_mode"] = v.to_json()
+    body["parse_mode"] = @json.to_json(v)
   }
   if reply_markup is Some(v) {
-    body["reply_markup"] = v.to_json()
+    body["reply_markup"] = @json.to_json(v)
   }
-  let (response, data) = @http.post(url, body.to_json(), headers={
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
     "Content-Type": "application/json",
   }) catch {
     err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
@@ -212,13 +212,13 @@ pub async fn Bot::edit_message_reply_markup(
 ) -> Message raise TelegramError {
   let url = self.api_url("editMessageReplyMarkup")
   let body : Map[String, Json] = {
-    "chat_id": chat_id.to_json(),
-    "message_id": message_id.to_json(),
+    "chat_id": @json.to_json(chat_id),
+    "message_id": @json.to_json(message_id),
   }
   if reply_markup is Some(v) {
-    body["reply_markup"] = v.to_json()
+    body["reply_markup"] = @json.to_json(v)
   }
-  let (response, data) = @http.post(url, body.to_json(), headers={
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
     "Content-Type": "application/json",
   }) catch {
     err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
@@ -241,15 +241,15 @@ pub async fn Bot::answer_callback_query(
 ) -> Bool raise TelegramError {
   let url = self.api_url("answerCallbackQuery")
   let body : Map[String, Json] = {
-    "callback_query_id": callback_query_id.to_json(),
+    "callback_query_id": @json.to_json(callback_query_id),
   }
   if text is Some(v) {
-    body["text"] = v.to_json()
+    body["text"] = @json.to_json(v)
   }
   if show_alert is Some(v) {
-    body["show_alert"] = v.to_json()
+    body["show_alert"] = @json.to_json(v)
   }
-  let (response, data) = @http.post(url, body.to_json(), headers={
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
     "Content-Type": "application/json",
   }) catch {
     err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
@@ -269,8 +269,8 @@ pub async fn Bot::set_my_commands(
   commands~ : Array[BotCommand],
 ) -> Bool raise TelegramError {
   let url = self.api_url("setMyCommands")
-  let body : Map[String, Json] = { "commands": commands.to_json() }
-  let (response, data) = @http.post(url, body.to_json(), headers={
+  let body : Map[String, Json] = { "commands": @json.ToJson::to_json(commands) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
     "Content-Type": "application/json",
   }) catch {
     err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")

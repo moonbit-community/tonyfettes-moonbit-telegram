@@ -7,7 +7,7 @@ pub(all) enum ChatType {
 } derive(Show, Eq)
 
 ///|
-pub impl ToJson for ChatType with to_json(self) {
+pub impl @json.ToJson for ChatType with to_json(self) {
   match self {
     Private => "private".to_json()
     Group => "group".to_json()
@@ -19,14 +19,14 @@ pub impl ToJson for ChatType with to_json(self) {
 ///|
 pub impl @json.FromJson for ChatType with from_json(json, path) {
   guard json is String(s) else {
-    raise @json.JsonDecodeError((path, "Expected string for ChatType"))
+    raise @json.JsonDecodeError(path~, "Expected string for ChatType")
   }
   match s {
     "private" => Private
     "group" => Group
     "supergroup" => Supergroup
     "channel" => Channel
-    _ => raise @json.JsonDecodeError((path, "Unknown ChatType: \{s}"))
+    _ => raise @json.JsonDecodeError(path~, "Unknown ChatType: \{s}")
   }
 }
 
@@ -53,49 +53,49 @@ pub fn Chat::new(
 }
 
 ///|
-pub impl ToJson for Chat with to_json(self) {
-  let obj : Map[String, Json] = {
-    "id": self.id.to_json(),
-    "type": self.type_.to_json(),
+pub impl @json.ToJson for Chat with to_json(self) {
+  let object : Map[String, Json] = {
+    "id": @json.to_json(self.id),
+    "type": @json.to_json(self.type_),
   }
   if self.title is Some(v) {
-    obj["title"] = v.to_json()
+    object["title"] = @json.to_json(v)
   }
   if self.username is Some(v) {
-    obj["username"] = v.to_json()
+    object["username"] = @json.to_json(v)
   }
   if self.first_name is Some(v) {
-    obj["first_name"] = v.to_json()
+    object["first_name"] = @json.to_json(v)
   }
   if self.last_name is Some(v) {
-    obj["last_name"] = v.to_json()
+    object["last_name"] = @json.to_json(v)
   }
-  obj.to_json()
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for Chat with from_json(json, path) {
-  guard json is Object(obj) else {
-    raise @json.JsonDecodeError((path, "Expected object for Chat"))
+  guard json is Object(object) else {
+    raise @json.JsonDecodeError(path~, "Expected object for Chat")
   }
-  let id : Int64 = @json.from_json(obj["id"], path~)
-  let type_ : ChatType = @json.from_json(obj["type"], path~)
-  let title : String? = if obj.get("title") is Some(v) {
+  let id : Int64 = @json.from_json(object["id"], path~)
+  let type_ : ChatType = @json.from_json(object["type"], path~)
+  let title : String? = if object.get("title") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let username : String? = if obj.get("username") is Some(v) {
+  let username : String? = if object.get("username") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let first_name : String? = if obj.get("first_name") is Some(v) {
+  let first_name : String? = if object.get("first_name") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let last_name : String? = if obj.get("last_name") is Some(v) {
+  let last_name : String? = if object.get("last_name") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None

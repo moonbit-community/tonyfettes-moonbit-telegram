@@ -36,12 +36,12 @@ moon info           # Generate .mbti interface files
 **Custom JSON serialization** (for types with optional fields or renamed fields):
 
 ```moonbit
-pub impl ToJson for Type with to_json(self) {
-  let obj : Map[String, Json] = { "required": self.required.to_json() }
+pub impl @json.ToJson for Type with to_json(self) {
+  let obj : Map[String, Json] = { "required": @json.to_json(self.required) }
   if self.optional is Some(v) {
-    obj["optional"] = v.to_json()
+    obj["optional"] = @json.to_json(v)
   }
-  obj.to_json()
+  @json.to_json(obj)
 }
 
 pub impl @json.FromJson for Type with from_json(json, path) {
@@ -67,9 +67,9 @@ pub async fn Bot::method_name(
   optional? : Type,
 ) -> ReturnType raise TelegramError {
   let url = self.api_url("methodName")
-  let body : Map[String, Json] = { "required": required.to_json() }
+  let body : Map[String, Json] = { "required": @json.to_json(required) }
   if optional is Some(v) {
-    body["optional"] = v.to_json()
+    body["optional"] = @json.to_json(v)
   }
   // HTTP POST, error handling, parse_api_response(data)
 }
@@ -80,7 +80,7 @@ pub async fn Bot::method_name(
 ```moonbit
 test "Type JSON round-trip" {
   let obj = Type::new(field=value)
-  let json = obj.to_json()
+  let json = @json.to_json(obj)
   let parsed : Type = @json.from_json(json)
   inspect(parsed.field, content="expected")
 }

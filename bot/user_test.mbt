@@ -6,7 +6,7 @@ test "User JSON round-trip" {
     first_name="TestBot",
     username="test_bot",
   )
-  let json = user.to_json()
+  let json = @json.to_json(user)
   let parsed : User = @json.from_json(json)
   inspect(parsed.id, content="123")
   inspect(parsed.is_bot, content="true")

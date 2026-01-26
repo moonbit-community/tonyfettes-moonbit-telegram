@@ -20,7 +20,7 @@ test "Message JSON round-trip" {
     ),
     text="Hello, world!",
   )
-  let json = message.to_json()
+  let json = @json.to_json(message)
   let parsed : Message = @json.from_json(json)
   inspect(parsed.message_id, content="789")
   inspect(parsed.text, content="Some(\"Hello, world!\")")

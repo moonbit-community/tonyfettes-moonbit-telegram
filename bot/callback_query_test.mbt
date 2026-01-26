@@ -11,7 +11,7 @@ test "CallbackQuery JSON round-trip" {
     chat_instance="987654321",
     data="button_clicked",
   )
-  let json = query.to_json()
+  let json = @json.to_json(query)
   let parsed : CallbackQuery = @json.from_json(json)
   inspect(parsed.id, content="123456789")
   inspect(parsed.from.first_name, content="John")
@@ -29,7 +29,7 @@ test "CallbackQuery without message JSON round-trip" {
     chat_instance="987654321",
     data="inline_button",
   )
-  let json = query.to_json()
+  let json = @json.to_json(query)
   let parsed : CallbackQuery = @json.from_json(json)
   inspect(parsed.id, content="123456789")
   inspect(parsed.message, content="None")

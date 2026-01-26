@@ -1,7 +1,7 @@
 ///|
 test "InlineKeyboardButton with callback_data JSON round-trip" {
   let button = InlineKeyboardButton::new(text="Click me", callback_data="btn_1")
-  let json = button.to_json()
+  let json = @json.to_json(button)
   let parsed : InlineKeyboardButton = @json.from_json(json)
   inspect(parsed.text, content="Click me")
   inspect(parsed.callback_data, content="Some(\"btn_1\")")
@@ -14,7 +14,7 @@ test "InlineKeyboardButton with url JSON round-trip" {
     text="Visit site",
     url="https://example.com",
   )
-  let json = button.to_json()
+  let json = @json.to_json(button)
   let parsed : InlineKeyboardButton = @json.from_json(json)
   inspect(parsed.text, content="Visit site")
   inspect(parsed.url, content="Some(\"https://example.com\")")
@@ -30,7 +30,7 @@ test "InlineKeyboardMarkup JSON round-trip" {
     ],
     [InlineKeyboardButton::new(text="URL", url="https://example.com")],
   ])
-  let json = keyboard.to_json()
+  let json = @json.to_json(keyboard)
   let parsed : InlineKeyboardMarkup = @json.from_json(json)
   inspect(parsed.inline_keyboard.length(), content="2")
   inspect(parsed.inline_keyboard[0].length(), content="2")

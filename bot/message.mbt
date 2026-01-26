@@ -9,43 +9,43 @@ pub struct MessageEntity {
 } derive(Show, Eq)
 
 ///|
-pub impl ToJson for MessageEntity with to_json(self) {
+pub impl @json.ToJson for MessageEntity with to_json(self) {
   let obj : Map[String, Json] = {
-    "type": self.type_.to_json(),
-    "offset": self.offset.to_json(),
-    "length": self.length.to_json(),
+    "type": @json.to_json(self.type_),
+    "offset": @json.to_json(self.offset),
+    "length": @json.to_json(self.length),
   }
   if self.url is Some(v) {
-    obj["url"] = v.to_json()
+    obj["url"] = @json.to_json(v)
   }
   if self.user is Some(v) {
-    obj["user"] = v.to_json()
+    obj["user"] = @json.to_json(v)
   }
   if self.language is Some(v) {
-    obj["language"] = v.to_json()
+    obj["language"] = @json.to_json(v)
   }
-  obj.to_json()
+  @json.to_json(obj)
 }
 
 ///|
 pub impl @json.FromJson for MessageEntity with from_json(json, path) {
-  guard json is Object(obj) else {
-    raise @json.JsonDecodeError((path, "Expected object for MessageEntity"))
+  guard json is Object(object) else {
+    raise @json.JsonDecodeError(path~, "Expected object for MessageEntity")
   }
-  let type_ : String = @json.from_json(obj["type"], path~)
-  let offset : Int = @json.from_json(obj["offset"], path~)
-  let length : Int = @json.from_json(obj["length"], path~)
-  let url : String? = if obj.get("url") is Some(v) {
+  let type_ : String = @json.from_json(object["type"], path~)
+  let offset : Int = @json.from_json(object["offset"], path~)
+  let length : Int = @json.from_json(object["length"], path~)
+  let url : String? = if object.get("url") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let user : User? = if obj.get("user") is Some(v) {
+  let user : User? = if object.get("user") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let language : String? = if obj.get("language") is Some(v) {
+  let language : String? = if object.get("language") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -78,31 +78,31 @@ pub fn Message::new(
 }
 
 ///|
-pub impl ToJson for Message with to_json(self) {
-  let obj : Map[String, Json] = {
-    "message_id": self.message_id.to_json(),
-    "date": self.date.to_json(),
-    "chat": self.chat.to_json(),
+pub impl @json.ToJson for Message with to_json(self) {
+  let object : Map[String, Json] = {
+    "message_id": @json.to_json(self.message_id),
+    "date": @json.to_json(self.date),
+    "chat": @json.to_json(self.chat),
   }
   if self.from is Some(v) {
-    obj["from"] = v.to_json()
+    object["from"] = @json.to_json(v)
   }
   if self.text is Some(v) {
-    obj["text"] = v.to_json()
+    object["text"] = @json.to_json(v)
   }
   if self.entities is Some(v) {
-    obj["entities"] = v.to_json()
+    object["entities"] = @json.to_json(v)
   }
   if self.reply_to_message is Some(v) {
-    obj["reply_to_message"] = v.to_json()
+    object["reply_to_message"] = @json.to_json(v)
   }
-  obj.to_json()
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for Message with from_json(json, path) {
   guard json is Object(obj) else {
-    raise @json.JsonDecodeError((path, "Expected object for Message"))
+    raise @json.JsonDecodeError(path~, "Expected object for Message")
   }
   let message_id : Int = @json.from_json(obj["message_id"], path~)
   let from : User? = if obj.get("from") is Some(v) {
