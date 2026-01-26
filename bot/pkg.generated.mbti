@@ -24,10 +24,39 @@ pub struct Bot {
   token : String
   base_url : String
 }
+pub async fn Bot::answer_callback_query(Self, callback_query_id~ : String, text? : String, show_alert? : Bool) -> Bool raise TelegramError
+pub async fn Bot::copy_message(Self, chat_id~ : Int64, from_chat_id~ : Int64, message_id~ : Int, disable_notification? : Bool, reply_markup? : InlineKeyboardMarkup) -> MessageId raise TelegramError
+pub async fn Bot::edit_message_reply_markup(Self, chat_id~ : Int64, message_id~ : Int, reply_markup? : InlineKeyboardMarkup) -> Message raise TelegramError
+pub async fn Bot::edit_message_text(Self, chat_id~ : Int64, message_id~ : Int, text~ : String, parse_mode? : String, reply_markup? : InlineKeyboardMarkup) -> Message raise TelegramError
 pub async fn Bot::get_me(Self) -> User raise TelegramError
 pub async fn Bot::get_updates(Self, offset? : Int, limit? : Int, timeout? : Int, allowed_updates? : Array[String]) -> Array[Update] raise TelegramError
 pub fn Bot::new(token~ : String, base_url? : String) -> Self
-pub async fn Bot::send_message(Self, chat_id~ : Int64, text~ : String, parse_mode? : String, disable_notification? : Bool, reply_to_message_id? : Int) -> Message raise TelegramError
+pub async fn Bot::send_message(Self, chat_id~ : Int64, text~ : String, parse_mode? : String, disable_notification? : Bool, reply_to_message_id? : Int, reply_markup? : InlineKeyboardMarkup) -> Message raise TelegramError
+pub async fn Bot::set_my_commands(Self, commands~ : Array[BotCommand]) -> Bool raise TelegramError
+
+pub struct BotCommand {
+  command : String
+  description : String
+}
+pub fn BotCommand::new(command~ : String, description~ : String) -> Self
+pub impl Eq for BotCommand
+pub impl Show for BotCommand
+pub impl ToJson for BotCommand
+pub impl @json.FromJson for BotCommand
+
+pub struct CallbackQuery {
+  id : String
+  from : User
+  message : Message?
+  inline_message_id : String?
+  chat_instance : String
+  data : String?
+}
+pub fn CallbackQuery::new(id~ : String, from~ : User, message? : Message, inline_message_id? : String, chat_instance~ : String, data? : String) -> Self
+pub impl Eq for CallbackQuery
+pub impl Show for CallbackQuery
+pub impl ToJson for CallbackQuery
+pub impl @json.FromJson for CallbackQuery
 
 pub(all) struct Chat {
   id : Int64
@@ -53,6 +82,26 @@ pub impl Eq for ChatType
 pub impl Show for ChatType
 pub impl ToJson for ChatType
 pub impl @json.FromJson for ChatType
+
+pub struct InlineKeyboardButton {
+  text : String
+  url : String?
+  callback_data : String?
+}
+pub fn InlineKeyboardButton::new(text~ : String, url? : String, callback_data? : String) -> Self
+pub impl Eq for InlineKeyboardButton
+pub impl Show for InlineKeyboardButton
+pub impl ToJson for InlineKeyboardButton
+pub impl @json.FromJson for InlineKeyboardButton
+
+pub struct InlineKeyboardMarkup {
+  inline_keyboard : Array[Array[InlineKeyboardButton]]
+}
+pub fn InlineKeyboardMarkup::new(inline_keyboard~ : Array[Array[InlineKeyboardButton]]) -> Self
+pub impl Eq for InlineKeyboardMarkup
+pub impl Show for InlineKeyboardMarkup
+pub impl ToJson for InlineKeyboardMarkup
+pub impl @json.FromJson for InlineKeyboardMarkup
 
 pub struct Message {
   message_id : Int
@@ -82,12 +131,22 @@ pub impl Show for MessageEntity
 pub impl ToJson for MessageEntity
 pub impl @json.FromJson for MessageEntity
 
+pub struct MessageId {
+  message_id : Int
+}
+pub fn MessageId::new(message_id~ : Int) -> Self
+pub impl Eq for MessageId
+pub impl Show for MessageId
+pub impl ToJson for MessageId
+pub impl @json.FromJson for MessageId
+
 pub struct Update {
   update_id : Int
   message : Message?
   edited_message : Message?
+  callback_query : CallbackQuery?
 }
-pub fn Update::new(update_id~ : Int, message? : Message, edited_message? : Message) -> Self
+pub fn Update::new(update_id~ : Int, message? : Message, edited_message? : Message, callback_query? : CallbackQuery) -> Self
 pub impl Eq for Update
 pub impl Show for Update
 pub impl ToJson for Update
