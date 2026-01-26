@@ -37,6 +37,7 @@ pub(all) struct Chat {
   first_name : String?
   last_name : String?
 }
+pub fn Chat::new(id~ : Int64, type_~ : ChatType, title? : String, username? : String, first_name? : String, last_name? : String) -> Self
 pub impl Eq for Chat
 pub impl Show for Chat
 pub impl ToJson for Chat
@@ -53,7 +54,7 @@ pub impl Show for ChatType
 pub impl ToJson for ChatType
 pub impl @json.FromJson for ChatType
 
-pub(all) struct Message {
+pub struct Message {
   message_id : Int
   from : User?
   date : Int
@@ -62,12 +63,13 @@ pub(all) struct Message {
   entities : Array[MessageEntity]?
   reply_to_message : Message?
 }
+pub fn Message::new(message_id~ : Int, from? : User, date~ : Int, chat~ : Chat, text? : String, entities? : Array[MessageEntity], reply_to_message? : Self) -> Self
 pub impl Eq for Message
 pub impl Show for Message
 pub impl ToJson for Message
 pub impl @json.FromJson for Message
 
-pub(all) struct MessageEntity {
+pub struct MessageEntity {
   type_ : String
   offset : Int
   length : Int
@@ -80,17 +82,18 @@ pub impl Show for MessageEntity
 pub impl ToJson for MessageEntity
 pub impl @json.FromJson for MessageEntity
 
-pub(all) struct Update {
+pub struct Update {
   update_id : Int
   message : Message?
   edited_message : Message?
 }
+pub fn Update::new(update_id~ : Int, message? : Message, edited_message? : Message) -> Self
 pub impl Eq for Update
 pub impl Show for Update
 pub impl ToJson for Update
 pub impl @json.FromJson for Update
 
-pub(all) struct User {
+pub struct User {
   id : Int64
   is_bot : Bool
   first_name : String
@@ -98,6 +101,7 @@ pub(all) struct User {
   username : String?
   language_code : String?
 }
+pub fn User::new(id~ : Int64, is_bot~ : Bool, first_name~ : String, last_name? : String, username? : String, language_code? : String) -> Self
 pub impl Eq for User
 pub impl Show for User
 pub impl ToJson for User

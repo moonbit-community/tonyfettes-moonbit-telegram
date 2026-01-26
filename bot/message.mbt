@@ -1,5 +1,5 @@
 ///|
-pub(all) struct MessageEntity {
+pub struct MessageEntity {
   type_ : String
   offset : Int
   length : Int
@@ -54,7 +54,7 @@ pub impl @json.FromJson for MessageEntity with from_json(json, path) {
 }
 
 ///|
-pub(all) struct Message {
+pub struct Message {
   message_id : Int
   from : User?
   date : Int
@@ -63,6 +63,19 @@ pub(all) struct Message {
   entities : Array[MessageEntity]?
   reply_to_message : Message?
 } derive(Show, Eq)
+
+///|
+pub fn Message::new(
+  message_id~ : Int,
+  from? : User,
+  date~ : Int,
+  chat~ : Chat,
+  text? : String,
+  entities? : Array[MessageEntity],
+  reply_to_message? : Message,
+) -> Message {
+  { message_id, from, date, chat, text, entities, reply_to_message }
+}
 
 ///|
 pub impl ToJson for Message with to_json(self) {

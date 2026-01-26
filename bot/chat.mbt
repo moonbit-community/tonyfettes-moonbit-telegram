@@ -41,6 +41,18 @@ pub(all) struct Chat {
 } derive(Show, Eq)
 
 ///|
+pub fn Chat::new(
+  id~ : Int64,
+  type_~ : ChatType,
+  title? : String,
+  username? : String,
+  first_name? : String,
+  last_name? : String,
+) -> Chat {
+  { id, type_, title, username, first_name, last_name }
+}
+
+///|
 pub impl ToJson for Chat with to_json(self) {
   let obj : Map[String, Json] = {
     "id": self.id.to_json(),
