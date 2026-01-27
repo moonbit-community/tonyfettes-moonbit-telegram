@@ -2488,3 +2488,140 @@ pub async fn Bot::delete_sticker_set(
   }
   parse_api_response(data)
 }
+
+///|
+/// Use this method to specify a URL and receive incoming updates via an outgoing webhook.
+/// Returns True on success.
+pub async fn Bot::set_webhook(
+  self : Bot,
+  url~ : String,
+  certificate? : String,
+  ip_address? : String,
+  max_connections? : Int,
+  allowed_updates? : Array[String],
+  drop_pending_updates? : Bool,
+  secret_token? : String,
+) -> Bool raise TelegramError {
+  let api_url = self.api_url("setWebhook")
+  let body : Map[String, Json] = { "url": @json.to_json(url) }
+  if certificate is Some(v) {
+    body["certificate"] = @json.to_json(v)
+  }
+  if ip_address is Some(v) {
+    body["ip_address"] = @json.to_json(v)
+  }
+  if max_connections is Some(v) {
+    body["max_connections"] = @json.to_json(v)
+  }
+  if allowed_updates is Some(v) {
+    body["allowed_updates"] = @json.ToJson::to_json(v)
+  }
+  if drop_pending_updates is Some(v) {
+    body["drop_pending_updates"] = @json.to_json(v)
+  }
+  if secret_token is Some(v) {
+    body["secret_token"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(api_url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to remove webhook integration if you decide to switch back to getUpdates.
+/// Returns True on success.
+pub async fn Bot::delete_webhook(
+  self : Bot,
+  drop_pending_updates? : Bool,
+) -> Bool raise TelegramError {
+  let url = self.api_url("deleteWebhook")
+  let body : Map[String, Json] = {}
+  if drop_pending_updates is Some(v) {
+    body["drop_pending_updates"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to get current webhook status.
+/// On success, returns a WebhookInfo object.
+pub async fn Bot::get_webhook_info(self : Bot) -> Json raise TelegramError {
+  let url = self.api_url("getWebhookInfo")
+  let (response, data) = @http.get(url, headers={
+    "Content-Type": "application/json",
+  }) catch {
+    error =>
+      raise TelegramError::HttpError(code=0, body="Request failed: \{error}")
+  }
+  guard response.code is (200..=299) else {
+    let body = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body~)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to get basic information about a file and prepare it for downloading.
+/// On success, a File object is returned.
+pub async fn Bot::get_file(
+  self : Bot,
+  file_id~ : String,
+) -> File raise TelegramError {
+  let url = self.api_url("getFile")
+  let body : Map[String, Json] = { "file_id": @json.to_json(file_id) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to get a list of profile pictures for a user.
+/// Returns a UserProfilePhotos object.
+pub async fn Bot::get_user_profile_photos(
+  self : Bot,
+  user_id~ : Int64,
+  offset? : Int,
+  limit? : Int,
+) -> Json raise TelegramError {
+  let url = self.api_url("getUserProfilePhotos")
+  let body : Map[String, Json] = { "user_id": @json.to_json(user_id) }
+  if offset is Some(v) {
+    body["offset"] = @json.to_json(v)
+  }
+  if limit is Some(v) {
+    body["limit"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
