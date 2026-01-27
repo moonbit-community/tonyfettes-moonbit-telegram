@@ -2346,3 +2346,145 @@ pub async fn Bot::get_custom_emoji_stickers(
   }
   parse_api_response(data)
 }
+
+///|
+/// Use this method to get a sticker set.
+/// On success, a StickerSet object is returned.
+pub async fn Bot::get_sticker_set(
+  self : Bot,
+  name~ : String,
+) -> StickerSet raise TelegramError {
+  let url = self.api_url("getStickerSet")
+  let body : Map[String, Json] = { "name": @json.to_json(name) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to upload a file with a sticker for later use in
+/// the createNewStickerSet, addStickerToSet, or replaceStickerInSet methods.
+/// Returns the uploaded File on success.
+pub async fn Bot::upload_sticker_file(
+  self : Bot,
+  user_id~ : Int64,
+  sticker~ : String,
+  sticker_format~ : String,
+) -> File raise TelegramError {
+  let url = self.api_url("uploadStickerFile")
+  let body : Map[String, Json] = {
+    "user_id": @json.to_json(user_id),
+    "sticker": @json.to_json(sticker),
+    "sticker_format": @json.to_json(sticker_format),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to delete a sticker from a set created by the bot.
+/// Returns True on success.
+pub async fn Bot::delete_sticker_from_set(
+  self : Bot,
+  sticker~ : String,
+) -> Bool raise TelegramError {
+  let url = self.api_url("deleteStickerFromSet")
+  let body : Map[String, Json] = { "sticker": @json.to_json(sticker) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to move a sticker in a set created by the bot to a specific position.
+/// Returns True on success.
+pub async fn Bot::set_sticker_position_in_set(
+  self : Bot,
+  sticker~ : String,
+  position~ : Int,
+) -> Bool raise TelegramError {
+  let url = self.api_url("setStickerPositionInSet")
+  let body : Map[String, Json] = {
+    "sticker": @json.to_json(sticker),
+    "position": @json.to_json(position),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to change the list of emoji assigned to a regular or custom emoji sticker.
+/// The sticker must belong to a sticker set created by the bot.
+/// Returns True on success.
+pub async fn Bot::set_sticker_emoji_list(
+  self : Bot,
+  sticker~ : String,
+  emoji_list~ : Array[String],
+) -> Bool raise TelegramError {
+  let url = self.api_url("setStickerEmojiList")
+  let body : Map[String, Json] = {
+    "sticker": @json.to_json(sticker),
+    "emoji_list": @json.ToJson::to_json(emoji_list),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to delete a sticker set that was created by the bot.
+/// Returns True on success.
+pub async fn Bot::delete_sticker_set(
+  self : Bot,
+  name~ : String,
+) -> Bool raise TelegramError {
+  let url = self.api_url("deleteStickerSet")
+  let body : Map[String, Json] = { "name": @json.to_json(name) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
