@@ -1815,3 +1815,178 @@ pub async fn Bot::set_chat_administrator_custom_title(
   }
   parse_api_response(data)
 }
+
+///|
+/// Use this method to generate a new primary invite link for a chat.
+/// Any previously generated primary link is revoked.
+/// Returns the new invite link as String on success.
+pub async fn Bot::export_chat_invite_link(
+  self : Bot,
+  chat_id~ : Int64,
+) -> String raise TelegramError {
+  let url = self.api_url("exportChatInviteLink")
+  let body : Map[String, Json] = { "chat_id": @json.to_json(chat_id) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to create an additional invite link for a chat.
+/// Returns the new invite link as ChatInviteLink object.
+pub async fn Bot::create_chat_invite_link(
+  self : Bot,
+  chat_id~ : Int64,
+  name? : String,
+  expire_date? : Int,
+  member_limit? : Int,
+  creates_join_request? : Bool,
+) -> Json raise TelegramError {
+  let url = self.api_url("createChatInviteLink")
+  let body : Map[String, Json] = { "chat_id": @json.to_json(chat_id) }
+  if name is Some(v) {
+    body["name"] = @json.to_json(v)
+  }
+  if expire_date is Some(v) {
+    body["expire_date"] = @json.to_json(v)
+  }
+  if member_limit is Some(v) {
+    body["member_limit"] = @json.to_json(v)
+  }
+  if creates_join_request is Some(v) {
+    body["creates_join_request"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to edit a non-primary invite link created by the bot.
+/// Returns the edited invite link as ChatInviteLink object.
+pub async fn Bot::edit_chat_invite_link(
+  self : Bot,
+  chat_id~ : Int64,
+  invite_link~ : String,
+  name? : String,
+  expire_date? : Int,
+  member_limit? : Int,
+  creates_join_request? : Bool,
+) -> Json raise TelegramError {
+  let url = self.api_url("editChatInviteLink")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "invite_link": @json.to_json(invite_link),
+  }
+  if name is Some(v) {
+    body["name"] = @json.to_json(v)
+  }
+  if expire_date is Some(v) {
+    body["expire_date"] = @json.to_json(v)
+  }
+  if member_limit is Some(v) {
+    body["member_limit"] = @json.to_json(v)
+  }
+  if creates_join_request is Some(v) {
+    body["creates_join_request"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to revoke an invite link created by the bot.
+/// Returns the revoked invite link as ChatInviteLink object.
+pub async fn Bot::revoke_chat_invite_link(
+  self : Bot,
+  chat_id~ : Int64,
+  invite_link~ : String,
+) -> Json raise TelegramError {
+  let url = self.api_url("revokeChatInviteLink")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "invite_link": @json.to_json(invite_link),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to approve a chat join request.
+/// Returns True on success.
+pub async fn Bot::approve_chat_join_request(
+  self : Bot,
+  chat_id~ : Int64,
+  user_id~ : Int64,
+) -> Bool raise TelegramError {
+  let url = self.api_url("approveChatJoinRequest")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "user_id": @json.to_json(user_id),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to decline a chat join request.
+/// Returns True on success.
+pub async fn Bot::decline_chat_join_request(
+  self : Bot,
+  chat_id~ : Int64,
+  user_id~ : Int64,
+) -> Bool raise TelegramError {
+  let url = self.api_url("declineChatJoinRequest")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "user_id": @json.to_json(user_id),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
