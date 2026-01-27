@@ -9,6 +9,18 @@ pub struct MessageEntity {
 } derive(Show, Eq)
 
 ///|
+pub fn MessageEntity::new(
+  type_~ : String,
+  offset~ : Int,
+  length~ : Int,
+  url? : String,
+  user? : User,
+  language? : String,
+) -> MessageEntity {
+  { type_, offset, length, url, user, language }
+}
+
+///|
 pub impl @json.ToJson for MessageEntity with to_json(self) {
   let obj : Map[String, Json] = {
     "type": @json.to_json(self.type_),
