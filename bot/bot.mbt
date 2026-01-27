@@ -853,3 +853,224 @@ pub async fn Bot::send_animation(
   }
   parse_api_response(data)
 }
+
+///|
+/// Use this method to send point on the map.
+/// On success, the sent Message is returned.
+pub async fn Bot::send_location(
+  self : Bot,
+  chat_id~ : Int64,
+  latitude~ : Double,
+  longitude~ : Double,
+  business_connection_id? : String,
+  message_thread_id? : Int,
+  horizontal_accuracy? : Double,
+  live_period? : Int,
+  heading? : Int,
+  proximity_alert_radius? : Int,
+  disable_notification? : Bool,
+  protect_content? : Bool,
+  allow_paid_broadcast? : Bool,
+  message_effect_id? : String,
+  reply_parameters? : ReplyParameters,
+  reply_markup? : InlineKeyboardMarkup,
+) -> Message raise TelegramError {
+  let url = self.api_url("sendLocation")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "latitude": @json.to_json(latitude),
+    "longitude": @json.to_json(longitude),
+  }
+  if business_connection_id is Some(v) {
+    body["business_connection_id"] = @json.to_json(v)
+  }
+  if message_thread_id is Some(v) {
+    body["message_thread_id"] = @json.to_json(v)
+  }
+  if horizontal_accuracy is Some(v) {
+    body["horizontal_accuracy"] = @json.to_json(v)
+  }
+  if live_period is Some(v) {
+    body["live_period"] = @json.to_json(v)
+  }
+  if heading is Some(v) {
+    body["heading"] = @json.to_json(v)
+  }
+  if proximity_alert_radius is Some(v) {
+    body["proximity_alert_radius"] = @json.to_json(v)
+  }
+  if disable_notification is Some(v) {
+    body["disable_notification"] = @json.to_json(v)
+  }
+  if protect_content is Some(v) {
+    body["protect_content"] = @json.to_json(v)
+  }
+  if allow_paid_broadcast is Some(v) {
+    body["allow_paid_broadcast"] = @json.to_json(v)
+  }
+  if message_effect_id is Some(v) {
+    body["message_effect_id"] = @json.to_json(v)
+  }
+  if reply_parameters is Some(v) {
+    body["reply_parameters"] = @json.to_json(v)
+  }
+  if reply_markup is Some(v) {
+    body["reply_markup"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to send information about a venue.
+/// On success, the sent Message is returned.
+pub async fn Bot::send_venue(
+  self : Bot,
+  chat_id~ : Int64,
+  latitude~ : Double,
+  longitude~ : Double,
+  title~ : String,
+  address~ : String,
+  business_connection_id? : String,
+  message_thread_id? : Int,
+  foursquare_id? : String,
+  foursquare_type? : String,
+  google_place_id? : String,
+  google_place_type? : String,
+  disable_notification? : Bool,
+  protect_content? : Bool,
+  allow_paid_broadcast? : Bool,
+  message_effect_id? : String,
+  reply_parameters? : ReplyParameters,
+  reply_markup? : InlineKeyboardMarkup,
+) -> Message raise TelegramError {
+  let url = self.api_url("sendVenue")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "latitude": @json.to_json(latitude),
+    "longitude": @json.to_json(longitude),
+    "title": @json.to_json(title),
+    "address": @json.to_json(address),
+  }
+  if business_connection_id is Some(v) {
+    body["business_connection_id"] = @json.to_json(v)
+  }
+  if message_thread_id is Some(v) {
+    body["message_thread_id"] = @json.to_json(v)
+  }
+  if foursquare_id is Some(v) {
+    body["foursquare_id"] = @json.to_json(v)
+  }
+  if foursquare_type is Some(v) {
+    body["foursquare_type"] = @json.to_json(v)
+  }
+  if google_place_id is Some(v) {
+    body["google_place_id"] = @json.to_json(v)
+  }
+  if google_place_type is Some(v) {
+    body["google_place_type"] = @json.to_json(v)
+  }
+  if disable_notification is Some(v) {
+    body["disable_notification"] = @json.to_json(v)
+  }
+  if protect_content is Some(v) {
+    body["protect_content"] = @json.to_json(v)
+  }
+  if allow_paid_broadcast is Some(v) {
+    body["allow_paid_broadcast"] = @json.to_json(v)
+  }
+  if message_effect_id is Some(v) {
+    body["message_effect_id"] = @json.to_json(v)
+  }
+  if reply_parameters is Some(v) {
+    body["reply_parameters"] = @json.to_json(v)
+  }
+  if reply_markup is Some(v) {
+    body["reply_markup"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to send phone contacts.
+/// On success, the sent Message is returned.
+pub async fn Bot::send_contact(
+  self : Bot,
+  chat_id~ : Int64,
+  phone_number~ : String,
+  first_name~ : String,
+  business_connection_id? : String,
+  message_thread_id? : Int,
+  last_name? : String,
+  vcard? : String,
+  disable_notification? : Bool,
+  protect_content? : Bool,
+  allow_paid_broadcast? : Bool,
+  message_effect_id? : String,
+  reply_parameters? : ReplyParameters,
+  reply_markup? : InlineKeyboardMarkup,
+) -> Message raise TelegramError {
+  let url = self.api_url("sendContact")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "phone_number": @json.to_json(phone_number),
+    "first_name": @json.to_json(first_name),
+  }
+  if business_connection_id is Some(v) {
+    body["business_connection_id"] = @json.to_json(v)
+  }
+  if message_thread_id is Some(v) {
+    body["message_thread_id"] = @json.to_json(v)
+  }
+  if last_name is Some(v) {
+    body["last_name"] = @json.to_json(v)
+  }
+  if vcard is Some(v) {
+    body["vcard"] = @json.to_json(v)
+  }
+  if disable_notification is Some(v) {
+    body["disable_notification"] = @json.to_json(v)
+  }
+  if protect_content is Some(v) {
+    body["protect_content"] = @json.to_json(v)
+  }
+  if allow_paid_broadcast is Some(v) {
+    body["allow_paid_broadcast"] = @json.to_json(v)
+  }
+  if message_effect_id is Some(v) {
+    body["message_effect_id"] = @json.to_json(v)
+  }
+  if reply_parameters is Some(v) {
+    body["reply_parameters"] = @json.to_json(v)
+  }
+  if reply_markup is Some(v) {
+    body["reply_markup"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
