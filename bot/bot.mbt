@@ -1990,3 +1990,275 @@ pub async fn Bot::decline_chat_join_request(
   }
   parse_api_response(data)
 }
+
+///|
+/// Use this method to set default chat permissions for all members.
+/// The bot must be an administrator in the group or a supergroup for this to work
+/// and must have the can_restrict_members administrator rights.
+/// Returns True on success.
+pub async fn Bot::set_chat_permissions(
+  self : Bot,
+  chat_id~ : Int64,
+  permissions~ : ChatPermissions,
+  use_independent_chat_permissions? : Bool,
+) -> Bool raise TelegramError {
+  let url = self.api_url("setChatPermissions")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "permissions": @json.to_json(permissions),
+  }
+  if use_independent_chat_permissions is Some(v) {
+    body["use_independent_chat_permissions"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to set a new profile photo for the chat.
+/// Photos can't be changed for private chats.
+/// The bot must be an administrator in the chat for this to work
+/// and must have the appropriate administrator rights.
+/// Returns True on success.
+pub async fn Bot::set_chat_photo(
+  self : Bot,
+  chat_id~ : Int64,
+  photo~ : String,
+) -> Bool raise TelegramError {
+  let url = self.api_url("setChatPhoto")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "photo": @json.to_json(photo),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to delete a chat photo.
+/// Photos can't be changed for private chats.
+/// The bot must be an administrator in the chat for this to work
+/// and must have the appropriate administrator rights.
+/// Returns True on success.
+pub async fn Bot::delete_chat_photo(
+  self : Bot,
+  chat_id~ : Int64,
+) -> Bool raise TelegramError {
+  let url = self.api_url("deleteChatPhoto")
+  let body : Map[String, Json] = { "chat_id": @json.to_json(chat_id) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to change the title of a chat.
+/// Titles can't be changed for private chats.
+/// The bot must be an administrator in the chat for this to work
+/// and must have the appropriate administrator rights.
+/// Returns True on success.
+pub async fn Bot::set_chat_title(
+  self : Bot,
+  chat_id~ : Int64,
+  title~ : String,
+) -> Bool raise TelegramError {
+  let url = self.api_url("setChatTitle")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "title": @json.to_json(title),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to change the description of a group, a supergroup or a channel.
+/// The bot must be an administrator in the chat for this to work
+/// and must have the appropriate administrator rights.
+/// Returns True on success.
+pub async fn Bot::set_chat_description(
+  self : Bot,
+  chat_id~ : Int64,
+  description? : String,
+) -> Bool raise TelegramError {
+  let url = self.api_url("setChatDescription")
+  let body : Map[String, Json] = { "chat_id": @json.to_json(chat_id) }
+  if description is Some(v) {
+    body["description"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to add a message to the list of pinned messages in a chat.
+/// If the chat is not a private chat, the bot must be an administrator in the chat
+/// for this to work and must have the 'can_pin_messages' administrator right
+/// in a supergroup or 'can_edit_messages' administrator right in a channel.
+/// Returns True on success.
+pub async fn Bot::pin_chat_message(
+  self : Bot,
+  chat_id~ : Int64,
+  message_id~ : Int,
+  business_connection_id? : String,
+  disable_notification? : Bool,
+) -> Bool raise TelegramError {
+  let url = self.api_url("pinChatMessage")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "message_id": @json.to_json(message_id),
+  }
+  if business_connection_id is Some(v) {
+    body["business_connection_id"] = @json.to_json(v)
+  }
+  if disable_notification is Some(v) {
+    body["disable_notification"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to remove a message from the list of pinned messages in a chat.
+/// If the chat is not a private chat, the bot must be an administrator in the chat
+/// for this to work and must have the 'can_pin_messages' administrator right
+/// in a supergroup or 'can_edit_messages' administrator right in a channel.
+/// Returns True on success.
+pub async fn Bot::unpin_chat_message(
+  self : Bot,
+  chat_id~ : Int64,
+  business_connection_id? : String,
+  message_id? : Int,
+) -> Bool raise TelegramError {
+  let url = self.api_url("unpinChatMessage")
+  let body : Map[String, Json] = { "chat_id": @json.to_json(chat_id) }
+  if business_connection_id is Some(v) {
+    body["business_connection_id"] = @json.to_json(v)
+  }
+  if message_id is Some(v) {
+    body["message_id"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to clear the list of pinned messages in a chat.
+/// If the chat is not a private chat, the bot must be an administrator in the chat
+/// for this to work and must have the 'can_pin_messages' administrator right
+/// in a supergroup or 'can_edit_messages' administrator right in a channel.
+/// Returns True on success.
+pub async fn Bot::unpin_all_chat_messages(
+  self : Bot,
+  chat_id~ : Int64,
+) -> Bool raise TelegramError {
+  let url = self.api_url("unpinAllChatMessages")
+  let body : Map[String, Json] = { "chat_id": @json.to_json(chat_id) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method for your bot to leave a group, supergroup or channel.
+/// Returns True on success.
+pub async fn Bot::leave_chat(
+  self : Bot,
+  chat_id~ : Int64,
+) -> Bool raise TelegramError {
+  let url = self.api_url("leaveChat")
+  let body : Map[String, Json] = { "chat_id": @json.to_json(chat_id) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to get up to date information about the chat.
+/// Returns a ChatFullInfo object on success.
+pub async fn Bot::get_chat(
+  self : Bot,
+  chat_id~ : Int64,
+) -> ChatFullInfo raise TelegramError {
+  let url = self.api_url("getChat")
+  let body : Map[String, Json] = { "chat_id": @json.to_json(chat_id) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
