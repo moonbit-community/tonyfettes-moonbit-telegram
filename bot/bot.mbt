@@ -853,3 +853,104 @@ pub async fn Bot::send_animation(
   }
   parse_api_response(data)
 }
+
+///|
+/// Use this method to edit live location messages.
+/// On success, the edited Message is returned.
+pub async fn Bot::edit_message_live_location(
+  self : Bot,
+  latitude~ : Double,
+  longitude~ : Double,
+  business_connection_id? : String,
+  chat_id? : Int64,
+  message_id? : Int,
+  inline_message_id? : String,
+  live_period? : Int,
+  horizontal_accuracy? : Double,
+  heading? : Int,
+  proximity_alert_radius? : Int,
+  reply_markup? : InlineKeyboardMarkup,
+) -> Message raise TelegramError {
+  let url = self.api_url("editMessageLiveLocation")
+  let body : Map[String, Json] = {
+    "latitude": @json.to_json(latitude),
+    "longitude": @json.to_json(longitude),
+  }
+  if business_connection_id is Some(v) {
+    body["business_connection_id"] = @json.to_json(v)
+  }
+  if chat_id is Some(v) {
+    body["chat_id"] = @json.to_json(v)
+  }
+  if message_id is Some(v) {
+    body["message_id"] = @json.to_json(v)
+  }
+  if inline_message_id is Some(v) {
+    body["inline_message_id"] = @json.to_json(v)
+  }
+  if live_period is Some(v) {
+    body["live_period"] = @json.to_json(v)
+  }
+  if horizontal_accuracy is Some(v) {
+    body["horizontal_accuracy"] = @json.to_json(v)
+  }
+  if heading is Some(v) {
+    body["heading"] = @json.to_json(v)
+  }
+  if proximity_alert_radius is Some(v) {
+    body["proximity_alert_radius"] = @json.to_json(v)
+  }
+  if reply_markup is Some(v) {
+    body["reply_markup"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to stop updating a live location message before live_period expires.
+/// On success, the edited Message is returned.
+pub async fn Bot::stop_message_live_location(
+  self : Bot,
+  business_connection_id? : String,
+  chat_id? : Int64,
+  message_id? : Int,
+  inline_message_id? : String,
+  reply_markup? : InlineKeyboardMarkup,
+) -> Message raise TelegramError {
+  let url = self.api_url("stopMessageLiveLocation")
+  let body : Map[String, Json] = {}
+  if business_connection_id is Some(v) {
+    body["business_connection_id"] = @json.to_json(v)
+  }
+  if chat_id is Some(v) {
+    body["chat_id"] = @json.to_json(v)
+  }
+  if message_id is Some(v) {
+    body["message_id"] = @json.to_json(v)
+  }
+  if inline_message_id is Some(v) {
+    body["inline_message_id"] = @json.to_json(v)
+  }
+  if reply_markup is Some(v) {
+    body["reply_markup"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
