@@ -1373,3 +1373,100 @@ pub async fn Bot::stop_message_live_location(
   }
   parse_api_response(data)
 }
+
+///|
+/// Use this method to edit captions of messages.
+/// On success, the edited Message is returned.
+pub async fn Bot::edit_message_caption(
+  self : Bot,
+  business_connection_id? : String,
+  chat_id? : Int64,
+  message_id? : Int,
+  inline_message_id? : String,
+  caption? : String,
+  parse_mode? : String,
+  caption_entities? : Array[MessageEntity],
+  show_caption_above_media? : Bool,
+  reply_markup? : InlineKeyboardMarkup,
+) -> Message raise TelegramError {
+  let url = self.api_url("editMessageCaption")
+  let body : Map[String, Json] = {}
+  if business_connection_id is Some(v) {
+    body["business_connection_id"] = @json.to_json(v)
+  }
+  if chat_id is Some(v) {
+    body["chat_id"] = @json.to_json(v)
+  }
+  if message_id is Some(v) {
+    body["message_id"] = @json.to_json(v)
+  }
+  if inline_message_id is Some(v) {
+    body["inline_message_id"] = @json.to_json(v)
+  }
+  if caption is Some(v) {
+    body["caption"] = @json.to_json(v)
+  }
+  if parse_mode is Some(v) {
+    body["parse_mode"] = @json.to_json(v)
+  }
+  if caption_entities is Some(v) {
+    body["caption_entities"] = @json.ToJson::to_json(v)
+  }
+  if show_caption_above_media is Some(v) {
+    body["show_caption_above_media"] = @json.to_json(v)
+  }
+  if reply_markup is Some(v) {
+    body["reply_markup"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to edit animation, audio, document, photo, or video messages.
+/// On success, the edited Message is returned.
+pub async fn Bot::edit_message_media(
+  self : Bot,
+  media~ : Json,
+  business_connection_id? : String,
+  chat_id? : Int64,
+  message_id? : Int,
+  inline_message_id? : String,
+  reply_markup? : InlineKeyboardMarkup,
+) -> Message raise TelegramError {
+  let url = self.api_url("editMessageMedia")
+  let body : Map[String, Json] = { "media": media }
+  if business_connection_id is Some(v) {
+    body["business_connection_id"] = @json.to_json(v)
+  }
+  if chat_id is Some(v) {
+    body["chat_id"] = @json.to_json(v)
+  }
+  if message_id is Some(v) {
+    body["message_id"] = @json.to_json(v)
+  }
+  if inline_message_id is Some(v) {
+    body["inline_message_id"] = @json.to_json(v)
+  }
+  if reply_markup is Some(v) {
+    body["reply_markup"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
