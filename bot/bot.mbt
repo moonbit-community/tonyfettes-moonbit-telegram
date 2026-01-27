@@ -1373,3 +1373,53 @@ pub async fn Bot::stop_message_live_location(
   }
   parse_api_response(data)
 }
+
+///|
+/// Use this method to delete a message, including service messages.
+/// Returns True on success.
+pub async fn Bot::delete_message(
+  self : Bot,
+  chat_id~ : Int64,
+  message_id~ : Int,
+) -> Bool raise TelegramError {
+  let url = self.api_url("deleteMessage")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "message_id": @json.to_json(message_id),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to delete multiple messages simultaneously.
+/// Returns True on success.
+pub async fn Bot::delete_messages(
+  self : Bot,
+  chat_id~ : Int64,
+  message_ids~ : Array[Int],
+) -> Bool raise TelegramError {
+  let url = self.api_url("deleteMessages")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "message_ids": @json.ToJson::to_json(message_ids),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
