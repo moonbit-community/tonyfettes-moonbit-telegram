@@ -2692,3 +2692,294 @@ pub async fn Bot::get_game_high_scores(
   }
   parse_api_response(data)
 }
+
+///|
+/// Use this method to send invoices.
+/// On success, the sent Message is returned.
+pub async fn Bot::send_invoice(
+  self : Bot,
+  chat_id~ : Int64,
+  title~ : String,
+  description~ : String,
+  payload~ : String,
+  currency~ : String,
+  prices~ : Array[LabeledPrice],
+  provider_token? : String,
+  message_thread_id? : Int,
+  max_tip_amount? : Int,
+  suggested_tip_amounts? : Array[Int],
+  start_parameter? : String,
+  provider_data? : String,
+  photo_url? : String,
+  photo_size? : Int,
+  photo_width? : Int,
+  photo_height? : Int,
+  need_name? : Bool,
+  need_phone_number? : Bool,
+  need_email? : Bool,
+  need_shipping_address? : Bool,
+  send_phone_number_to_provider? : Bool,
+  send_email_to_provider? : Bool,
+  is_flexible? : Bool,
+  disable_notification? : Bool,
+  protect_content? : Bool,
+  allow_paid_broadcast? : Bool,
+  message_effect_id? : String,
+  reply_parameters? : ReplyParameters,
+  reply_markup? : InlineKeyboardMarkup,
+) -> Message raise TelegramError {
+  let url = self.api_url("sendInvoice")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "title": @json.to_json(title),
+    "description": @json.to_json(description),
+    "payload": @json.to_json(payload),
+    "currency": @json.to_json(currency),
+    "prices": @json.to_json(prices),
+  }
+  if provider_token is Some(v) {
+    body["provider_token"] = @json.to_json(v)
+  }
+  if message_thread_id is Some(v) {
+    body["message_thread_id"] = @json.to_json(v)
+  }
+  if max_tip_amount is Some(v) {
+    body["max_tip_amount"] = @json.to_json(v)
+  }
+  if suggested_tip_amounts is Some(v) {
+    body["suggested_tip_amounts"] = @json.to_json(v)
+  }
+  if start_parameter is Some(v) {
+    body["start_parameter"] = @json.to_json(v)
+  }
+  if provider_data is Some(v) {
+    body["provider_data"] = @json.to_json(v)
+  }
+  if photo_url is Some(v) {
+    body["photo_url"] = @json.to_json(v)
+  }
+  if photo_size is Some(v) {
+    body["photo_size"] = @json.to_json(v)
+  }
+  if photo_width is Some(v) {
+    body["photo_width"] = @json.to_json(v)
+  }
+  if photo_height is Some(v) {
+    body["photo_height"] = @json.to_json(v)
+  }
+  if need_name is Some(v) {
+    body["need_name"] = @json.to_json(v)
+  }
+  if need_phone_number is Some(v) {
+    body["need_phone_number"] = @json.to_json(v)
+  }
+  if need_email is Some(v) {
+    body["need_email"] = @json.to_json(v)
+  }
+  if need_shipping_address is Some(v) {
+    body["need_shipping_address"] = @json.to_json(v)
+  }
+  if send_phone_number_to_provider is Some(v) {
+    body["send_phone_number_to_provider"] = @json.to_json(v)
+  }
+  if send_email_to_provider is Some(v) {
+    body["send_email_to_provider"] = @json.to_json(v)
+  }
+  if is_flexible is Some(v) {
+    body["is_flexible"] = @json.to_json(v)
+  }
+  if disable_notification is Some(v) {
+    body["disable_notification"] = @json.to_json(v)
+  }
+  if protect_content is Some(v) {
+    body["protect_content"] = @json.to_json(v)
+  }
+  if allow_paid_broadcast is Some(v) {
+    body["allow_paid_broadcast"] = @json.to_json(v)
+  }
+  if message_effect_id is Some(v) {
+    body["message_effect_id"] = @json.to_json(v)
+  }
+  if reply_parameters is Some(v) {
+    body["reply_parameters"] = @json.to_json(v)
+  }
+  if reply_markup is Some(v) {
+    body["reply_markup"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to create a link for an invoice.
+/// Returns the created invoice link as String on success.
+pub async fn Bot::create_invoice_link(
+  self : Bot,
+  title~ : String,
+  description~ : String,
+  payload~ : String,
+  currency~ : String,
+  prices~ : Array[LabeledPrice],
+  provider_token? : String,
+  max_tip_amount? : Int,
+  suggested_tip_amounts? : Array[Int],
+  provider_data? : String,
+  photo_url? : String,
+  photo_size? : Int,
+  photo_width? : Int,
+  photo_height? : Int,
+  need_name? : Bool,
+  need_phone_number? : Bool,
+  need_email? : Bool,
+  need_shipping_address? : Bool,
+  send_phone_number_to_provider? : Bool,
+  send_email_to_provider? : Bool,
+  is_flexible? : Bool,
+  subscription_period? : Int,
+  business_connection_id? : String,
+) -> String raise TelegramError {
+  let url = self.api_url("createInvoiceLink")
+  let body : Map[String, Json] = {
+    "title": @json.to_json(title),
+    "description": @json.to_json(description),
+    "payload": @json.to_json(payload),
+    "currency": @json.to_json(currency),
+    "prices": @json.to_json(prices),
+  }
+  if provider_token is Some(v) {
+    body["provider_token"] = @json.to_json(v)
+  }
+  if max_tip_amount is Some(v) {
+    body["max_tip_amount"] = @json.to_json(v)
+  }
+  if suggested_tip_amounts is Some(v) {
+    body["suggested_tip_amounts"] = @json.to_json(v)
+  }
+  if provider_data is Some(v) {
+    body["provider_data"] = @json.to_json(v)
+  }
+  if photo_url is Some(v) {
+    body["photo_url"] = @json.to_json(v)
+  }
+  if photo_size is Some(v) {
+    body["photo_size"] = @json.to_json(v)
+  }
+  if photo_width is Some(v) {
+    body["photo_width"] = @json.to_json(v)
+  }
+  if photo_height is Some(v) {
+    body["photo_height"] = @json.to_json(v)
+  }
+  if need_name is Some(v) {
+    body["need_name"] = @json.to_json(v)
+  }
+  if need_phone_number is Some(v) {
+    body["need_phone_number"] = @json.to_json(v)
+  }
+  if need_email is Some(v) {
+    body["need_email"] = @json.to_json(v)
+  }
+  if need_shipping_address is Some(v) {
+    body["need_shipping_address"] = @json.to_json(v)
+  }
+  if send_phone_number_to_provider is Some(v) {
+    body["send_phone_number_to_provider"] = @json.to_json(v)
+  }
+  if send_email_to_provider is Some(v) {
+    body["send_email_to_provider"] = @json.to_json(v)
+  }
+  if is_flexible is Some(v) {
+    body["is_flexible"] = @json.to_json(v)
+  }
+  if subscription_period is Some(v) {
+    body["subscription_period"] = @json.to_json(v)
+  }
+  if business_connection_id is Some(v) {
+    body["business_connection_id"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// If you sent an invoice requesting a shipping address and the parameter is_flexible was specified,
+/// the Bot API will send an Update with a shipping_query field to the bot.
+/// Use this method to reply to shipping queries.
+/// On success, True is returned.
+pub async fn Bot::answer_shipping_query(
+  self : Bot,
+  shipping_query_id~ : String,
+  ok~ : Bool,
+  shipping_options? : Array[ShippingOption],
+  error_message? : String,
+) -> Bool raise TelegramError {
+  let url = self.api_url("answerShippingQuery")
+  let body : Map[String, Json] = {
+    "shipping_query_id": @json.to_json(shipping_query_id),
+    "ok": @json.to_json(ok),
+  }
+  if shipping_options is Some(v) {
+    body["shipping_options"] = @json.to_json(v)
+  }
+  if error_message is Some(v) {
+    body["error_message"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Once the user has confirmed their payment and shipping details,
+/// the Bot API sends the final confirmation in the form of an Update with the field pre_checkout_query.
+/// Use this method to respond to such pre-checkout queries.
+/// On success, True is returned.
+/// Note: The Bot API must receive an answer within 10 seconds after the pre-checkout query was sent.
+pub async fn Bot::answer_pre_checkout_query(
+  self : Bot,
+  pre_checkout_query_id~ : String,
+  ok~ : Bool,
+  error_message? : String,
+) -> Bool raise TelegramError {
+  let url = self.api_url("answerPreCheckoutQuery")
+  let body : Map[String, Json] = {
+    "pre_checkout_query_id": @json.to_json(pre_checkout_query_id),
+    "ok": @json.to_json(ok),
+  }
+  if error_message is Some(v) {
+    body["error_message"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
