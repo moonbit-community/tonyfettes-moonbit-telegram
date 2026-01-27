@@ -281,3 +281,166 @@ pub async fn Bot::set_my_commands(
   }
   parse_api_response(data)
 }
+
+///|
+/// Use this method to send audio files, if you want Telegram clients to display
+/// them in the music player. Your audio must be in the .MP3 or .M4A format.
+/// On success, the sent Message is returned.
+pub async fn Bot::send_audio(
+  self : Bot,
+  chat_id~ : Int64,
+  audio~ : String,
+  business_connection_id? : String,
+  message_thread_id? : Int,
+  caption? : String,
+  parse_mode? : String,
+  caption_entities? : Array[MessageEntity],
+  duration? : Int,
+  performer? : String,
+  title? : String,
+  thumbnail? : String,
+  disable_notification? : Bool,
+  protect_content? : Bool,
+  allow_paid_broadcast? : Bool,
+  message_effect_id? : String,
+  reply_parameters? : ReplyParameters,
+  reply_markup? : InlineKeyboardMarkup,
+) -> Message raise TelegramError {
+  let url = self.api_url("sendAudio")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "audio": @json.to_json(audio),
+  }
+  if business_connection_id is Some(v) {
+    body["business_connection_id"] = @json.to_json(v)
+  }
+  if message_thread_id is Some(v) {
+    body["message_thread_id"] = @json.to_json(v)
+  }
+  if caption is Some(v) {
+    body["caption"] = @json.to_json(v)
+  }
+  if parse_mode is Some(v) {
+    body["parse_mode"] = @json.to_json(v)
+  }
+  if caption_entities is Some(v) {
+    body["caption_entities"] = @json.ToJson::to_json(v)
+  }
+  if duration is Some(v) {
+    body["duration"] = @json.to_json(v)
+  }
+  if performer is Some(v) {
+    body["performer"] = @json.to_json(v)
+  }
+  if title is Some(v) {
+    body["title"] = @json.to_json(v)
+  }
+  if thumbnail is Some(v) {
+    body["thumbnail"] = @json.to_json(v)
+  }
+  if disable_notification is Some(v) {
+    body["disable_notification"] = @json.to_json(v)
+  }
+  if protect_content is Some(v) {
+    body["protect_content"] = @json.to_json(v)
+  }
+  if allow_paid_broadcast is Some(v) {
+    body["allow_paid_broadcast"] = @json.to_json(v)
+  }
+  if message_effect_id is Some(v) {
+    body["message_effect_id"] = @json.to_json(v)
+  }
+  if reply_parameters is Some(v) {
+    body["reply_parameters"] = @json.to_json(v)
+  }
+  if reply_markup is Some(v) {
+    body["reply_markup"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to send general files.
+/// On success, the sent Message is returned.
+pub async fn Bot::send_document(
+  self : Bot,
+  chat_id~ : Int64,
+  document~ : String,
+  business_connection_id? : String,
+  message_thread_id? : Int,
+  thumbnail? : String,
+  caption? : String,
+  parse_mode? : String,
+  caption_entities? : Array[MessageEntity],
+  disable_content_type_detection? : Bool,
+  disable_notification? : Bool,
+  protect_content? : Bool,
+  allow_paid_broadcast? : Bool,
+  message_effect_id? : String,
+  reply_parameters? : ReplyParameters,
+  reply_markup? : InlineKeyboardMarkup,
+) -> Message raise TelegramError {
+  let url = self.api_url("sendDocument")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "document": @json.to_json(document),
+  }
+  if business_connection_id is Some(v) {
+    body["business_connection_id"] = @json.to_json(v)
+  }
+  if message_thread_id is Some(v) {
+    body["message_thread_id"] = @json.to_json(v)
+  }
+  if thumbnail is Some(v) {
+    body["thumbnail"] = @json.to_json(v)
+  }
+  if caption is Some(v) {
+    body["caption"] = @json.to_json(v)
+  }
+  if parse_mode is Some(v) {
+    body["parse_mode"] = @json.to_json(v)
+  }
+  if caption_entities is Some(v) {
+    body["caption_entities"] = @json.ToJson::to_json(v)
+  }
+  if disable_content_type_detection is Some(v) {
+    body["disable_content_type_detection"] = @json.to_json(v)
+  }
+  if disable_notification is Some(v) {
+    body["disable_notification"] = @json.to_json(v)
+  }
+  if protect_content is Some(v) {
+    body["protect_content"] = @json.to_json(v)
+  }
+  if allow_paid_broadcast is Some(v) {
+    body["allow_paid_broadcast"] = @json.to_json(v)
+  }
+  if message_effect_id is Some(v) {
+    body["message_effect_id"] = @json.to_json(v)
+  }
+  if reply_parameters is Some(v) {
+    body["reply_parameters"] = @json.to_json(v)
+  }
+  if reply_markup is Some(v) {
+    body["reply_markup"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
