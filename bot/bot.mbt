@@ -3120,3 +3120,298 @@ pub async fn Bot::get_user_profile_photos(
   }
   parse_api_response(data)
 }
+
+///|
+/// Use this method to get custom emoji stickers, which can be used as a forum topic icon by any user.
+/// Returns an Array of Sticker objects.
+pub async fn Bot::get_forum_topic_icon_stickers(
+  self : Bot,
+) -> Array[Sticker] raise TelegramError {
+  let url = self.api_url("getForumTopicIconStickers")
+  let (response, data) = @http.get(url, headers={
+    "Content-Type": "application/json",
+  }) catch {
+    error =>
+      raise TelegramError::HttpError(code=0, body="Request failed: \{error}")
+  }
+  guard response.code is (200..=299) else {
+    let body = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body~)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to create a topic in a forum supergroup chat.
+/// Returns information about the created topic as a ForumTopic object.
+pub async fn Bot::create_forum_topic(
+  self : Bot,
+  chat_id~ : Int64,
+  name~ : String,
+  icon_color? : Int,
+  icon_custom_emoji_id? : String,
+) -> Json raise TelegramError {
+  let url = self.api_url("createForumTopic")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "name": @json.to_json(name),
+  }
+  if icon_color is Some(v) {
+    body["icon_color"] = @json.to_json(v)
+  }
+  if icon_custom_emoji_id is Some(v) {
+    body["icon_custom_emoji_id"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to edit name and icon of a topic in a forum supergroup chat.
+/// Returns True on success.
+pub async fn Bot::edit_forum_topic(
+  self : Bot,
+  chat_id~ : Int64,
+  message_thread_id~ : Int,
+  name? : String,
+  icon_custom_emoji_id? : String,
+) -> Bool raise TelegramError {
+  let url = self.api_url("editForumTopic")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "message_thread_id": @json.to_json(message_thread_id),
+  }
+  if name is Some(v) {
+    body["name"] = @json.to_json(v)
+  }
+  if icon_custom_emoji_id is Some(v) {
+    body["icon_custom_emoji_id"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to close an open topic in a forum supergroup chat.
+/// Returns True on success.
+pub async fn Bot::close_forum_topic(
+  self : Bot,
+  chat_id~ : Int64,
+  message_thread_id~ : Int,
+) -> Bool raise TelegramError {
+  let url = self.api_url("closeForumTopic")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "message_thread_id": @json.to_json(message_thread_id),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to reopen a closed topic in a forum supergroup chat.
+/// Returns True on success.
+pub async fn Bot::reopen_forum_topic(
+  self : Bot,
+  chat_id~ : Int64,
+  message_thread_id~ : Int,
+) -> Bool raise TelegramError {
+  let url = self.api_url("reopenForumTopic")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "message_thread_id": @json.to_json(message_thread_id),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to delete a forum topic along with all its messages in a forum supergroup chat.
+/// Returns True on success.
+pub async fn Bot::delete_forum_topic(
+  self : Bot,
+  chat_id~ : Int64,
+  message_thread_id~ : Int,
+) -> Bool raise TelegramError {
+  let url = self.api_url("deleteForumTopic")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "message_thread_id": @json.to_json(message_thread_id),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to clear the list of pinned messages in a forum topic.
+/// Returns True on success.
+pub async fn Bot::unpin_all_forum_topic_messages(
+  self : Bot,
+  chat_id~ : Int64,
+  message_thread_id~ : Int,
+) -> Bool raise TelegramError {
+  let url = self.api_url("unpinAllForumTopicMessages")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "message_thread_id": @json.to_json(message_thread_id),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to edit the name of the 'General' topic in a forum supergroup chat.
+/// Returns True on success.
+pub async fn Bot::edit_general_forum_topic(
+  self : Bot,
+  chat_id~ : Int64,
+  name~ : String,
+) -> Bool raise TelegramError {
+  let url = self.api_url("editGeneralForumTopic")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "name": @json.to_json(name),
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to close an open 'General' topic in a forum supergroup chat.
+/// Returns True on success.
+pub async fn Bot::close_general_forum_topic(
+  self : Bot,
+  chat_id~ : Int64,
+) -> Bool raise TelegramError {
+  let url = self.api_url("closeGeneralForumTopic")
+  let body : Map[String, Json] = { "chat_id": @json.to_json(chat_id) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to reopen a closed 'General' topic in a forum supergroup chat.
+/// Returns True on success.
+pub async fn Bot::reopen_general_forum_topic(
+  self : Bot,
+  chat_id~ : Int64,
+) -> Bool raise TelegramError {
+  let url = self.api_url("reopenGeneralForumTopic")
+  let body : Map[String, Json] = { "chat_id": @json.to_json(chat_id) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to hide the 'General' topic in a forum supergroup chat.
+/// Returns True on success.
+pub async fn Bot::hide_general_forum_topic(
+  self : Bot,
+  chat_id~ : Int64,
+) -> Bool raise TelegramError {
+  let url = self.api_url("hideGeneralForumTopic")
+  let body : Map[String, Json] = { "chat_id": @json.to_json(chat_id) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to unhide the 'General' topic in a forum supergroup chat.
+/// Returns True on success.
+pub async fn Bot::unhide_general_forum_topic(
+  self : Bot,
+  chat_id~ : Int64,
+) -> Bool raise TelegramError {
+  let url = self.api_url("unhideGeneralForumTopic")
+  let body : Map[String, Json] = { "chat_id": @json.to_json(chat_id) }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
