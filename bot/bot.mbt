@@ -1373,3 +1373,81 @@ pub async fn Bot::stop_message_live_location(
   }
   parse_api_response(data)
 }
+
+///|
+/// Use this method to forward messages of any kind.
+/// On success, the sent Message is returned.
+pub async fn Bot::forward_message(
+  self : Bot,
+  chat_id~ : Int64,
+  from_chat_id~ : Int64,
+  message_id~ : Int,
+  message_thread_id? : Int,
+  disable_notification? : Bool,
+  protect_content? : Bool,
+) -> Message raise TelegramError {
+  let url = self.api_url("forwardMessage")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "from_chat_id": @json.to_json(from_chat_id),
+    "message_id": @json.to_json(message_id),
+  }
+  if message_thread_id is Some(v) {
+    body["message_thread_id"] = @json.to_json(v)
+  }
+  if disable_notification is Some(v) {
+    body["disable_notification"] = @json.to_json(v)
+  }
+  if protect_content is Some(v) {
+    body["protect_content"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
+
+///|
+/// Use this method to forward multiple messages of any kind.
+/// On success, an Array of MessageId of the sent messages is returned.
+pub async fn Bot::forward_messages(
+  self : Bot,
+  chat_id~ : Int64,
+  from_chat_id~ : Int64,
+  message_ids~ : Array[Int],
+  message_thread_id? : Int,
+  disable_notification? : Bool,
+  protect_content? : Bool,
+) -> Array[MessageId] raise TelegramError {
+  let url = self.api_url("forwardMessages")
+  let body : Map[String, Json] = {
+    "chat_id": @json.to_json(chat_id),
+    "from_chat_id": @json.to_json(from_chat_id),
+    "message_ids": @json.ToJson::to_json(message_ids),
+  }
+  if message_thread_id is Some(v) {
+    body["message_thread_id"] = @json.to_json(v)
+  }
+  if disable_notification is Some(v) {
+    body["disable_notification"] = @json.to_json(v)
+  }
+  if protect_content is Some(v) {
+    body["protect_content"] = @json.to_json(v)
+  }
+  let (response, data) = @http.post(url, @json.to_json(body), headers={
+    "Content-Type": "application/json",
+  }) catch {
+    err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
+  }
+  guard response.code is (200..=299) else {
+    let body_text = data.text() catch { _ => "<failed to read body>" }
+    raise TelegramError::HttpError(code=response.code, body=body_text)
+  }
+  parse_api_response(data)
+}
