@@ -1,0 +1,9 @@
+{
+  "import": [
+    "tonyfettes/telegram/tl/ast",
+    {
+      "path": "moonbitlang/quickcheck",
+      "alias": "qc"
+    }
+  ]
+}

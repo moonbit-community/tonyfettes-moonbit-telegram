@@ -1,0 +1,19 @@
+{
+  "import": [
+    "tonyfettes/telegram/tl/ast"
+  ],
+  "test-import": [
+    "tonyfettes/telegram/tl/ast",
+    "tonyfettes/telegram/tl/error",
+    "tonyfettes/telegram/tl/lexer",
+    "tonyfettes/telegram/tl/parser",
+    {
+      "path": "tonyfettes/telegram/tl/internal/qc",
+      "alias": "internal_qc"
+    },
+    {
+      "path": "moonbitlang/quickcheck",
+      "alias": "qc"
+    }
+  ]
+}

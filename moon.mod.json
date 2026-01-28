@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "deps": {
     "moonbitlang/async": "0.16.2",
-    "tonyfettes/json": "0.2.3"
+    "tonyfettes/json": "0.2.3",
+    "moonbitlang/quickcheck": "0.9.10"
   },
   "readme": "README.md",
   "repository": "https://github.com/tonyfettes/telegram.mbt",
