@@ -59,6 +59,13 @@ fn collect_combinator(
   // Register the result type
   let type_name = type_ident_full_name(c.result.type_ident)
   if table.types.get(type_name) is Some(resolved) {
+    // Check if the type is marked as final or empty
+    if resolved.is_final {
+      raise FinalTypeViolation(pos=c.span, type_name~)
+    }
+    if resolved.is_empty {
+      raise EmptyTypeViolation(pos=c.span, type_name~)
+    }
     // Add constructor to existing type
     resolved.constructors.push(c)
   } else {
@@ -92,14 +99,22 @@ fn collect_function(
 
 ///|
 /// Collects a final declaration.
-fn collect_final(table : SymbolTable, f : @ast.FinalDecl) -> Unit {
-  let (ident, is_final, is_empty) = match f {
-    @ast.FinalDecl::New(ident) => (ident, false, false)
-    @ast.FinalDecl::Final(ident) => (ident, true, false)
-    @ast.FinalDecl::Empty(ident) => (ident, false, true)
+fn collect_final(
+  table : SymbolTable,
+  f : @ast.FinalDecl,
+) -> Unit raise TLTypeError {
+  let (data, is_new, is_final, is_empty) = match f {
+    @ast.FinalDecl::New(data) => (data, true, false, false)
+    @ast.FinalDecl::Final(data) => (data, false, true, false)
+    @ast.FinalDecl::Empty(data) => (data, false, false, true)
   }
+  let ident = data.type_ident
   let type_name = type_ident_full_name(ident)
   if table.types.get(type_name) is Some(resolved) {
+    // For New declarations, check that no constructors exist yet
+    if is_new && resolved.constructors.length() > 0 {
+      raise NewTypeViolation(pos=data.span, type_name~)
+    }
     // Update existing type
     table.types[type_name] = {
       ..resolved,

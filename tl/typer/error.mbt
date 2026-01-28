@@ -13,4 +13,7 @@ pub(all) suberror TLTypeError {
   UnboundTypeVariable(pos~ : @ast.Span, variable~ : String)
   UnboundNatVariable(pos~ : @ast.Span, variable~ : String)
   UnusedOptionalParameter(pos~ : @ast.Span, variable~ : String)
+  FinalTypeViolation(pos~ : @ast.Span, type_name~ : String)
+  NewTypeViolation(pos~ : @ast.Span, type_name~ : String)
+  EmptyTypeViolation(pos~ : @ast.Span, type_name~ : String)
 } derive(Show, Eq)
