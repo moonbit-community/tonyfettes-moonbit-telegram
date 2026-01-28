@@ -50,11 +50,17 @@ fn collect_combinator(
   table.constructors[full_name] = c
 
   // Register constructor ID
+  // Compute ID from CRC32 if not explicitly provided
   // Note: Telegram schema allows duplicate IDs where "Prefix" versions are
   // placeholders that get overwritten by the real declarations
-  if c.id is Some(id) {
-    table.ids[id] = c
+  let id = match c.id {
+    Some(id) => id
+    None => {
+      let normalized = normalize_combinator(c)
+      crc32(normalized)
+    }
   }
+  table.ids[id] = c
 
   // Register the result type
   let type_name = type_ident_full_name(c.result.type_ident)
@@ -92,9 +98,15 @@ fn collect_function(
   table.functions[full_name] = f
 
   // Register function ID
-  if f.id is Some(id) {
-    table.ids[id] = f
+  // Compute ID from CRC32 if not explicitly provided
+  let id = match f.id {
+    Some(id) => id
+    None => {
+      let normalized = normalize_combinator(f)
+      crc32(normalized)
+    }
   }
+  table.ids[id] = f
 }
 
 ///|
