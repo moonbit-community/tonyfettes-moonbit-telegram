@@ -12,4 +12,5 @@ pub(all) suberror TLTypeError {
   UndefinedFlagsField(pos~ : @ast.Span, conditional~ : String, ctor~ : String)
   UnboundTypeVariable(pos~ : @ast.Span, variable~ : String)
   UnboundNatVariable(pos~ : @ast.Span, variable~ : String)
+  UnusedOptionalParameter(pos~ : @ast.Span, variable~ : String)
 } derive(Show, Eq)

@@ -198,3 +198,35 @@ test "typer: percent type modifier" {
   let table = type_schema(schema)
   assert_true(table.types.contains("VectorTotal"))
 }
+
+///|
+test "typer: unused type parameter" {
+  let schema = parse_tl("foo {t:Type} x:int = Foo;")
+  let result = try? type_schema(schema)
+  guard result is Err(UnusedOptionalParameter(variable="t", ..)) else {
+    fail("expected UnusedOptionalParameter error, got \{result}")
+  }
+}
+
+///|
+test "typer: unused nat parameter" {
+  let schema = parse_tl("foo {n:#} x:int = Foo;")
+  let result = try? type_schema(schema)
+  guard result is Err(UnusedOptionalParameter(variable="n", ..)) else {
+    fail("expected UnusedOptionalParameter error, got \{result}")
+  }
+}
+
+///|
+test "typer: used type parameter is valid" {
+  let schema = parse_tl("foo {t:Type} x:t = Foo t;")
+  let table = type_schema(schema)
+  assert_true(table.types.contains("Foo"))
+}
+
+///|
+test "typer: used nat parameter is valid" {
+  let schema = parse_tl("foo {n:#} x:Vector<int> = Foo n;")
+  let table = type_schema(schema)
+  assert_true(table.types.contains("Foo"))
+}

@@ -43,7 +43,8 @@ fn collect_combinator(
   let full_name = combinator_full_name(c)
 
   // Check for duplicate constructor name
-  if table.constructors.contains(full_name) || table.functions.contains(full_name) {
+  if table.constructors.contains(full_name) ||
+    table.functions.contains(full_name) {
     raise DuplicateConstructorName(pos=c.span, name=full_name)
   }
   table.constructors[full_name] = c
@@ -77,7 +78,8 @@ fn collect_function(
   let full_name = combinator_full_name(f)
 
   // Check for duplicate function name (and cross-section collisions)
-  if table.functions.contains(full_name) || table.constructors.contains(full_name) {
+  if table.functions.contains(full_name) ||
+    table.constructors.contains(full_name) {
     raise DuplicateConstructorName(pos=f.span, name=full_name)
   }
   table.functions[full_name] = f
@@ -139,12 +141,17 @@ fn resolve_combinator(
   // Collect bound type variables from opt_args
   let type_vars : Map[String, Unit] = {}
   let nat_vars : Map[String, Unit] = {}
+  // Track which optional parameters are used (only for opt_args, not flags fields)
+  let type_var_used : Map[String, Bool] = {}
+  let nat_var_used : Map[String, Bool] = {}
   for opt in c.opt_args {
     for name in opt.names {
       if opt.type_ is @ast.TypeExpr::Nat {
         nat_vars[name] = ()
+        nat_var_used[name] = false
       } else {
         type_vars[name] = ()
+        type_var_used[name] = false
       }
     }
   }
@@ -164,18 +171,55 @@ fn resolve_combinator(
 
   // Resolve opt_args types
   for opt in c.opt_args {
-    resolve_type_expr(table, opt.type_, c.span, type_vars, nat_vars)
+    resolve_type_expr(
+      table,
+      opt.type_,
+      c.span,
+      type_vars,
+      nat_vars,
+      type_var_used,
+      nat_var_used,
+    )
   }
 
   // Resolve args
   for arg in c.args {
-    resolve_arg(table, arg, c.span, type_vars, nat_vars, flags_fields)
+    resolve_arg(
+      table,
+      arg,
+      c.span,
+      type_vars,
+      nat_vars,
+      flags_fields,
+      type_var_used,
+      nat_var_used,
+    )
   }
 
   // Resolve result type
-  resolve_result_type(table, c.result, c.span, type_vars, nat_vars)
+  resolve_result_type(
+    table,
+    c.result,
+    c.span,
+    type_vars,
+    nat_vars,
+    type_var_used,
+    nat_var_used,
+  )
   if check_result_type {
     validate_result_type_name(table, c.result, c.span, type_vars)
+  }
+
+  // Check that all optional parameters are used
+  for entry in type_var_used {
+    if not(entry.1) {
+      raise UnusedOptionalParameter(pos=c.span, variable=entry.0)
+    }
+  }
+  for entry in nat_var_used {
+    if not(entry.1) {
+      raise UnusedOptionalParameter(pos=c.span, variable=entry.0)
+    }
   }
 }
 
@@ -187,6 +231,8 @@ fn resolve_type_expr(
   span : @ast.Span,
   type_vars : Map[String, Unit],
   nat_vars : Map[String, Unit],
+  type_var_used : Map[String, Bool],
+  nat_var_used : Map[String, Bool],
 ) -> Unit raise TLTypeError {
   match expr {
     @ast.TypeExpr::Ident(ident) => {
@@ -201,19 +247,25 @@ fn resolve_type_expr(
       }
     }
     @ast.TypeExpr::Bang(inner) =>
-      resolve_type_expr(table, inner, span, type_vars, nat_vars)
+      resolve_type_expr(
+        table, inner, span, type_vars, nat_vars, type_var_used, nat_var_used,
+      )
     @ast.TypeExpr::Percent(inner) =>
-      resolve_type_expr(table, inner, span, type_vars, nat_vars)
+      resolve_type_expr(
+        table, inner, span, type_vars, nat_vars, type_var_used, nat_var_used,
+      )
     @ast.TypeExpr::Apply(ident, params) => {
       let name = type_ident_full_name(ident)
       if not(table.builtins.contains(name) || table.types.contains(name)) {
         raise UndefinedType(pos=span, name~)
       }
       for param in params {
-        resolve_type_expr(table, param, span, type_vars, nat_vars)
+        resolve_type_expr(
+          table, param, span, type_vars, nat_vars, type_var_used, nat_var_used,
+        )
       }
     }
-    @ast.TypeExpr::Var(name) =>
+    @ast.TypeExpr::Var(name) => {
       // Variables can be type variables, nat variables, or built-in types
       // Due to parser ambiguity, nat variables might appear as type vars
       if not(
@@ -223,6 +275,14 @@ fn resolve_type_expr(
         ) {
         raise UnboundTypeVariable(pos=span, variable=name)
       }
+      // Mark variable as used
+      if type_var_used.contains(name) {
+        type_var_used[name] = true
+      }
+      if nat_var_used.contains(name) {
+        nat_var_used[name] = true
+      }
+    }
     @ast.TypeExpr::Nat => ()
   }
 }
@@ -236,6 +296,8 @@ fn resolve_arg(
   type_vars : Map[String, Unit],
   nat_vars : Map[String, Unit],
   flags_fields : Map[String, Unit],
+  type_var_used : Map[String, Bool],
+  nat_var_used : Map[String, Bool],
 ) -> Unit raise TLTypeError {
   match arg {
     @ast.Arg::Named(named) => {
@@ -249,23 +311,52 @@ fn resolve_arg(
           )
         }
       }
-      resolve_type_expr(table, named.type_, span, type_vars, nat_vars)
+      resolve_type_expr(
+        table,
+        named.type_,
+        span,
+        type_vars,
+        nat_vars,
+        type_var_used,
+        nat_var_used,
+      )
     }
     @ast.Arg::Optional(opt) =>
       // Optional args introduce new type/nat variables - they're already collected
-      resolve_type_expr(table, opt.type_, span, type_vars, nat_vars)
+      resolve_type_expr(
+        table,
+        opt.type_,
+        span,
+        type_vars,
+        nat_vars,
+        type_var_used,
+        nat_var_used,
+      )
     @ast.Arg::Multiplicity(mult) => {
       // Check multiplicity count variable
-      resolve_nat_expr(mult.count, span, nat_vars)
+      resolve_nat_expr(mult.count, span, nat_vars, nat_var_used)
       // Resolve nested args
       for nested in mult.args {
-        resolve_arg(table, nested, span, type_vars, nat_vars, flags_fields)
+        resolve_arg(
+          table, nested, span, type_vars, nat_vars, flags_fields, type_var_used,
+          nat_var_used,
+        )
       }
     }
     @ast.Arg::Grouped(grouped) =>
-      resolve_type_expr(table, grouped.type_, span, type_vars, nat_vars)
+      resolve_type_expr(
+        table,
+        grouped.type_,
+        span,
+        type_vars,
+        nat_vars,
+        type_var_used,
+        nat_var_used,
+      )
     @ast.Arg::Anonymous(type_) =>
-      resolve_type_expr(table, type_, span, type_vars, nat_vars)
+      resolve_type_expr(
+        table, type_, span, type_vars, nat_vars, type_var_used, nat_var_used,
+      )
   }
 }
 
@@ -275,16 +366,22 @@ fn resolve_nat_expr(
   expr : @ast.NatExpr,
   span : @ast.Span,
   nat_vars : Map[String, Unit],
+  nat_var_used : Map[String, Bool],
 ) -> Unit raise TLTypeError {
   match expr {
     @ast.NatExpr::Const(_) => ()
-    @ast.NatExpr::Var(name) =>
+    @ast.NatExpr::Var(name) => {
       if not(nat_vars.contains(name)) {
         raise UnboundNatVariable(pos=span, variable=name)
       }
+      // Mark variable as used
+      if nat_var_used.contains(name) {
+        nat_var_used[name] = true
+      }
+    }
     @ast.NatExpr::Add(left, right) => {
-      resolve_nat_expr(left, span, nat_vars)
-      resolve_nat_expr(right, span, nat_vars)
+      resolve_nat_expr(left, span, nat_vars, nat_var_used)
+      resolve_nat_expr(right, span, nat_vars, nat_var_used)
     }
   }
 }
@@ -297,15 +394,24 @@ fn resolve_result_type(
   span : @ast.Span,
   type_vars : Map[String, Unit],
   nat_vars : Map[String, Unit],
+  type_var_used : Map[String, Bool],
+  nat_var_used : Map[String, Bool],
 ) -> Unit raise TLTypeError {
-  // Result type is being defined by this combinator, so we only resolve params here.
+  // Mark type variable as used if the result type name is a type variable
+  // (e.g., in `{X:Type} query:!X = X;` the result type X should mark X as used)
+  let type_name = type_ident_full_name(result.type_ident)
+  if type_var_used.contains(type_name) {
+    type_var_used[type_name] = true
+  }
 
   // Resolve params
   for param in result.params {
     match param {
       @ast.Expr::Type(t) =>
-        resolve_type_expr(table, t, span, type_vars, nat_vars)
-      @ast.Expr::Nat(n) => resolve_nat_expr(n, span, nat_vars)
+        resolve_type_expr(
+          table, t, span, type_vars, nat_vars, type_var_used, nat_var_used,
+        )
+      @ast.Expr::Nat(n) => resolve_nat_expr(n, span, nat_vars, nat_var_used)
     }
   }
 }
