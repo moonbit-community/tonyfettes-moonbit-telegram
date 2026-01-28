@@ -6,6 +6,63 @@ This document guides the main agent through spawning and managing subagents for 
 
 ---
 
+## Mental Model
+
+### Why Delegate Everything
+
+**Context is a finite resource.** Your context window is your working memory. Every file you read, every error you debug, every implementation detail you work through - these consume context that could be used for orchestration, planning, and user communication.
+
+**The sunk cost trap:** Once you invest effort building context on a task ("I've already read these files, I understand the patterns..."), you become biased toward completing it yourself. "I'll just finish this one" leads to doing all the work yourself and losing the orchestrator perspective. **Avoid this by delegating from the start.**
+
+**Even without parallelism benefits:** Spawning a subagent for a single blocking task keeps your context clean, establishes the delegation pattern, and prevents the sunk cost trap from ever forming.
+
+### Your Job
+
+1. **Task design**: Decompose work into tasks with clean, small, verifiable boundaries
+2. **Boundary control**: Define interfaces and contracts, not implementations
+3. **Lightweight verification**: Check that outputs meet contracts
+4. **Orchestration**: Manage multiple subagents, handle issues, communicate with user
+
+Your job is NOT: reading implementation code, debugging test failures, writing feature code.
+
+### Task Design Principles
+
+Good task decomposition determines how reviewable the output is:
+
+- **Small scope**: One clear objective per task
+- **Clean boundaries**: Well-defined inputs and outputs
+- **Explicit contracts**: "Function X should return Y", "File Z should export A, B, C"
+- **Verifiable criteria**: Can be checked without reading implementation details
+
+Example of good task spec:
+```
+Create tl/internal/qc/gen_ident.mbt with:
+- pub fn gen_lower_ident() -> @qc.Gen[String]  // [a-z][a-z0-9_]*
+- pub fn gen_upper_ident() -> @qc.Gen[String]  // [A-Z][a-zA-Z0-9_]*
+- pub fn gen_namespace() -> @qc.Gen[String?]
+
+Acceptance: moon check passes, functions have correct signatures
+```
+
+### Verification Principle
+
+**Control the boundary, trust the interior.**
+
+Verify:
+- Compiles (`moon check`)
+- Tests pass (`moon test`)
+- API matches spec (function signatures, exports)
+- Follows stated patterns
+
+Don't:
+- Read every line of implementation
+- Debug failing tests yourself (send back to subagent)
+- Second-guess implementation choices that meet the spec
+
+If verification fails, resume the subagent with specific feedback rather than fixing it yourself.
+
+---
+
 ## Quick Reference
 
 ### Essential Commands
@@ -45,6 +102,10 @@ git branch -d feature/<id>-<name>
 - [ ] No blocking dependencies
 - [ ] Scope is specific (not "improve X" but "implement Y in X")
 - [ ] Acceptance criteria are clear
+- [ ] Boundary/contract is defined (what inputs, what outputs)
+- [ ] **You are NOT tempted to "just do it yourself"** (if you are, that's the sunk cost trap)
+
+**Parallel spawning:** When multiple tasks have no dependencies on each other, spawn them all in a single message. Don't wait for one to complete before spawning the next.
 
 ### 2. Create Worktree
 
@@ -110,9 +171,9 @@ tail -50 /path/to/output-file         # Check recent output
 
 **Intervention options:**
 
-1. Resume with guidance (Task tool `resume` parameter)
+1. Resume with guidance (Task tool `resume` parameter) - **preferred**
 2. Abort and restart with refined prompt
-3. Take over manually
+3. Take over manually - **avoid this; it pulls you back into implementer role**
 
 **Productive waiting:**
 
