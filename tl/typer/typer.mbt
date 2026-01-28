@@ -43,7 +43,8 @@ fn collect_combinator(
   let full_name = combinator_full_name(c)
 
   // Check for duplicate constructor name
-  if table.constructors.contains(full_name) || table.functions.contains(full_name) {
+  if table.constructors.contains(full_name) ||
+    table.functions.contains(full_name) {
     raise DuplicateConstructorName(pos=c.span, name=full_name)
   }
   table.constructors[full_name] = c
@@ -77,7 +78,8 @@ fn collect_function(
   let full_name = combinator_full_name(f)
 
   // Check for duplicate function name (and cross-section collisions)
-  if table.functions.contains(full_name) || table.constructors.contains(full_name) {
+  if table.functions.contains(full_name) ||
+    table.constructors.contains(full_name) {
     raise DuplicateConstructorName(pos=f.span, name=full_name)
   }
   table.functions[full_name] = f
@@ -286,6 +288,10 @@ fn resolve_nat_expr(
       resolve_nat_expr(left, span, nat_vars)
       resolve_nat_expr(right, span, nat_vars)
     }
+    @ast.NatExpr::Zero => () // Peano zero, no validation needed
+    @ast.NatExpr::Succ(inner) =>
+      // Peano successor, recursively validate inner
+      resolve_nat_expr(inner, span, nat_vars)
   }
 }
 

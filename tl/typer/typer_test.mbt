@@ -198,3 +198,33 @@ test "typer: percent type modifier" {
   let table = type_schema(schema)
   assert_true(table.types.contains("VectorTotal"))
 }
+
+///|
+test "typer: Peano zero in result type" {
+  let schema = parse_tl("nil = List O;")
+  let table = type_schema(schema)
+  assert_true(table.types.contains("List"))
+}
+
+///|
+test "typer: Peano successor in result type" {
+  let schema = parse_tl("cons {n:#} head:int tail:List n = List (S n);")
+  let table = type_schema(schema)
+  assert_true(table.types.contains("List"))
+}
+
+///|
+test "typer: nested Peano successor" {
+  let schema = parse_tl("two = Nat (S (S O));")
+  let table = type_schema(schema)
+  assert_true(table.types.contains("Nat"))
+}
+
+///|
+test "typer: unbound variable in Peano successor" {
+  let schema = parse_tl("bad = List (S m);")
+  let result = try? type_schema(schema)
+  guard result is Err(UnboundNatVariable(variable="m", ..)) else {
+    fail("expected UnboundNatVariable error for m, got \{result}")
+  }
+}
