@@ -719,8 +719,41 @@ fn Parser::parse_expr(self : Parser) -> @ast.Expr raise @error.TLParseError {
         @ast.Expr::Type(@ast.TypeExpr::Var(name))
       }
     }
-    UpperIdent(_) | Bang | Percent | Hash | LParen =>
-      @ast.Expr::Type(self.parse_type_expr())
+    UpperIdent(name) =>
+      // Check for Peano numerals O and S
+      if name == "O" {
+        let _ = self.advance()
+        @ast.Expr::Nat(@ast.NatExpr::Zero)
+      } else if name == "S" {
+        let _ = self.advance()
+        let inner = self.parse_nat_expr_atom()
+        @ast.Expr::Nat(@ast.NatExpr::Succ(inner))
+      } else {
+        @ast.Expr::Type(self.parse_type_expr())
+      }
+    Bang | Percent | Hash => @ast.Expr::Type(self.parse_type_expr())
+    LParen => {
+      // Could be parenthesized Peano nat or type
+      let saved = self.pos
+      let _ = self.advance()
+      match self.peek() {
+        UpperIdent(name) =>
+          if name == "O" || name == "S" {
+            // It's a Peano nat expression
+            self.pos = saved
+            @ast.Expr::Nat(self.parse_nat_expr())
+          } else {
+            // It's a type expression
+            self.pos = saved
+            @ast.Expr::Type(self.parse_type_expr())
+          }
+        _ => {
+          // Restore and parse as type
+          self.pos = saved
+          @ast.Expr::Type(self.parse_type_expr())
+        }
+      }
+    }
     _ => {
       let token = self.current()
       raise @error.TLParseError::UnexpectedToken(
@@ -733,7 +766,7 @@ fn Parser::parse_expr(self : Parser) -> @ast.Expr raise @error.TLParseError {
 }
 
 ///|
-/// Parses a nat expression: n or n+m.
+/// Parses a nat expression: n or n+m or O or S n.
 fn Parser::parse_nat_expr(
   self : Parser,
 ) -> @ast.NatExpr raise @error.TLParseError {
@@ -748,6 +781,24 @@ fn Parser::parse_nat_expr(
         @ast.NatExpr::Const(n)
       }
     }
+    UpperIdent(name) =>
+      if name == "O" {
+        // Peano zero
+        let _ = self.advance()
+        @ast.NatExpr::Zero
+      } else if name == "S" {
+        // Peano successor
+        let _ = self.advance()
+        let inner = self.parse_nat_expr_atom()
+        @ast.NatExpr::Succ(inner)
+      } else {
+        let token = self.current()
+        raise @error.TLParseError::UnexpectedToken(
+          pos=token.span.start,
+          expected="nat expression",
+          found=token.kind.to_string(),
+        )
+      }
     LowerIdent(name) => {
       let _ = self.advance()
       if self.peek() is Plus {
@@ -757,6 +808,60 @@ fn Parser::parse_nat_expr(
       } else {
         @ast.NatExpr::Var(name)
       }
+    }
+    LParen => {
+      // Parenthesized nat expression
+      let _ = self.advance()
+      let expr = self.parse_nat_expr()
+      let _ = self.expect(RParen)
+      expr
+    }
+    _ => {
+      let token = self.current()
+      raise @error.TLParseError::UnexpectedToken(
+        pos=token.span.start,
+        expected="nat expression",
+        found=token.kind.to_string(),
+      )
+    }
+  }
+}
+
+///|
+/// Parses a nat expression atom (for Succ argument).
+fn Parser::parse_nat_expr_atom(
+  self : Parser,
+) -> @ast.NatExpr raise @error.TLParseError {
+  match self.peek() {
+    Number(n) => {
+      let _ = self.advance()
+      @ast.NatExpr::Const(n)
+    }
+    UpperIdent(name) =>
+      if name == "O" {
+        let _ = self.advance()
+        @ast.NatExpr::Zero
+      } else if name == "S" {
+        let _ = self.advance()
+        let inner = self.parse_nat_expr_atom()
+        @ast.NatExpr::Succ(inner)
+      } else {
+        let token = self.current()
+        raise @error.TLParseError::UnexpectedToken(
+          pos=token.span.start,
+          expected="nat expression",
+          found=token.kind.to_string(),
+        )
+      }
+    LowerIdent(name) => {
+      let _ = self.advance()
+      @ast.NatExpr::Var(name)
+    }
+    LParen => {
+      let _ = self.advance()
+      let expr = self.parse_nat_expr()
+      let _ = self.expect(RParen)
+      expr
     }
     _ => {
       let token = self.current()

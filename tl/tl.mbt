@@ -286,6 +286,8 @@ fn nat_expr_to_string(expr : @ast.NatExpr) -> String {
     @ast.NatExpr::Var(name) => name
     @ast.NatExpr::Add(left, right) =>
       nat_expr_to_string(left) + "+" + nat_expr_to_string(right)
+    @ast.NatExpr::Zero => "O"
+    @ast.NatExpr::Succ(inner) => "S " + nat_expr_to_string(inner)
   }
 }
 

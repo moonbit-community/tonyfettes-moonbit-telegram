@@ -4,6 +4,8 @@ pub(all) enum NatExpr {
   Const(Int) // literal like 4, 8
   Var(String) // variable like n, dif
   Add(NatExpr, NatExpr) // addition like n+dif
+  Zero // O (Peano zero)
+  Succ(NatExpr) // S n (Peano successor)
 } derive(Show, Eq)
 
 ///|
