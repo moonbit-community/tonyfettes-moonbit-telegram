@@ -73,11 +73,18 @@ pub(all) struct Combinator {
 } derive(Show, Eq)
 
 ///|
+/// Final declaration (includes span for error reporting)
+pub(all) struct FinalDeclData {
+  type_ident : TypeIdent
+  span : Span
+} derive(Show, Eq)
+
+///|
 /// Final declarations
 pub(all) enum FinalDecl {
-  New(TypeIdent)
-  Final(TypeIdent)
-  Empty(TypeIdent)
+  New(FinalDeclData)
+  Final(FinalDeclData)
+  Empty(FinalDeclData)
 } derive(Show, Eq)
 
 ///|

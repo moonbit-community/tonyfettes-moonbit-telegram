@@ -84,9 +84,22 @@ test "Combinator creation" {
 
 ///|
 test "FinalDecl variants" {
-  let new_decl = FinalDecl::New(TypeIdent::{ ns: None, name: "UserStatus" })
-  let final_decl = FinalDecl::Final(TypeIdent::{ ns: None, name: "UserStatus" })
-  let empty_decl = FinalDecl::Empty(TypeIdent::{ ns: None, name: "SomeType" })
+  let dummy_span = Span::new(
+    start=Position::new(line=1, column=1, offset=0),
+    end=Position::new(line=1, column=1, offset=0),
+  )
+  let new_decl = FinalDecl::New(FinalDeclData::{
+    type_ident: TypeIdent::{ ns: None, name: "UserStatus" },
+    span: dummy_span,
+  })
+  let final_decl = FinalDecl::Final(FinalDeclData::{
+    type_ident: TypeIdent::{ ns: None, name: "UserStatus" },
+    span: dummy_span,
+  })
+  let empty_decl = FinalDecl::Empty(FinalDeclData::{
+    type_ident: TypeIdent::{ ns: None, name: "SomeType" },
+    span: dummy_span,
+  })
   guard new_decl is New(_) else { fail("expected New") }
   guard final_decl is Final(_) else { fail("expected Final") }
   guard empty_decl is Empty(_) else { fail("expected Empty") }

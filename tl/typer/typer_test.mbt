@@ -260,3 +260,82 @@ test "typer: used nat parameter is valid" {
   let table = type_schema(schema)
   assert_true(table.types.contains("Foo"))
 }
+
+///|
+test "typer: constructor after Final" {
+  let source =
+    #|foo = Foo;
+    #|Final Foo;
+    #|bar = Foo;
+  let schema = parse_tl(source)
+  let result = try? type_schema(schema)
+  guard result is Err(FinalTypeViolation(type_name="Foo", ..)) else {
+    fail("expected FinalTypeViolation error, got \{result}")
+  }
+}
+
+///|
+test "typer: constructor before New" {
+  let source =
+    #|foo = Foo;
+    #|New Foo;
+  let schema = parse_tl(source)
+  let result = try? type_schema(schema)
+  guard result is Err(NewTypeViolation(type_name="Foo", ..)) else {
+    fail("expected NewTypeViolation error, got \{result}")
+  }
+}
+
+///|
+test "typer: constructor for Empty type" {
+  let source =
+    #|Empty Foo;
+    #|foo = Foo;
+  let schema = parse_tl(source)
+  let result = try? type_schema(schema)
+  guard result is Err(EmptyTypeViolation(type_name="Foo", ..)) else {
+    fail("expected EmptyTypeViolation error, got \{result}")
+  }
+}
+
+///|
+test "typer: valid Final after constructors" {
+  let source =
+    #|foo = Foo;
+    #|bar = Foo;
+    #|Final Foo;
+  let schema = parse_tl(source)
+  let table = type_schema(schema)
+  guard table.types.get("Foo") is Some(resolved) else {
+    fail("expected Foo type")
+  }
+  assert_true(resolved.is_final)
+  assert_eq(resolved.constructors.length(), 2)
+}
+
+///|
+test "typer: valid New before constructors" {
+  let source =
+    #|New Foo;
+    #|foo = Foo;
+    #|bar = Foo;
+  let schema = parse_tl(source)
+  let table = type_schema(schema)
+  guard table.types.get("Foo") is Some(resolved) else {
+    fail("expected Foo type")
+  }
+  assert_eq(resolved.constructors.length(), 2)
+}
+
+///|
+test "typer: Empty type has no constructors" {
+  let source =
+    #|Empty Foo;
+  let schema = parse_tl(source)
+  let table = type_schema(schema)
+  guard table.types.get("Foo") is Some(resolved) else {
+    fail("expected Foo type")
+  }
+  assert_true(resolved.is_empty)
+  assert_eq(resolved.constructors.length(), 0)
+}

@@ -313,8 +313,11 @@ fn expr_to_string(expr : @ast.Expr) -> String {
 ///|
 fn final_decl_to_string(decl : @ast.FinalDecl) -> String {
   match decl {
-    @ast.FinalDecl::New(ident) => "New " + type_ident_to_string(ident) + ";"
-    @ast.FinalDecl::Final(ident) => "Final " + type_ident_to_string(ident) + ";"
-    @ast.FinalDecl::Empty(ident) => "Empty " + type_ident_to_string(ident) + ";"
+    @ast.FinalDecl::New(data) =>
+      "New " + type_ident_to_string(data.type_ident) + ";"
+    @ast.FinalDecl::Final(data) =>
+      "Final " + type_ident_to_string(data.type_ident) + ";"
+    @ast.FinalDecl::Empty(data) =>
+      "Empty " + type_ident_to_string(data.type_ident) + ";"
   }
 }

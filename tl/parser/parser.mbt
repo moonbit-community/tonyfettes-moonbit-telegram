@@ -881,22 +881,40 @@ fn Parser::parse_final_decl(
 ) -> @ast.FinalDecl raise @error.TLParseError {
   match self.peek() {
     New => {
+      let start = self.current().span.start
       let _ = self.advance()
       let ident = self.parse_type_ident()
+      let end = self.current().span.end
       let _ = self.expect(Semicolon)
-      @ast.FinalDecl::New(ident)
+      let data = @ast.FinalDeclData::{
+        type_ident: ident,
+        span: @ast.Span::new(start~, end~),
+      }
+      @ast.FinalDecl::New(data)
     }
     Final => {
+      let start = self.current().span.start
       let _ = self.advance()
       let ident = self.parse_type_ident()
+      let end = self.current().span.end
       let _ = self.expect(Semicolon)
-      @ast.FinalDecl::Final(ident)
+      let data = @ast.FinalDeclData::{
+        type_ident: ident,
+        span: @ast.Span::new(start~, end~),
+      }
+      @ast.FinalDecl::Final(data)
     }
     Empty => {
+      let start = self.current().span.start
       let _ = self.advance()
       let ident = self.parse_type_ident()
+      let end = self.current().span.end
       let _ = self.expect(Semicolon)
-      @ast.FinalDecl::Empty(ident)
+      let data = @ast.FinalDeclData::{
+        type_ident: ident,
+        span: @ast.Span::new(start~, end~),
+      }
+      @ast.FinalDecl::Empty(data)
     }
     _ => {
       let token = self.current()
