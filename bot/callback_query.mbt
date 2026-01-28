@@ -22,21 +22,21 @@ pub fn CallbackQuery::new(
 
 ///|
 pub impl @json.ToJson for CallbackQuery with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "id": @json.to_json(self.id),
     "from": @json.to_json(self.from),
     "chat_instance": @json.to_json(self.chat_instance),
   }
   if self.message is Some(v) {
-    obj["message"] = @json.to_json(v)
+    object["message"] = @json.to_json(v)
   }
   if self.inline_message_id is Some(v) {
-    obj["inline_message_id"] = @json.to_json(v)
+    object["inline_message_id"] = @json.to_json(v)
   }
   if self.data is Some(v) {
-    obj["data"] = @json.to_json(v)
+    object["data"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|

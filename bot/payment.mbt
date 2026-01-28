@@ -20,26 +20,26 @@ pub fn Invoice::new(
 
 ///|
 pub impl @json.ToJson for Invoice with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "title": @json.to_json(self.title),
     "description": @json.to_json(self.description),
     "start_parameter": @json.to_json(self.start_parameter),
     "currency": @json.to_json(self.currency),
     "total_amount": @json.to_json(self.total_amount),
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for Invoice with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for Invoice")
   }
-  let title : String = @json.from_json(obj["title"], path~)
-  let description : String = @json.from_json(obj["description"], path~)
-  let start_parameter : String = @json.from_json(obj["start_parameter"], path~)
-  let currency : String = @json.from_json(obj["currency"], path~)
-  let total_amount : Int = @json.from_json(obj["total_amount"], path~)
+  let title : String = @json.from_json(object["title"], path~)
+  let description : String = @json.from_json(object["description"], path~)
+  let start_parameter : String = @json.from_json(object["start_parameter"], path~)
+  let currency : String = @json.from_json(object["currency"], path~)
+  let total_amount : Int = @json.from_json(object["total_amount"], path~)
   { title, description, start_parameter, currency, total_amount }
 }
 
@@ -56,20 +56,20 @@ pub fn LabeledPrice::new(label~ : String, amount~ : Int) -> LabeledPrice {
 
 ///|
 pub impl @json.ToJson for LabeledPrice with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "label": @json.to_json(self.label),
     "amount": @json.to_json(self.amount),
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for LabeledPrice with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for LabeledPrice")
   }
-  let label : String = @json.from_json(obj["label"], path~)
-  let amount : Int = @json.from_json(obj["amount"], path~)
+  let label : String = @json.from_json(object["label"], path~)
+  let amount : Int = @json.from_json(object["amount"], path~)
   { label, amount }
 }
 
@@ -97,7 +97,7 @@ pub fn ShippingAddress::new(
 
 ///|
 pub impl @json.ToJson for ShippingAddress with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "country_code": @json.to_json(self.country_code),
     "state": @json.to_json(self.state),
     "city": @json.to_json(self.city),
@@ -105,20 +105,20 @@ pub impl @json.ToJson for ShippingAddress with to_json(self) {
     "street_line2": @json.to_json(self.street_line2),
     "post_code": @json.to_json(self.post_code),
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for ShippingAddress with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for ShippingAddress")
   }
-  let country_code : String = @json.from_json(obj["country_code"], path~)
-  let state : String = @json.from_json(obj["state"], path~)
-  let city : String = @json.from_json(obj["city"], path~)
-  let street_line1 : String = @json.from_json(obj["street_line1"], path~)
-  let street_line2 : String = @json.from_json(obj["street_line2"], path~)
-  let post_code : String = @json.from_json(obj["post_code"], path~)
+  let country_code : String = @json.from_json(object["country_code"], path~)
+  let state : String = @json.from_json(object["state"], path~)
+  let city : String = @json.from_json(object["city"], path~)
+  let street_line1 : String = @json.from_json(object["street_line1"], path~)
+  let street_line2 : String = @json.from_json(object["street_line2"], path~)
+  let post_code : String = @json.from_json(object["post_code"], path~)
   { country_code, state, city, street_line1, street_line2, post_code }
 }
 
@@ -142,43 +142,43 @@ pub fn OrderInfo::new(
 
 ///|
 pub impl @json.ToJson for OrderInfo with to_json(self) {
-  let obj : Map[String, Json] = {}
+  let object : Map[String, Json] = {}
   if self.name is Some(v) {
-    obj["name"] = @json.to_json(v)
+    object["name"] = @json.to_json(v)
   }
   if self.phone_number is Some(v) {
-    obj["phone_number"] = @json.to_json(v)
+    object["phone_number"] = @json.to_json(v)
   }
   if self.email is Some(v) {
-    obj["email"] = @json.to_json(v)
+    object["email"] = @json.to_json(v)
   }
   if self.shipping_address is Some(v) {
-    obj["shipping_address"] = @json.to_json(v)
+    object["shipping_address"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for OrderInfo with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for OrderInfo")
   }
-  let name : String? = if obj.get("name") is Some(v) {
+  let name : String? = if object.get("name") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let phone_number : String? = if obj.get("phone_number") is Some(v) {
+  let phone_number : String? = if object.get("phone_number") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let email : String? = if obj.get("email") is Some(v) {
+  let email : String? = if object.get("email") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let shipping_address : ShippingAddress? = if obj.get("shipping_address")
+  let shipping_address : ShippingAddress? = if object.get("shipping_address")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -205,22 +205,22 @@ pub fn ShippingOption::new(
 
 ///|
 pub impl @json.ToJson for ShippingOption with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "id": @json.to_json(self.id),
     "title": @json.to_json(self.title),
     "prices": @json.to_json(self.prices),
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for ShippingOption with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for ShippingOption")
   }
-  let id : String = @json.from_json(obj["id"], path~)
-  let title : String = @json.from_json(obj["title"], path~)
-  let prices : Array[LabeledPrice] = @json.from_json(obj["prices"], path~)
+  let id : String = @json.from_json(object["id"], path~)
+  let title : String = @json.from_json(object["title"], path~)
+  let prices : Array[LabeledPrice] = @json.from_json(object["prices"], path~)
   { id, title, prices }
 }
 
@@ -258,7 +258,7 @@ pub fn SuccessfulPayment::new(
 
 ///|
 pub impl @json.ToJson for SuccessfulPayment with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "currency": @json.to_json(self.currency),
     "total_amount": @json.to_json(self.total_amount),
     "invoice_payload": @json.to_json(self.invoice_payload),
@@ -266,38 +266,38 @@ pub impl @json.ToJson for SuccessfulPayment with to_json(self) {
     "provider_payment_charge_id": @json.to_json(self.provider_payment_charge_id),
   }
   if self.shipping_option_id is Some(v) {
-    obj["shipping_option_id"] = @json.to_json(v)
+    object["shipping_option_id"] = @json.to_json(v)
   }
   if self.order_info is Some(v) {
-    obj["order_info"] = @json.to_json(v)
+    object["order_info"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for SuccessfulPayment with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for SuccessfulPayment")
   }
-  let currency : String = @json.from_json(obj["currency"], path~)
-  let total_amount : Int = @json.from_json(obj["total_amount"], path~)
-  let invoice_payload : String = @json.from_json(obj["invoice_payload"], path~)
-  let shipping_option_id : String? = if obj.get("shipping_option_id") is Some(v) {
+  let currency : String = @json.from_json(object["currency"], path~)
+  let total_amount : Int = @json.from_json(object["total_amount"], path~)
+  let invoice_payload : String = @json.from_json(object["invoice_payload"], path~)
+  let shipping_option_id : String? = if object.get("shipping_option_id") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let order_info : OrderInfo? = if obj.get("order_info") is Some(v) {
+  let order_info : OrderInfo? = if object.get("order_info") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
   let telegram_payment_charge_id : String = @json.from_json(
-    obj["telegram_payment_charge_id"],
+    object["telegram_payment_charge_id"],
     path~,
   )
   let provider_payment_charge_id : String = @json.from_json(
-    obj["provider_payment_charge_id"],
+    object["provider_payment_charge_id"],
     path~,
   )
   {
@@ -339,31 +339,31 @@ pub fn RefundedPayment::new(
 
 ///|
 pub impl @json.ToJson for RefundedPayment with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "currency": @json.to_json(self.currency),
     "total_amount": @json.to_json(self.total_amount),
     "invoice_payload": @json.to_json(self.invoice_payload),
     "telegram_payment_charge_id": @json.to_json(self.telegram_payment_charge_id),
   }
   if self.provider_payment_charge_id is Some(v) {
-    obj["provider_payment_charge_id"] = @json.to_json(v)
+    object["provider_payment_charge_id"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for RefundedPayment with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for RefundedPayment")
   }
-  let currency : String = @json.from_json(obj["currency"], path~)
-  let total_amount : Int = @json.from_json(obj["total_amount"], path~)
-  let invoice_payload : String = @json.from_json(obj["invoice_payload"], path~)
+  let currency : String = @json.from_json(object["currency"], path~)
+  let total_amount : Int = @json.from_json(object["total_amount"], path~)
+  let invoice_payload : String = @json.from_json(object["invoice_payload"], path~)
   let telegram_payment_charge_id : String = @json.from_json(
-    obj["telegram_payment_charge_id"],
+    object["telegram_payment_charge_id"],
     path~,
   )
-  let provider_payment_charge_id : String? = if obj.get(
+  let provider_payment_charge_id : String? = if object.get(
       "provider_payment_charge_id",
     )
     is Some(v) {

@@ -16,31 +16,31 @@ pub fn InlineKeyboardButton::new(
 
 ///|
 pub impl @json.ToJson for InlineKeyboardButton with to_json(self) {
-  let obj : Map[String, Json] = { "text": @json.to_json(self.text) }
+  let object : Map[String, Json] = { "text": @json.to_json(self.text) }
   if self.url is Some(v) {
-    obj["url"] = @json.to_json(v)
+    object["url"] = @json.to_json(v)
   }
   if self.callback_data is Some(v) {
-    obj["callback_data"] = @json.to_json(v)
+    object["callback_data"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for InlineKeyboardButton with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for InlineKeyboardButton",
     )
   }
-  let text : String = @json.from_json(obj["text"], path~)
-  let url : String? = if obj.get("url") is Some(v) {
+  let text : String = @json.from_json(object["text"], path~)
+  let url : String? = if object.get("url") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let callback_data : String? = if obj.get("callback_data") is Some(v) {
+  let callback_data : String? = if object.get("callback_data") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -62,10 +62,10 @@ pub fn InlineKeyboardMarkup::new(
 
 ///|
 pub impl @json.ToJson for InlineKeyboardMarkup with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "inline_keyboard": @json.ToJson::to_json(self.inline_keyboard),
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|

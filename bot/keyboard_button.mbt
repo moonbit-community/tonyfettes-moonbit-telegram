@@ -10,22 +10,22 @@ pub fn KeyboardButtonPollType::new(type_? : String) -> KeyboardButtonPollType {
 
 ///|
 pub impl @json.ToJson for KeyboardButtonPollType with to_json(self) {
-  let obj : Map[String, Json] = {}
+  let object : Map[String, Json] = {}
   if self.type_ is Some(v) {
-    obj["type"] = @json.to_json(v)
+    object["type"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for KeyboardButtonPollType with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for KeyboardButtonPollType",
     )
   }
-  let type_ : String? = if obj.get("type") is Some(v) {
+  let type_ : String? = if object.get("type") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -67,26 +67,26 @@ pub fn KeyboardButtonRequestUsers::new(
 
 ///|
 pub impl @json.ToJson for KeyboardButtonRequestUsers with to_json(self) {
-  let obj : Map[String, Json] = { "request_id": @json.to_json(self.request_id) }
+  let object : Map[String, Json] = { "request_id": @json.to_json(self.request_id) }
   if self.user_is_bot is Some(v) {
-    obj["user_is_bot"] = @json.to_json(v)
+    object["user_is_bot"] = @json.to_json(v)
   }
   if self.user_is_premium is Some(v) {
-    obj["user_is_premium"] = @json.to_json(v)
+    object["user_is_premium"] = @json.to_json(v)
   }
   if self.max_quantity is Some(v) {
-    obj["max_quantity"] = @json.to_json(v)
+    object["max_quantity"] = @json.to_json(v)
   }
   if self.request_name is Some(v) {
-    obj["request_name"] = @json.to_json(v)
+    object["request_name"] = @json.to_json(v)
   }
   if self.request_username is Some(v) {
-    obj["request_username"] = @json.to_json(v)
+    object["request_username"] = @json.to_json(v)
   }
   if self.request_photo is Some(v) {
-    obj["request_photo"] = @json.to_json(v)
+    object["request_photo"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
@@ -94,39 +94,39 @@ pub impl @json.FromJson for KeyboardButtonRequestUsers with from_json(
   json,
   path,
 ) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for KeyboardButtonRequestUsers",
     )
   }
-  let request_id : Int = @json.from_json(obj["request_id"], path~)
-  let user_is_bot : Bool? = if obj.get("user_is_bot") is Some(v) {
+  let request_id : Int = @json.from_json(object["request_id"], path~)
+  let user_is_bot : Bool? = if object.get("user_is_bot") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let user_is_premium : Bool? = if obj.get("user_is_premium") is Some(v) {
+  let user_is_premium : Bool? = if object.get("user_is_premium") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let max_quantity : Int? = if obj.get("max_quantity") is Some(v) {
+  let max_quantity : Int? = if object.get("max_quantity") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let request_name : Bool? = if obj.get("request_name") is Some(v) {
+  let request_name : Bool? = if object.get("request_name") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let request_username : Bool? = if obj.get("request_username") is Some(v) {
+  let request_username : Bool? = if object.get("request_username") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let request_photo : Bool? = if obj.get("request_photo") is Some(v) {
+  let request_photo : Bool? = if object.get("request_photo") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -182,75 +182,75 @@ pub fn KeyboardButtonRequestChat::new(
 
 ///|
 pub impl @json.ToJson for KeyboardButtonRequestChat with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "request_id": @json.to_json(self.request_id),
     "chat_is_channel": @json.to_json(self.chat_is_channel),
   }
   if self.chat_is_forum is Some(v) {
-    obj["chat_is_forum"] = @json.to_json(v)
+    object["chat_is_forum"] = @json.to_json(v)
   }
   if self.chat_has_username is Some(v) {
-    obj["chat_has_username"] = @json.to_json(v)
+    object["chat_has_username"] = @json.to_json(v)
   }
   if self.chat_is_created is Some(v) {
-    obj["chat_is_created"] = @json.to_json(v)
+    object["chat_is_created"] = @json.to_json(v)
   }
   if self.bot_is_member is Some(v) {
-    obj["bot_is_member"] = @json.to_json(v)
+    object["bot_is_member"] = @json.to_json(v)
   }
   if self.request_title is Some(v) {
-    obj["request_title"] = @json.to_json(v)
+    object["request_title"] = @json.to_json(v)
   }
   if self.request_username is Some(v) {
-    obj["request_username"] = @json.to_json(v)
+    object["request_username"] = @json.to_json(v)
   }
   if self.request_photo is Some(v) {
-    obj["request_photo"] = @json.to_json(v)
+    object["request_photo"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for KeyboardButtonRequestChat with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for KeyboardButtonRequestChat",
     )
   }
-  let request_id : Int = @json.from_json(obj["request_id"], path~)
-  let chat_is_channel : Bool = @json.from_json(obj["chat_is_channel"], path~)
-  let chat_is_forum : Bool? = if obj.get("chat_is_forum") is Some(v) {
+  let request_id : Int = @json.from_json(object["request_id"], path~)
+  let chat_is_channel : Bool = @json.from_json(object["chat_is_channel"], path~)
+  let chat_is_forum : Bool? = if object.get("chat_is_forum") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let chat_has_username : Bool? = if obj.get("chat_has_username") is Some(v) {
+  let chat_has_username : Bool? = if object.get("chat_has_username") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let chat_is_created : Bool? = if obj.get("chat_is_created") is Some(v) {
+  let chat_is_created : Bool? = if object.get("chat_is_created") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let bot_is_member : Bool? = if obj.get("bot_is_member") is Some(v) {
+  let bot_is_member : Bool? = if object.get("bot_is_member") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let request_title : Bool? = if obj.get("request_title") is Some(v) {
+  let request_title : Bool? = if object.get("request_title") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let request_username : Bool? = if obj.get("request_username") is Some(v) {
+  let request_username : Bool? = if object.get("request_username") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let request_photo : Bool? = if obj.get("request_photo") is Some(v) {
+  let request_photo : Bool? = if object.get("request_photo") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -302,63 +302,63 @@ pub fn KeyboardButton::new(
 
 ///|
 pub impl @json.ToJson for KeyboardButton with to_json(self) {
-  let obj : Map[String, Json] = { "text": @json.to_json(self.text) }
+  let object : Map[String, Json] = { "text": @json.to_json(self.text) }
   if self.request_users is Some(v) {
-    obj["request_users"] = @json.to_json(v)
+    object["request_users"] = @json.to_json(v)
   }
   if self.request_chat is Some(v) {
-    obj["request_chat"] = @json.to_json(v)
+    object["request_chat"] = @json.to_json(v)
   }
   if self.request_contact is Some(v) {
-    obj["request_contact"] = @json.to_json(v)
+    object["request_contact"] = @json.to_json(v)
   }
   if self.request_location is Some(v) {
-    obj["request_location"] = @json.to_json(v)
+    object["request_location"] = @json.to_json(v)
   }
   if self.request_poll is Some(v) {
-    obj["request_poll"] = @json.to_json(v)
+    object["request_poll"] = @json.to_json(v)
   }
   if self.web_app is Some(v) {
-    obj["web_app"] = @json.to_json(v)
+    object["web_app"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for KeyboardButton with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for KeyboardButton")
   }
-  let text : String = @json.from_json(obj["text"], path~)
-  let request_users : KeyboardButtonRequestUsers? = if obj.get("request_users")
+  let text : String = @json.from_json(object["text"], path~)
+  let request_users : KeyboardButtonRequestUsers? = if object.get("request_users")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let request_chat : KeyboardButtonRequestChat? = if obj.get("request_chat")
+  let request_chat : KeyboardButtonRequestChat? = if object.get("request_chat")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let request_contact : Bool? = if obj.get("request_contact") is Some(v) {
+  let request_contact : Bool? = if object.get("request_contact") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let request_location : Bool? = if obj.get("request_location") is Some(v) {
+  let request_location : Bool? = if object.get("request_location") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let request_poll : KeyboardButtonPollType? = if obj.get("request_poll")
+  let request_poll : KeyboardButtonPollType? = if object.get("request_poll")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let web_app : WebAppInfo? = if obj.get("web_app") is Some(v) {
+  let web_app : WebAppInfo? = if object.get("web_app") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None

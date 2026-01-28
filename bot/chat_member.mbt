@@ -193,18 +193,18 @@ pub(all) enum ChatMember {
 pub impl @json.ToJson for ChatMember with to_json(self) {
   match self {
     Owner(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "status": "creator",
         "user": @json.to_json(v.user),
         "is_anonymous": @json.to_json(v.is_anonymous),
       }
       if v.custom_title is Some(t) {
-        obj["custom_title"] = @json.to_json(t)
+        object["custom_title"] = @json.to_json(t)
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     Administrator(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "status": "administrator",
         "user": @json.to_json(v.user),
         "can_be_edited": @json.to_json(v.can_be_edited),
@@ -221,34 +221,34 @@ pub impl @json.ToJson for ChatMember with to_json(self) {
         "can_delete_stories": @json.to_json(v.can_delete_stories),
       }
       if v.can_post_messages is Some(x) {
-        obj["can_post_messages"] = @json.to_json(x)
+        object["can_post_messages"] = @json.to_json(x)
       }
       if v.can_edit_messages is Some(x) {
-        obj["can_edit_messages"] = @json.to_json(x)
+        object["can_edit_messages"] = @json.to_json(x)
       }
       if v.can_pin_messages is Some(x) {
-        obj["can_pin_messages"] = @json.to_json(x)
+        object["can_pin_messages"] = @json.to_json(x)
       }
       if v.can_manage_topics is Some(x) {
-        obj["can_manage_topics"] = @json.to_json(x)
+        object["can_manage_topics"] = @json.to_json(x)
       }
       if v.custom_title is Some(t) {
-        obj["custom_title"] = @json.to_json(t)
+        object["custom_title"] = @json.to_json(t)
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     Member(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "status": "member",
         "user": @json.to_json(v.user),
       }
       if v.until_date is Some(d) {
-        obj["until_date"] = @json.to_json(d)
+        object["until_date"] = @json.to_json(d)
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     Restricted(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "status": "restricted",
         "user": @json.to_json(v.user),
         "is_member": @json.to_json(v.is_member),
@@ -268,39 +268,39 @@ pub impl @json.ToJson for ChatMember with to_json(self) {
         "can_manage_topics": @json.to_json(v.can_manage_topics),
         "until_date": @json.to_json(v.until_date),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     Left(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "status": "left",
         "user": @json.to_json(v.user),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     Banned(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "status": "kicked",
         "user": @json.to_json(v.user),
         "until_date": @json.to_json(v.until_date),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
   }
 }
 
 ///|
 pub impl @json.FromJson for ChatMember with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for ChatMember")
   }
-  guard obj["status"] is String(status) else {
+  guard object["status"] is String(status) else {
     raise @json.JsonDecodeError(path~, "Expected status field")
   }
   match status {
     "creator" => {
-      let user : User = @json.from_json(obj["user"], path~)
-      let is_anonymous : Bool = @json.from_json(obj["is_anonymous"], path~)
-      let custom_title : String? = if obj.get("custom_title") is Some(v) {
+      let user : User = @json.from_json(object["user"], path~)
+      let is_anonymous : Bool = @json.from_json(object["is_anonymous"], path~)
+      let custom_title : String? = if object.get("custom_title") is Some(v) {
         Some(@json.from_json(v, path~))
       } else {
         None
@@ -308,70 +308,70 @@ pub impl @json.FromJson for ChatMember with from_json(json, path) {
       Owner(ChatMemberOwner::new(user~, is_anonymous~, custom_title?))
     }
     "administrator" => {
-      let user : User = @json.from_json(obj["user"], path~)
-      let can_be_edited : Bool = @json.from_json(obj["can_be_edited"], path~)
-      let is_anonymous : Bool = @json.from_json(obj["is_anonymous"], path~)
+      let user : User = @json.from_json(object["user"], path~)
+      let can_be_edited : Bool = @json.from_json(object["can_be_edited"], path~)
+      let is_anonymous : Bool = @json.from_json(object["is_anonymous"], path~)
       let can_manage_chat : Bool = @json.from_json(
-        obj["can_manage_chat"],
+        object["can_manage_chat"],
         path~,
       )
       let can_delete_messages : Bool = @json.from_json(
-        obj["can_delete_messages"],
+        object["can_delete_messages"],
         path~,
       )
       let can_manage_video_chats : Bool = @json.from_json(
-        obj["can_manage_video_chats"],
+        object["can_manage_video_chats"],
         path~,
       )
       let can_restrict_members : Bool = @json.from_json(
-        obj["can_restrict_members"],
+        object["can_restrict_members"],
         path~,
       )
       let can_promote_members : Bool = @json.from_json(
-        obj["can_promote_members"],
+        object["can_promote_members"],
         path~,
       )
       let can_change_info : Bool = @json.from_json(
-        obj["can_change_info"],
+        object["can_change_info"],
         path~,
       )
       let can_invite_users : Bool = @json.from_json(
-        obj["can_invite_users"],
+        object["can_invite_users"],
         path~,
       )
       let can_post_stories : Bool = @json.from_json(
-        obj["can_post_stories"],
+        object["can_post_stories"],
         path~,
       )
       let can_edit_stories : Bool = @json.from_json(
-        obj["can_edit_stories"],
+        object["can_edit_stories"],
         path~,
       )
       let can_delete_stories : Bool = @json.from_json(
-        obj["can_delete_stories"],
+        object["can_delete_stories"],
         path~,
       )
-      let can_post_messages : Bool? = if obj.get("can_post_messages") is Some(v) {
+      let can_post_messages : Bool? = if object.get("can_post_messages") is Some(v) {
         Some(@json.from_json(v, path~))
       } else {
         None
       }
-      let can_edit_messages : Bool? = if obj.get("can_edit_messages") is Some(v) {
+      let can_edit_messages : Bool? = if object.get("can_edit_messages") is Some(v) {
         Some(@json.from_json(v, path~))
       } else {
         None
       }
-      let can_pin_messages : Bool? = if obj.get("can_pin_messages") is Some(v) {
+      let can_pin_messages : Bool? = if object.get("can_pin_messages") is Some(v) {
         Some(@json.from_json(v, path~))
       } else {
         None
       }
-      let can_manage_topics : Bool? = if obj.get("can_manage_topics") is Some(v) {
+      let can_manage_topics : Bool? = if object.get("can_manage_topics") is Some(v) {
         Some(@json.from_json(v, path~))
       } else {
         None
       }
-      let custom_title : String? = if obj.get("custom_title") is Some(v) {
+      let custom_title : String? = if object.get("custom_title") is Some(v) {
         Some(@json.from_json(v, path~))
       } else {
         None
@@ -400,8 +400,8 @@ pub impl @json.FromJson for ChatMember with from_json(json, path) {
       )
     }
     "member" => {
-      let user : User = @json.from_json(obj["user"], path~)
-      let until_date : Int? = if obj.get("until_date") is Some(v) {
+      let user : User = @json.from_json(object["user"], path~)
+      let until_date : Int? = if object.get("until_date") is Some(v) {
         Some(@json.from_json(v, path~))
       } else {
         None
@@ -409,62 +409,62 @@ pub impl @json.FromJson for ChatMember with from_json(json, path) {
       Member(ChatMemberMember::new(user~, until_date?))
     }
     "restricted" => {
-      let user : User = @json.from_json(obj["user"], path~)
-      let is_member : Bool = @json.from_json(obj["is_member"], path~)
+      let user : User = @json.from_json(object["user"], path~)
+      let is_member : Bool = @json.from_json(object["is_member"], path~)
       let can_send_messages : Bool = @json.from_json(
-        obj["can_send_messages"],
+        object["can_send_messages"],
         path~,
       )
       let can_send_audios : Bool = @json.from_json(
-        obj["can_send_audios"],
+        object["can_send_audios"],
         path~,
       )
       let can_send_documents : Bool = @json.from_json(
-        obj["can_send_documents"],
+        object["can_send_documents"],
         path~,
       )
       let can_send_photos : Bool = @json.from_json(
-        obj["can_send_photos"],
+        object["can_send_photos"],
         path~,
       )
       let can_send_videos : Bool = @json.from_json(
-        obj["can_send_videos"],
+        object["can_send_videos"],
         path~,
       )
       let can_send_video_notes : Bool = @json.from_json(
-        obj["can_send_video_notes"],
+        object["can_send_video_notes"],
         path~,
       )
       let can_send_voice_notes : Bool = @json.from_json(
-        obj["can_send_voice_notes"],
+        object["can_send_voice_notes"],
         path~,
       )
-      let can_send_polls : Bool = @json.from_json(obj["can_send_polls"], path~)
+      let can_send_polls : Bool = @json.from_json(object["can_send_polls"], path~)
       let can_send_other_messages : Bool = @json.from_json(
-        obj["can_send_other_messages"],
+        object["can_send_other_messages"],
         path~,
       )
       let can_add_web_page_previews : Bool = @json.from_json(
-        obj["can_add_web_page_previews"],
+        object["can_add_web_page_previews"],
         path~,
       )
       let can_change_info : Bool = @json.from_json(
-        obj["can_change_info"],
+        object["can_change_info"],
         path~,
       )
       let can_invite_users : Bool = @json.from_json(
-        obj["can_invite_users"],
+        object["can_invite_users"],
         path~,
       )
       let can_pin_messages : Bool = @json.from_json(
-        obj["can_pin_messages"],
+        object["can_pin_messages"],
         path~,
       )
       let can_manage_topics : Bool = @json.from_json(
-        obj["can_manage_topics"],
+        object["can_manage_topics"],
         path~,
       )
-      let until_date : Int = @json.from_json(obj["until_date"], path~)
+      let until_date : Int = @json.from_json(object["until_date"], path~)
       Restricted(
         ChatMemberRestricted::new(
           user~,
@@ -488,12 +488,12 @@ pub impl @json.FromJson for ChatMember with from_json(json, path) {
       )
     }
     "left" => {
-      let user : User = @json.from_json(obj["user"], path~)
+      let user : User = @json.from_json(object["user"], path~)
       Left(ChatMemberLeft::new(user~))
     }
     "kicked" => {
-      let user : User = @json.from_json(obj["user"], path~)
-      let until_date : Int = @json.from_json(obj["until_date"], path~)
+      let user : User = @json.from_json(object["user"], path~)
+      let until_date : Int = @json.from_json(object["until_date"], path~)
       Banned(ChatMemberBanned::new(user~, until_date~))
     }
     _ =>
@@ -556,106 +556,106 @@ pub fn ChatPermissions::new(
 
 ///|
 pub impl @json.ToJson for ChatPermissions with to_json(self) {
-  let obj : Map[String, Json] = {}
+  let object : Map[String, Json] = {}
   if self.can_send_messages is Some(v) {
-    obj["can_send_messages"] = @json.to_json(v)
+    object["can_send_messages"] = @json.to_json(v)
   }
   if self.can_send_audios is Some(v) {
-    obj["can_send_audios"] = @json.to_json(v)
+    object["can_send_audios"] = @json.to_json(v)
   }
   if self.can_send_documents is Some(v) {
-    obj["can_send_documents"] = @json.to_json(v)
+    object["can_send_documents"] = @json.to_json(v)
   }
   if self.can_send_photos is Some(v) {
-    obj["can_send_photos"] = @json.to_json(v)
+    object["can_send_photos"] = @json.to_json(v)
   }
   if self.can_send_videos is Some(v) {
-    obj["can_send_videos"] = @json.to_json(v)
+    object["can_send_videos"] = @json.to_json(v)
   }
   if self.can_send_video_notes is Some(v) {
-    obj["can_send_video_notes"] = @json.to_json(v)
+    object["can_send_video_notes"] = @json.to_json(v)
   }
   if self.can_send_voice_notes is Some(v) {
-    obj["can_send_voice_notes"] = @json.to_json(v)
+    object["can_send_voice_notes"] = @json.to_json(v)
   }
   if self.can_send_polls is Some(v) {
-    obj["can_send_polls"] = @json.to_json(v)
+    object["can_send_polls"] = @json.to_json(v)
   }
   if self.can_send_other_messages is Some(v) {
-    obj["can_send_other_messages"] = @json.to_json(v)
+    object["can_send_other_messages"] = @json.to_json(v)
   }
   if self.can_add_web_page_previews is Some(v) {
-    obj["can_add_web_page_previews"] = @json.to_json(v)
+    object["can_add_web_page_previews"] = @json.to_json(v)
   }
   if self.can_change_info is Some(v) {
-    obj["can_change_info"] = @json.to_json(v)
+    object["can_change_info"] = @json.to_json(v)
   }
   if self.can_invite_users is Some(v) {
-    obj["can_invite_users"] = @json.to_json(v)
+    object["can_invite_users"] = @json.to_json(v)
   }
   if self.can_pin_messages is Some(v) {
-    obj["can_pin_messages"] = @json.to_json(v)
+    object["can_pin_messages"] = @json.to_json(v)
   }
   if self.can_manage_topics is Some(v) {
-    obj["can_manage_topics"] = @json.to_json(v)
+    object["can_manage_topics"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for ChatPermissions with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for ChatPermissions")
   }
-  let can_send_messages : Bool? = if obj.get("can_send_messages") is Some(v) {
+  let can_send_messages : Bool? = if object.get("can_send_messages") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_send_audios : Bool? = if obj.get("can_send_audios") is Some(v) {
+  let can_send_audios : Bool? = if object.get("can_send_audios") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_send_documents : Bool? = if obj.get("can_send_documents") is Some(v) {
+  let can_send_documents : Bool? = if object.get("can_send_documents") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_send_photos : Bool? = if obj.get("can_send_photos") is Some(v) {
+  let can_send_photos : Bool? = if object.get("can_send_photos") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_send_videos : Bool? = if obj.get("can_send_videos") is Some(v) {
+  let can_send_videos : Bool? = if object.get("can_send_videos") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_send_video_notes : Bool? = if obj.get("can_send_video_notes")
+  let can_send_video_notes : Bool? = if object.get("can_send_video_notes")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_send_voice_notes : Bool? = if obj.get("can_send_voice_notes")
+  let can_send_voice_notes : Bool? = if object.get("can_send_voice_notes")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_send_polls : Bool? = if obj.get("can_send_polls") is Some(v) {
+  let can_send_polls : Bool? = if object.get("can_send_polls") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_send_other_messages : Bool? = if obj.get("can_send_other_messages")
+  let can_send_other_messages : Bool? = if object.get("can_send_other_messages")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_add_web_page_previews : Bool? = if obj.get(
+  let can_add_web_page_previews : Bool? = if object.get(
       "can_add_web_page_previews",
     )
     is Some(v) {
@@ -663,22 +663,22 @@ pub impl @json.FromJson for ChatPermissions with from_json(json, path) {
   } else {
     None
   }
-  let can_change_info : Bool? = if obj.get("can_change_info") is Some(v) {
+  let can_change_info : Bool? = if object.get("can_change_info") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_invite_users : Bool? = if obj.get("can_invite_users") is Some(v) {
+  let can_invite_users : Bool? = if object.get("can_invite_users") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_pin_messages : Bool? = if obj.get("can_pin_messages") is Some(v) {
+  let can_pin_messages : Bool? = if object.get("can_pin_messages") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_manage_topics : Bool? = if obj.get("can_manage_topics") is Some(v) {
+  let can_manage_topics : Bool? = if object.get("can_manage_topics") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -759,7 +759,7 @@ pub fn ChatAdministratorRights::new(
 
 ///|
 pub impl @json.ToJson for ChatAdministratorRights with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "is_anonymous": @json.to_json(self.is_anonymous),
     "can_manage_chat": @json.to_json(self.can_manage_chat),
     "can_delete_messages": @json.to_json(self.can_delete_messages),
@@ -773,70 +773,70 @@ pub impl @json.ToJson for ChatAdministratorRights with to_json(self) {
     "can_delete_stories": @json.to_json(self.can_delete_stories),
   }
   if self.can_post_messages is Some(v) {
-    obj["can_post_messages"] = @json.to_json(v)
+    object["can_post_messages"] = @json.to_json(v)
   }
   if self.can_edit_messages is Some(v) {
-    obj["can_edit_messages"] = @json.to_json(v)
+    object["can_edit_messages"] = @json.to_json(v)
   }
   if self.can_pin_messages is Some(v) {
-    obj["can_pin_messages"] = @json.to_json(v)
+    object["can_pin_messages"] = @json.to_json(v)
   }
   if self.can_manage_topics is Some(v) {
-    obj["can_manage_topics"] = @json.to_json(v)
+    object["can_manage_topics"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for ChatAdministratorRights with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for ChatAdministratorRights",
     )
   }
-  let is_anonymous : Bool = @json.from_json(obj["is_anonymous"], path~)
-  let can_manage_chat : Bool = @json.from_json(obj["can_manage_chat"], path~)
+  let is_anonymous : Bool = @json.from_json(object["is_anonymous"], path~)
+  let can_manage_chat : Bool = @json.from_json(object["can_manage_chat"], path~)
   let can_delete_messages : Bool = @json.from_json(
-    obj["can_delete_messages"],
+    object["can_delete_messages"],
     path~,
   )
   let can_manage_video_chats : Bool = @json.from_json(
-    obj["can_manage_video_chats"],
+    object["can_manage_video_chats"],
     path~,
   )
   let can_restrict_members : Bool = @json.from_json(
-    obj["can_restrict_members"],
+    object["can_restrict_members"],
     path~,
   )
   let can_promote_members : Bool = @json.from_json(
-    obj["can_promote_members"],
+    object["can_promote_members"],
     path~,
   )
-  let can_change_info : Bool = @json.from_json(obj["can_change_info"], path~)
-  let can_invite_users : Bool = @json.from_json(obj["can_invite_users"], path~)
-  let can_post_stories : Bool = @json.from_json(obj["can_post_stories"], path~)
-  let can_edit_stories : Bool = @json.from_json(obj["can_edit_stories"], path~)
+  let can_change_info : Bool = @json.from_json(object["can_change_info"], path~)
+  let can_invite_users : Bool = @json.from_json(object["can_invite_users"], path~)
+  let can_post_stories : Bool = @json.from_json(object["can_post_stories"], path~)
+  let can_edit_stories : Bool = @json.from_json(object["can_edit_stories"], path~)
   let can_delete_stories : Bool = @json.from_json(
-    obj["can_delete_stories"],
+    object["can_delete_stories"],
     path~,
   )
-  let can_post_messages : Bool? = if obj.get("can_post_messages") is Some(v) {
+  let can_post_messages : Bool? = if object.get("can_post_messages") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_edit_messages : Bool? = if obj.get("can_edit_messages") is Some(v) {
+  let can_edit_messages : Bool? = if object.get("can_edit_messages") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_pin_messages : Bool? = if obj.get("can_pin_messages") is Some(v) {
+  let can_pin_messages : Bool? = if object.get("can_pin_messages") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let can_manage_topics : Bool? = if obj.get("can_manage_topics") is Some(v) {
+  let can_manage_topics : Bool? = if object.get("can_manage_topics") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None

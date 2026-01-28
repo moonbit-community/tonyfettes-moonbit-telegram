@@ -22,21 +22,21 @@ pub fn MessageEntity::new(
 
 ///|
 pub impl @json.ToJson for MessageEntity with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "type": @json.to_json(self.type_),
     "offset": @json.to_json(self.offset),
     "length": @json.to_json(self.length),
   }
   if self.url is Some(v) {
-    obj["url"] = @json.to_json(v)
+    object["url"] = @json.to_json(v)
   }
   if self.user is Some(v) {
-    obj["user"] = @json.to_json(v)
+    object["user"] = @json.to_json(v)
   }
   if self.language is Some(v) {
-    obj["language"] = @json.to_json(v)
+    object["language"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
@@ -113,28 +113,28 @@ pub impl @json.ToJson for Message with to_json(self) {
 
 ///|
 pub impl @json.FromJson for Message with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for Message")
   }
-  let message_id : Int = @json.from_json(obj["message_id"], path~)
-  let from : User? = if obj.get("from") is Some(v) {
+  let message_id : Int = @json.from_json(object["message_id"], path~)
+  let from : User? = if object.get("from") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let date : Int = @json.from_json(obj["date"], path~)
-  let chat : Chat = @json.from_json(obj["chat"], path~)
-  let text : String? = if obj.get("text") is Some(v) {
+  let date : Int = @json.from_json(object["date"], path~)
+  let chat : Chat = @json.from_json(object["chat"], path~)
+  let text : String? = if object.get("text") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let entities : Array[MessageEntity]? = if obj.get("entities") is Some(v) {
+  let entities : Array[MessageEntity]? = if object.get("entities") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let reply_to_message : Message? = if obj.get("reply_to_message") is Some(v) {
+  let reply_to_message : Message? = if object.get("reply_to_message") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None

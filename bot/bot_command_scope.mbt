@@ -49,52 +49,52 @@ pub(all) enum BotCommandScope {
 pub impl @json.ToJson for BotCommandScope with to_json(self) {
   match self {
     Default => {
-      let obj : Map[String, Json] = { "type": "default" }
-      @json.to_json(obj)
+      let object : Map[String, Json] = { "type": "default" }
+      @json.to_json(object)
     }
     AllPrivateChats => {
-      let obj : Map[String, Json] = { "type": "all_private_chats" }
-      @json.to_json(obj)
+      let object : Map[String, Json] = { "type": "all_private_chats" }
+      @json.to_json(object)
     }
     AllGroupChats => {
-      let obj : Map[String, Json] = { "type": "all_group_chats" }
-      @json.to_json(obj)
+      let object : Map[String, Json] = { "type": "all_group_chats" }
+      @json.to_json(object)
     }
     AllChatAdministrators => {
-      let obj : Map[String, Json] = { "type": "all_chat_administrators" }
-      @json.to_json(obj)
+      let object : Map[String, Json] = { "type": "all_chat_administrators" }
+      @json.to_json(object)
     }
     Chat(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "type": "chat",
         "chat_id": @json.to_json(v.chat_id),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     ChatAdministrators(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "type": "chat_administrators",
         "chat_id": @json.to_json(v.chat_id),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     ChatMember(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "type": "chat_member",
         "chat_id": @json.to_json(v.chat_id),
         "user_id": @json.to_json(v.user_id),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
   }
 }
 
 ///|
 pub impl @json.FromJson for BotCommandScope with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for BotCommandScope")
   }
-  guard obj["type"] is String(type_) else {
+  guard object["type"] is String(type_) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected type field for BotCommandScope",
@@ -106,16 +106,16 @@ pub impl @json.FromJson for BotCommandScope with from_json(json, path) {
     "all_group_chats" => AllGroupChats
     "all_chat_administrators" => AllChatAdministrators
     "chat" => {
-      let chat_id : Int64 = @json.from_json(obj["chat_id"], path~)
+      let chat_id : Int64 = @json.from_json(object["chat_id"], path~)
       Chat({ chat_id, })
     }
     "chat_administrators" => {
-      let chat_id : Int64 = @json.from_json(obj["chat_id"], path~)
+      let chat_id : Int64 = @json.from_json(object["chat_id"], path~)
       ChatAdministrators({ chat_id, })
     }
     "chat_member" => {
-      let chat_id : Int64 = @json.from_json(obj["chat_id"], path~)
-      let user_id : Int64 = @json.from_json(obj["user_id"], path~)
+      let chat_id : Int64 = @json.from_json(object["chat_id"], path~)
+      let user_id : Int64 = @json.from_json(object["user_id"], path~)
       ChatMember({ chat_id, user_id })
     }
     _ =>

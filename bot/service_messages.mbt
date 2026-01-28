@@ -8,8 +8,8 @@ pub fn ForumTopicClosed::new() -> ForumTopicClosed {
 
 ///|
 pub impl @json.ToJson for ForumTopicClosed with to_json(_self) {
-  let obj : Map[String, Json] = {}
-  @json.to_json(obj)
+  let object : Map[String, Json] = {}
+  @json.to_json(object)
 }
 
 ///|
@@ -30,8 +30,8 @@ pub fn ForumTopicReopened::new() -> ForumTopicReopened {
 
 ///|
 pub impl @json.ToJson for ForumTopicReopened with to_json(_self) {
-  let obj : Map[String, Json] = {}
-  @json.to_json(obj)
+  let object : Map[String, Json] = {}
+  @json.to_json(object)
 }
 
 ///|
@@ -52,8 +52,8 @@ pub fn GeneralForumTopicHidden::new() -> GeneralForumTopicHidden {
 
 ///|
 pub impl @json.ToJson for GeneralForumTopicHidden with to_json(_self) {
-  let obj : Map[String, Json] = {}
-  @json.to_json(obj)
+  let object : Map[String, Json] = {}
+  @json.to_json(object)
 }
 
 ///|
@@ -77,8 +77,8 @@ pub fn GeneralForumTopicUnhidden::new() -> GeneralForumTopicUnhidden {
 
 ///|
 pub impl @json.ToJson for GeneralForumTopicUnhidden with to_json(_self) {
-  let obj : Map[String, Json] = {}
-  @json.to_json(obj)
+  let object : Map[String, Json] = {}
+  @json.to_json(object)
 }
 
 ///|
@@ -102,8 +102,8 @@ pub fn VideoChatStarted::new() -> VideoChatStarted {
 
 ///|
 pub impl @json.ToJson for VideoChatStarted with to_json(_self) {
-  let obj : Map[String, Json] = {}
-  @json.to_json(obj)
+  let object : Map[String, Json] = {}
+  @json.to_json(object)
 }
 
 ///|
@@ -126,16 +126,16 @@ pub fn VideoChatEnded::new(duration~ : Int) -> VideoChatEnded {
 
 ///|
 pub impl @json.ToJson for VideoChatEnded with to_json(self) {
-  let obj : Map[String, Json] = { "duration": @json.to_json(self.duration) }
-  @json.to_json(obj)
+  let object : Map[String, Json] = { "duration": @json.to_json(self.duration) }
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for VideoChatEnded with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for VideoChatEnded")
   }
-  let duration : Int = @json.from_json(obj["duration"], path~)
+  let duration : Int = @json.from_json(object["duration"], path~)
   { duration, }
 }
 
@@ -151,16 +151,16 @@ pub fn VideoChatScheduled::new(start_date~ : Int) -> VideoChatScheduled {
 
 ///|
 pub impl @json.ToJson for VideoChatScheduled with to_json(self) {
-  let obj : Map[String, Json] = { "start_date": @json.to_json(self.start_date) }
-  @json.to_json(obj)
+  let object : Map[String, Json] = { "start_date": @json.to_json(self.start_date) }
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for VideoChatScheduled with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for VideoChatScheduled")
   }
-  let start_date : Int = @json.from_json(obj["start_date"], path~)
+  let start_date : Int = @json.from_json(object["start_date"], path~)
   { start_date, }
 }
 
@@ -178,8 +178,8 @@ pub fn VideoChatParticipantsInvited::new(
 
 ///|
 pub impl @json.ToJson for VideoChatParticipantsInvited with to_json(self) {
-  let obj : Map[String, Json] = { "users": @json.to_json(self.users) }
-  @json.to_json(obj)
+  let object : Map[String, Json] = { "users": @json.to_json(self.users) }
+  @json.to_json(object)
 }
 
 ///|
@@ -187,13 +187,13 @@ pub impl @json.FromJson for VideoChatParticipantsInvited with from_json(
   json,
   path,
 ) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for VideoChatParticipantsInvited",
     )
   }
-  let users : Array[User] = @json.from_json(obj["users"], path~)
+  let users : Array[User] = @json.from_json(object["users"], path~)
   { users, }
 }
 
@@ -211,10 +211,10 @@ pub fn MessageAutoDeleteTimerChanged::new(
 
 ///|
 pub impl @json.ToJson for MessageAutoDeleteTimerChanged with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "message_auto_delete_time": @json.to_json(self.message_auto_delete_time),
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
@@ -222,14 +222,14 @@ pub impl @json.FromJson for MessageAutoDeleteTimerChanged with from_json(
   json,
   path,
 ) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for MessageAutoDeleteTimerChanged",
     )
   }
   let message_auto_delete_time : Int = @json.from_json(
-    obj["message_auto_delete_time"],
+    object["message_auto_delete_time"],
     path~,
   )
   { message_auto_delete_time, }
@@ -247,18 +247,18 @@ pub fn ChatBoostAdded::new(boost_count~ : Int) -> ChatBoostAdded {
 
 ///|
 pub impl @json.ToJson for ChatBoostAdded with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "boost_count": @json.to_json(self.boost_count),
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for ChatBoostAdded with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for ChatBoostAdded")
   }
-  let boost_count : Int = @json.from_json(obj["boost_count"], path~)
+  let boost_count : Int = @json.from_json(object["boost_count"], path~)
   { boost_count, }
 }
 
@@ -280,25 +280,25 @@ pub fn ProximityAlertTriggered::new(
 
 ///|
 pub impl @json.ToJson for ProximityAlertTriggered with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "traveler": @json.to_json(self.traveler),
     "watcher": @json.to_json(self.watcher),
     "distance": @json.to_json(self.distance),
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for ProximityAlertTriggered with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for ProximityAlertTriggered",
     )
   }
-  let traveler : User = @json.from_json(obj["traveler"], path~)
-  let watcher : User = @json.from_json(obj["watcher"], path~)
-  let distance : Int = @json.from_json(obj["distance"], path~)
+  let traveler : User = @json.from_json(object["traveler"], path~)
+  let watcher : User = @json.from_json(object["watcher"], path~)
+  let distance : Int = @json.from_json(object["distance"], path~)
   { traveler, watcher, distance }
 }
 
@@ -320,35 +320,35 @@ pub fn WriteAccessAllowed::new(
 
 ///|
 pub impl @json.ToJson for WriteAccessAllowed with to_json(self) {
-  let obj : Map[String, Json] = {}
+  let object : Map[String, Json] = {}
   if self.from_request is Some(v) {
-    obj["from_request"] = @json.to_json(v)
+    object["from_request"] = @json.to_json(v)
   }
   if self.web_app_name is Some(v) {
-    obj["web_app_name"] = @json.to_json(v)
+    object["web_app_name"] = @json.to_json(v)
   }
   if self.from_attachment_menu is Some(v) {
-    obj["from_attachment_menu"] = @json.to_json(v)
+    object["from_attachment_menu"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for WriteAccessAllowed with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for WriteAccessAllowed")
   }
-  let from_request : Bool? = if obj.get("from_request") is Some(v) {
+  let from_request : Bool? = if object.get("from_request") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let web_app_name : String? = if obj.get("web_app_name") is Some(v) {
+  let web_app_name : String? = if object.get("web_app_name") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let from_attachment_menu : Bool? = if obj.get("from_attachment_menu")
+  let from_attachment_menu : Bool? = if object.get("from_attachment_menu")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -370,19 +370,19 @@ pub fn WebAppData::new(data~ : String, button_text~ : String) -> WebAppData {
 
 ///|
 pub impl @json.ToJson for WebAppData with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "data": @json.to_json(self.data),
     "button_text": @json.to_json(self.button_text),
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for WebAppData with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for WebAppData")
   }
-  let data : String = @json.from_json(obj["data"], path~)
-  let button_text : String = @json.from_json(obj["button_text"], path~)
+  let data : String = @json.from_json(object["data"], path~)
+  let button_text : String = @json.from_json(object["button_text"], path~)
   { data, button_text }
 }

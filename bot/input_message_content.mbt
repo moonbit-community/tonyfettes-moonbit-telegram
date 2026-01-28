@@ -18,41 +18,41 @@ pub fn InputTextMessageContent::new(
 
 ///|
 pub impl @json.ToJson for InputTextMessageContent with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "message_text": @json.to_json(self.message_text),
   }
   if self.parse_mode is Some(v) {
-    obj["parse_mode"] = @json.to_json(v)
+    object["parse_mode"] = @json.to_json(v)
   }
   if self.entities is Some(v) {
-    obj["entities"] = @json.to_json(v)
+    object["entities"] = @json.to_json(v)
   }
   if self.link_preview_options is Some(v) {
-    obj["link_preview_options"] = @json.to_json(v)
+    object["link_preview_options"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for InputTextMessageContent with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for InputTextMessageContent",
     )
   }
-  let message_text : String = @json.from_json(obj["message_text"], path~)
-  let parse_mode : String? = if obj.get("parse_mode") is Some(v) {
+  let message_text : String = @json.from_json(object["message_text"], path~)
+  let parse_mode : String? = if object.get("parse_mode") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let entities : Array[MessageEntity]? = if obj.get("entities") is Some(v) {
+  let entities : Array[MessageEntity]? = if object.get("entities") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let link_preview_options : LinkPreviewOptions? = if obj.get(
+  let link_preview_options : LinkPreviewOptions? = if object.get(
       "link_preview_options",
     )
     is Some(v) {
@@ -94,23 +94,23 @@ pub fn InputLocationMessageContent::new(
 
 ///|
 pub impl @json.ToJson for InputLocationMessageContent with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "latitude": @json.to_json(self.latitude),
     "longitude": @json.to_json(self.longitude),
   }
   if self.horizontal_accuracy is Some(v) {
-    obj["horizontal_accuracy"] = @json.to_json(v)
+    object["horizontal_accuracy"] = @json.to_json(v)
   }
   if self.live_period is Some(v) {
-    obj["live_period"] = @json.to_json(v)
+    object["live_period"] = @json.to_json(v)
   }
   if self.heading is Some(v) {
-    obj["heading"] = @json.to_json(v)
+    object["heading"] = @json.to_json(v)
   }
   if self.proximity_alert_radius is Some(v) {
-    obj["proximity_alert_radius"] = @json.to_json(v)
+    object["proximity_alert_radius"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
@@ -118,31 +118,31 @@ pub impl @json.FromJson for InputLocationMessageContent with from_json(
   json,
   path,
 ) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for InputLocationMessageContent",
     )
   }
-  let latitude : Double = @json.from_json(obj["latitude"], path~)
-  let longitude : Double = @json.from_json(obj["longitude"], path~)
-  let horizontal_accuracy : Double? = if obj.get("horizontal_accuracy")
+  let latitude : Double = @json.from_json(object["latitude"], path~)
+  let longitude : Double = @json.from_json(object["longitude"], path~)
+  let horizontal_accuracy : Double? = if object.get("horizontal_accuracy")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let live_period : Int? = if obj.get("live_period") is Some(v) {
+  let live_period : Int? = if object.get("live_period") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let heading : Int? = if obj.get("heading") is Some(v) {
+  let heading : Int? = if object.get("heading") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let proximity_alert_radius : Int? = if obj.get("proximity_alert_radius")
+  let proximity_alert_radius : Int? = if object.get("proximity_alert_radius")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -195,55 +195,55 @@ pub fn InputVenueMessageContent::new(
 
 ///|
 pub impl @json.ToJson for InputVenueMessageContent with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "latitude": @json.to_json(self.latitude),
     "longitude": @json.to_json(self.longitude),
     "title": @json.to_json(self.title),
     "address": @json.to_json(self.address),
   }
   if self.foursquare_id is Some(v) {
-    obj["foursquare_id"] = @json.to_json(v)
+    object["foursquare_id"] = @json.to_json(v)
   }
   if self.foursquare_type is Some(v) {
-    obj["foursquare_type"] = @json.to_json(v)
+    object["foursquare_type"] = @json.to_json(v)
   }
   if self.google_place_id is Some(v) {
-    obj["google_place_id"] = @json.to_json(v)
+    object["google_place_id"] = @json.to_json(v)
   }
   if self.google_place_type is Some(v) {
-    obj["google_place_type"] = @json.to_json(v)
+    object["google_place_type"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for InputVenueMessageContent with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for InputVenueMessageContent",
     )
   }
-  let latitude : Double = @json.from_json(obj["latitude"], path~)
-  let longitude : Double = @json.from_json(obj["longitude"], path~)
-  let title : String = @json.from_json(obj["title"], path~)
-  let address : String = @json.from_json(obj["address"], path~)
-  let foursquare_id : String? = if obj.get("foursquare_id") is Some(v) {
+  let latitude : Double = @json.from_json(object["latitude"], path~)
+  let longitude : Double = @json.from_json(object["longitude"], path~)
+  let title : String = @json.from_json(object["title"], path~)
+  let address : String = @json.from_json(object["address"], path~)
+  let foursquare_id : String? = if object.get("foursquare_id") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let foursquare_type : String? = if obj.get("foursquare_type") is Some(v) {
+  let foursquare_type : String? = if object.get("foursquare_type") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let google_place_id : String? = if obj.get("google_place_id") is Some(v) {
+  let google_place_id : String? = if object.get("google_place_id") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let google_place_type : String? = if obj.get("google_place_type") is Some(v) {
+  let google_place_type : String? = if object.get("google_place_type") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -280,17 +280,17 @@ pub fn InputContactMessageContent::new(
 
 ///|
 pub impl @json.ToJson for InputContactMessageContent with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "phone_number": @json.to_json(self.phone_number),
     "first_name": @json.to_json(self.first_name),
   }
   if self.last_name is Some(v) {
-    obj["last_name"] = @json.to_json(v)
+    object["last_name"] = @json.to_json(v)
   }
   if self.vcard is Some(v) {
-    obj["vcard"] = @json.to_json(v)
+    object["vcard"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
@@ -298,20 +298,20 @@ pub impl @json.FromJson for InputContactMessageContent with from_json(
   json,
   path,
 ) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for InputContactMessageContent",
     )
   }
-  let phone_number : String = @json.from_json(obj["phone_number"], path~)
-  let first_name : String = @json.from_json(obj["first_name"], path~)
-  let last_name : String? = if obj.get("last_name") is Some(v) {
+  let phone_number : String = @json.from_json(object["phone_number"], path~)
+  let first_name : String = @json.from_json(object["first_name"], path~)
+  let last_name : String? = if object.get("last_name") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let vcard : String? = if obj.get("vcard") is Some(v) {
+  let vcard : String? = if object.get("vcard") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -392,7 +392,7 @@ pub fn InputInvoiceMessageContent::new(
 
 ///|
 pub impl @json.ToJson for InputInvoiceMessageContent with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "title": @json.to_json(self.title),
     "description": @json.to_json(self.description),
     "payload": @json.to_json(self.payload),
@@ -400,51 +400,51 @@ pub impl @json.ToJson for InputInvoiceMessageContent with to_json(self) {
     "prices": @json.to_json(self.prices),
   }
   if self.provider_token is Some(v) {
-    obj["provider_token"] = @json.to_json(v)
+    object["provider_token"] = @json.to_json(v)
   }
   if self.max_tip_amount is Some(v) {
-    obj["max_tip_amount"] = @json.to_json(v)
+    object["max_tip_amount"] = @json.to_json(v)
   }
   if self.suggested_tip_amounts is Some(v) {
-    obj["suggested_tip_amounts"] = @json.to_json(v)
+    object["suggested_tip_amounts"] = @json.to_json(v)
   }
   if self.provider_data is Some(v) {
-    obj["provider_data"] = @json.to_json(v)
+    object["provider_data"] = @json.to_json(v)
   }
   if self.photo_url is Some(v) {
-    obj["photo_url"] = @json.to_json(v)
+    object["photo_url"] = @json.to_json(v)
   }
   if self.photo_size is Some(v) {
-    obj["photo_size"] = @json.to_json(v)
+    object["photo_size"] = @json.to_json(v)
   }
   if self.photo_width is Some(v) {
-    obj["photo_width"] = @json.to_json(v)
+    object["photo_width"] = @json.to_json(v)
   }
   if self.photo_height is Some(v) {
-    obj["photo_height"] = @json.to_json(v)
+    object["photo_height"] = @json.to_json(v)
   }
   if self.need_name is Some(v) {
-    obj["need_name"] = @json.to_json(v)
+    object["need_name"] = @json.to_json(v)
   }
   if self.need_phone_number is Some(v) {
-    obj["need_phone_number"] = @json.to_json(v)
+    object["need_phone_number"] = @json.to_json(v)
   }
   if self.need_email is Some(v) {
-    obj["need_email"] = @json.to_json(v)
+    object["need_email"] = @json.to_json(v)
   }
   if self.need_shipping_address is Some(v) {
-    obj["need_shipping_address"] = @json.to_json(v)
+    object["need_shipping_address"] = @json.to_json(v)
   }
   if self.send_phone_number_to_provider is Some(v) {
-    obj["send_phone_number_to_provider"] = @json.to_json(v)
+    object["send_phone_number_to_provider"] = @json.to_json(v)
   }
   if self.send_email_to_provider is Some(v) {
-    obj["send_email_to_provider"] = @json.to_json(v)
+    object["send_email_to_provider"] = @json.to_json(v)
   }
   if self.is_flexible is Some(v) {
-    obj["is_flexible"] = @json.to_json(v)
+    object["is_flexible"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
@@ -452,80 +452,80 @@ pub impl @json.FromJson for InputInvoiceMessageContent with from_json(
   json,
   path,
 ) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for InputInvoiceMessageContent",
     )
   }
-  let title : String = @json.from_json(obj["title"], path~)
-  let description : String = @json.from_json(obj["description"], path~)
-  let payload : String = @json.from_json(obj["payload"], path~)
-  let provider_token : String? = if obj.get("provider_token") is Some(v) {
+  let title : String = @json.from_json(object["title"], path~)
+  let description : String = @json.from_json(object["description"], path~)
+  let payload : String = @json.from_json(object["payload"], path~)
+  let provider_token : String? = if object.get("provider_token") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let currency : String = @json.from_json(obj["currency"], path~)
-  let prices : Array[LabeledPrice] = @json.from_json(obj["prices"], path~)
-  let max_tip_amount : Int? = if obj.get("max_tip_amount") is Some(v) {
+  let currency : String = @json.from_json(object["currency"], path~)
+  let prices : Array[LabeledPrice] = @json.from_json(object["prices"], path~)
+  let max_tip_amount : Int? = if object.get("max_tip_amount") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let suggested_tip_amounts : Array[Int]? = if obj.get("suggested_tip_amounts")
+  let suggested_tip_amounts : Array[Int]? = if object.get("suggested_tip_amounts")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let provider_data : String? = if obj.get("provider_data") is Some(v) {
+  let provider_data : String? = if object.get("provider_data") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let photo_url : String? = if obj.get("photo_url") is Some(v) {
+  let photo_url : String? = if object.get("photo_url") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let photo_size : Int? = if obj.get("photo_size") is Some(v) {
+  let photo_size : Int? = if object.get("photo_size") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let photo_width : Int? = if obj.get("photo_width") is Some(v) {
+  let photo_width : Int? = if object.get("photo_width") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let photo_height : Int? = if obj.get("photo_height") is Some(v) {
+  let photo_height : Int? = if object.get("photo_height") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let need_name : Bool? = if obj.get("need_name") is Some(v) {
+  let need_name : Bool? = if object.get("need_name") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let need_phone_number : Bool? = if obj.get("need_phone_number") is Some(v) {
+  let need_phone_number : Bool? = if object.get("need_phone_number") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let need_email : Bool? = if obj.get("need_email") is Some(v) {
+  let need_email : Bool? = if object.get("need_email") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let need_shipping_address : Bool? = if obj.get("need_shipping_address")
+  let need_shipping_address : Bool? = if object.get("need_shipping_address")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let send_phone_number_to_provider : Bool? = if obj.get(
+  let send_phone_number_to_provider : Bool? = if object.get(
       "send_phone_number_to_provider",
     )
     is Some(v) {
@@ -533,13 +533,13 @@ pub impl @json.FromJson for InputInvoiceMessageContent with from_json(
   } else {
     None
   }
-  let send_email_to_provider : Bool? = if obj.get("send_email_to_provider")
+  let send_email_to_provider : Bool? = if object.get("send_email_to_provider")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let is_flexible : Bool? = if obj.get("is_flexible") is Some(v) {
+  let is_flexible : Bool? = if object.get("is_flexible") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -590,7 +590,7 @@ pub impl @json.ToJson for InputMessageContent with to_json(self) {
 
 ///|
 pub impl @json.FromJson for InputMessageContent with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for InputMessageContent",
@@ -602,20 +602,20 @@ pub impl @json.FromJson for InputMessageContent with from_json(json, path) {
   // Venue: has latitude, longitude, title, address
   // Contact: has phone_number, first_name
   // Invoice: has title, description, payload, currency, prices
-  if obj.contains("message_text") {
+  if object.contains("message_text") {
     Text(@json.from_json(json, path~))
-  } else if obj.contains("phone_number") && obj.contains("first_name") {
+  } else if object.contains("phone_number") && object.contains("first_name") {
     Contact(@json.from_json(json, path~))
-  } else if obj.contains("payload") &&
-    obj.contains("currency") &&
-    obj.contains("prices") {
+  } else if object.contains("payload") &&
+    object.contains("currency") &&
+    object.contains("prices") {
     Invoice(@json.from_json(json, path~))
-  } else if obj.contains("latitude") &&
-    obj.contains("longitude") &&
-    obj.contains("title") &&
-    obj.contains("address") {
+  } else if object.contains("latitude") &&
+    object.contains("longitude") &&
+    object.contains("title") &&
+    object.contains("address") {
     Venue(@json.from_json(json, path~))
-  } else if obj.contains("latitude") && obj.contains("longitude") {
+  } else if object.contains("latitude") && object.contains("longitude") {
     Location(@json.from_json(json, path~))
   } else {
     raise @json.JsonDecodeError(

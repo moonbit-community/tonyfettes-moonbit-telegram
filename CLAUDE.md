@@ -37,19 +37,19 @@ moon info           # Generate .mbti interface files
 
 ```moonbit
 pub impl @json.ToJson for Type with to_json(self) {
-  let obj : Map[String, Json] = { "required": @json.to_json(self.required) }
+  let object : Map[String, Json] = { "required": @json.to_json(self.required) }
   if self.optional is Some(v) {
-    obj["optional"] = @json.to_json(v)
+    object["optional"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 pub impl @json.FromJson for Type with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError((path, "Expected object for Type"))
   }
-  let required : T = @json.from_json(obj["required"], path~)
-  let optional : T? = if obj.get("optional") is Some(v) {
+  let required : T = @json.from_json(object["required"], path~)
+  let optional : T? = if object.get("optional") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -79,8 +79,8 @@ pub async fn Bot::method_name(
 
 ```moonbit
 test "Type JSON round-trip" {
-  let obj = Type::new(field=value)
-  let json = @json.to_json(obj)
+  let object = Type::new(field=value)
+  let json = @json.to_json(object)
   let parsed : Type = @json.from_json(json)
   inspect(parsed.field, content="expected")
 }

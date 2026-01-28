@@ -161,99 +161,99 @@ pub(all) enum PassportElementError {
 pub impl @json.ToJson for PassportElementError with to_json(self) {
   match self {
     DataField(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "source": "data",
         "type": @json.to_json(v.type_),
         "field_name": @json.to_json(v.field_name),
         "data_hash": @json.to_json(v.data_hash),
         "message": @json.to_json(v.message),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     FrontSide(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "source": "front_side",
         "type": @json.to_json(v.type_),
         "file_hash": @json.to_json(v.file_hash),
         "message": @json.to_json(v.message),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     ReverseSide(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "source": "reverse_side",
         "type": @json.to_json(v.type_),
         "file_hash": @json.to_json(v.file_hash),
         "message": @json.to_json(v.message),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     Selfie(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "source": "selfie",
         "type": @json.to_json(v.type_),
         "file_hash": @json.to_json(v.file_hash),
         "message": @json.to_json(v.message),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     File(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "source": "file",
         "type": @json.to_json(v.type_),
         "file_hash": @json.to_json(v.file_hash),
         "message": @json.to_json(v.message),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     Files(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "source": "files",
         "type": @json.to_json(v.type_),
         "file_hashes": @json.to_json(v.file_hashes),
         "message": @json.to_json(v.message),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     TranslationFile(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "source": "translation_file",
         "type": @json.to_json(v.type_),
         "file_hash": @json.to_json(v.file_hash),
         "message": @json.to_json(v.message),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     TranslationFiles(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "source": "translation_files",
         "type": @json.to_json(v.type_),
         "file_hashes": @json.to_json(v.file_hashes),
         "message": @json.to_json(v.message),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
     Unspecified(v) => {
-      let obj : Map[String, Json] = {
+      let object : Map[String, Json] = {
         "source": "unspecified",
         "type": @json.to_json(v.type_),
         "element_hash": @json.to_json(v.element_hash),
         "message": @json.to_json(v.message),
       }
-      @json.to_json(obj)
+      @json.to_json(object)
     }
   }
 }
 
 ///|
 pub impl @json.FromJson for PassportElementError with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for PassportElementError",
     )
   }
-  guard obj["source"] is String(source) else {
+  guard object["source"] is String(source) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected source field for PassportElementError",
@@ -261,64 +261,64 @@ pub impl @json.FromJson for PassportElementError with from_json(json, path) {
   }
   match source {
     "data" => {
-      let type_ : String = @json.from_json(obj["type"], path~)
-      let field_name : String = @json.from_json(obj["field_name"], path~)
-      let data_hash : String = @json.from_json(obj["data_hash"], path~)
-      let message : String = @json.from_json(obj["message"], path~)
+      let type_ : String = @json.from_json(object["type"], path~)
+      let field_name : String = @json.from_json(object["field_name"], path~)
+      let data_hash : String = @json.from_json(object["data_hash"], path~)
+      let message : String = @json.from_json(object["message"], path~)
       DataField({ type_, field_name, data_hash, message })
     }
     "front_side" => {
-      let type_ : String = @json.from_json(obj["type"], path~)
-      let file_hash : String = @json.from_json(obj["file_hash"], path~)
-      let message : String = @json.from_json(obj["message"], path~)
+      let type_ : String = @json.from_json(object["type"], path~)
+      let file_hash : String = @json.from_json(object["file_hash"], path~)
+      let message : String = @json.from_json(object["message"], path~)
       FrontSide({ type_, file_hash, message })
     }
     "reverse_side" => {
-      let type_ : String = @json.from_json(obj["type"], path~)
-      let file_hash : String = @json.from_json(obj["file_hash"], path~)
-      let message : String = @json.from_json(obj["message"], path~)
+      let type_ : String = @json.from_json(object["type"], path~)
+      let file_hash : String = @json.from_json(object["file_hash"], path~)
+      let message : String = @json.from_json(object["message"], path~)
       ReverseSide({ type_, file_hash, message })
     }
     "selfie" => {
-      let type_ : String = @json.from_json(obj["type"], path~)
-      let file_hash : String = @json.from_json(obj["file_hash"], path~)
-      let message : String = @json.from_json(obj["message"], path~)
+      let type_ : String = @json.from_json(object["type"], path~)
+      let file_hash : String = @json.from_json(object["file_hash"], path~)
+      let message : String = @json.from_json(object["message"], path~)
       Selfie({ type_, file_hash, message })
     }
     "file" => {
-      let type_ : String = @json.from_json(obj["type"], path~)
-      let file_hash : String = @json.from_json(obj["file_hash"], path~)
-      let message : String = @json.from_json(obj["message"], path~)
+      let type_ : String = @json.from_json(object["type"], path~)
+      let file_hash : String = @json.from_json(object["file_hash"], path~)
+      let message : String = @json.from_json(object["message"], path~)
       File({ type_, file_hash, message })
     }
     "files" => {
-      let type_ : String = @json.from_json(obj["type"], path~)
+      let type_ : String = @json.from_json(object["type"], path~)
       let file_hashes : Array[String] = @json.from_json(
-        obj["file_hashes"],
+        object["file_hashes"],
         path~,
       )
-      let message : String = @json.from_json(obj["message"], path~)
+      let message : String = @json.from_json(object["message"], path~)
       Files({ type_, file_hashes, message })
     }
     "translation_file" => {
-      let type_ : String = @json.from_json(obj["type"], path~)
-      let file_hash : String = @json.from_json(obj["file_hash"], path~)
-      let message : String = @json.from_json(obj["message"], path~)
+      let type_ : String = @json.from_json(object["type"], path~)
+      let file_hash : String = @json.from_json(object["file_hash"], path~)
+      let message : String = @json.from_json(object["message"], path~)
       TranslationFile({ type_, file_hash, message })
     }
     "translation_files" => {
-      let type_ : String = @json.from_json(obj["type"], path~)
+      let type_ : String = @json.from_json(object["type"], path~)
       let file_hashes : Array[String] = @json.from_json(
-        obj["file_hashes"],
+        object["file_hashes"],
         path~,
       )
-      let message : String = @json.from_json(obj["message"], path~)
+      let message : String = @json.from_json(object["message"], path~)
       TranslationFiles({ type_, file_hashes, message })
     }
     "unspecified" => {
-      let type_ : String = @json.from_json(obj["type"], path~)
-      let element_hash : String = @json.from_json(obj["element_hash"], path~)
-      let message : String = @json.from_json(obj["message"], path~)
+      let type_ : String = @json.from_json(object["type"], path~)
+      let element_hash : String = @json.from_json(object["element_hash"], path~)
+      let message : String = @json.from_json(object["message"], path~)
       Unspecified({ type_, element_hash, message })
     }
     _ =>

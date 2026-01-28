@@ -52,106 +52,106 @@ pub fn InlineQueryResultPhoto::new(
 
 ///|
 pub impl @json.ToJson for InlineQueryResultPhoto with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "type": @json.to_json(self.type_),
     "id": @json.to_json(self.id),
     "photo_url": @json.to_json(self.photo_url),
     "thumbnail_url": @json.to_json(self.thumbnail_url),
   }
   if self.photo_width is Some(v) {
-    obj["photo_width"] = @json.to_json(v)
+    object["photo_width"] = @json.to_json(v)
   }
   if self.photo_height is Some(v) {
-    obj["photo_height"] = @json.to_json(v)
+    object["photo_height"] = @json.to_json(v)
   }
   if self.title is Some(v) {
-    obj["title"] = @json.to_json(v)
+    object["title"] = @json.to_json(v)
   }
   if self.description is Some(v) {
-    obj["description"] = @json.to_json(v)
+    object["description"] = @json.to_json(v)
   }
   if self.caption is Some(v) {
-    obj["caption"] = @json.to_json(v)
+    object["caption"] = @json.to_json(v)
   }
   if self.parse_mode is Some(v) {
-    obj["parse_mode"] = @json.to_json(v)
+    object["parse_mode"] = @json.to_json(v)
   }
   if self.caption_entities is Some(v) {
-    obj["caption_entities"] = @json.to_json(v)
+    object["caption_entities"] = @json.to_json(v)
   }
   if self.show_caption_above_media is Some(v) {
-    obj["show_caption_above_media"] = @json.to_json(v)
+    object["show_caption_above_media"] = @json.to_json(v)
   }
   if self.reply_markup is Some(v) {
-    obj["reply_markup"] = @json.to_json(v)
+    object["reply_markup"] = @json.to_json(v)
   }
   if self.input_message_content is Some(v) {
-    obj["input_message_content"] = @json.to_json(v)
+    object["input_message_content"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for InlineQueryResultPhoto with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for InlineQueryResultPhoto",
     )
   }
-  let type_ : String = @json.from_json(obj["type"], path~)
-  let id : String = @json.from_json(obj["id"], path~)
-  let photo_url : String = @json.from_json(obj["photo_url"], path~)
-  let thumbnail_url : String = @json.from_json(obj["thumbnail_url"], path~)
-  let photo_width : Int? = if obj.get("photo_width") is Some(v) {
+  let type_ : String = @json.from_json(object["type"], path~)
+  let id : String = @json.from_json(object["id"], path~)
+  let photo_url : String = @json.from_json(object["photo_url"], path~)
+  let thumbnail_url : String = @json.from_json(object["thumbnail_url"], path~)
+  let photo_width : Int? = if object.get("photo_width") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let photo_height : Int? = if obj.get("photo_height") is Some(v) {
+  let photo_height : Int? = if object.get("photo_height") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let title : String? = if obj.get("title") is Some(v) {
+  let title : String? = if object.get("title") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let description : String? = if obj.get("description") is Some(v) {
+  let description : String? = if object.get("description") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let caption : String? = if obj.get("caption") is Some(v) {
+  let caption : String? = if object.get("caption") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let parse_mode : String? = if obj.get("parse_mode") is Some(v) {
+  let parse_mode : String? = if object.get("parse_mode") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if obj.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let show_caption_above_media : Bool? = if obj.get("show_caption_above_media")
+  let show_caption_above_media : Bool? = if object.get("show_caption_above_media")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let reply_markup : InlineKeyboardMarkup? = if obj.get("reply_markup")
+  let reply_markup : InlineKeyboardMarkup? = if object.get("reply_markup")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let input_message_content : InputTextMessageContent? = if obj.get(
+  let input_message_content : InputTextMessageContent? = if object.get(
       "input_message_content",
     )
     is Some(v) {
@@ -234,115 +234,115 @@ pub fn InlineQueryResultGif::new(
 
 ///|
 pub impl @json.ToJson for InlineQueryResultGif with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "type": @json.to_json(self.type_),
     "id": @json.to_json(self.id),
     "gif_url": @json.to_json(self.gif_url),
     "thumbnail_url": @json.to_json(self.thumbnail_url),
   }
   if self.gif_width is Some(v) {
-    obj["gif_width"] = @json.to_json(v)
+    object["gif_width"] = @json.to_json(v)
   }
   if self.gif_height is Some(v) {
-    obj["gif_height"] = @json.to_json(v)
+    object["gif_height"] = @json.to_json(v)
   }
   if self.gif_duration is Some(v) {
-    obj["gif_duration"] = @json.to_json(v)
+    object["gif_duration"] = @json.to_json(v)
   }
   if self.thumbnail_mime_type is Some(v) {
-    obj["thumbnail_mime_type"] = @json.to_json(v)
+    object["thumbnail_mime_type"] = @json.to_json(v)
   }
   if self.title is Some(v) {
-    obj["title"] = @json.to_json(v)
+    object["title"] = @json.to_json(v)
   }
   if self.caption is Some(v) {
-    obj["caption"] = @json.to_json(v)
+    object["caption"] = @json.to_json(v)
   }
   if self.parse_mode is Some(v) {
-    obj["parse_mode"] = @json.to_json(v)
+    object["parse_mode"] = @json.to_json(v)
   }
   if self.caption_entities is Some(v) {
-    obj["caption_entities"] = @json.to_json(v)
+    object["caption_entities"] = @json.to_json(v)
   }
   if self.show_caption_above_media is Some(v) {
-    obj["show_caption_above_media"] = @json.to_json(v)
+    object["show_caption_above_media"] = @json.to_json(v)
   }
   if self.reply_markup is Some(v) {
-    obj["reply_markup"] = @json.to_json(v)
+    object["reply_markup"] = @json.to_json(v)
   }
   if self.input_message_content is Some(v) {
-    obj["input_message_content"] = @json.to_json(v)
+    object["input_message_content"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for InlineQueryResultGif with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for InlineQueryResultGif",
     )
   }
-  let type_ : String = @json.from_json(obj["type"], path~)
-  let id : String = @json.from_json(obj["id"], path~)
-  let gif_url : String = @json.from_json(obj["gif_url"], path~)
-  let thumbnail_url : String = @json.from_json(obj["thumbnail_url"], path~)
-  let gif_width : Int? = if obj.get("gif_width") is Some(v) {
+  let type_ : String = @json.from_json(object["type"], path~)
+  let id : String = @json.from_json(object["id"], path~)
+  let gif_url : String = @json.from_json(object["gif_url"], path~)
+  let thumbnail_url : String = @json.from_json(object["thumbnail_url"], path~)
+  let gif_width : Int? = if object.get("gif_width") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let gif_height : Int? = if obj.get("gif_height") is Some(v) {
+  let gif_height : Int? = if object.get("gif_height") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let gif_duration : Int? = if obj.get("gif_duration") is Some(v) {
+  let gif_duration : Int? = if object.get("gif_duration") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let thumbnail_mime_type : String? = if obj.get("thumbnail_mime_type")
+  let thumbnail_mime_type : String? = if object.get("thumbnail_mime_type")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let title : String? = if obj.get("title") is Some(v) {
+  let title : String? = if object.get("title") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let caption : String? = if obj.get("caption") is Some(v) {
+  let caption : String? = if object.get("caption") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let parse_mode : String? = if obj.get("parse_mode") is Some(v) {
+  let parse_mode : String? = if object.get("parse_mode") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if obj.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let show_caption_above_media : Bool? = if obj.get("show_caption_above_media")
+  let show_caption_above_media : Bool? = if object.get("show_caption_above_media")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let reply_markup : InlineKeyboardMarkup? = if obj.get("reply_markup")
+  let reply_markup : InlineKeyboardMarkup? = if object.get("reply_markup")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let input_message_content : InputTextMessageContent? = if obj.get(
+  let input_message_content : InputTextMessageContent? = if object.get(
       "input_message_content",
     )
     is Some(v) {
@@ -426,115 +426,115 @@ pub fn InlineQueryResultMpeg4Gif::new(
 
 ///|
 pub impl @json.ToJson for InlineQueryResultMpeg4Gif with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "type": @json.to_json(self.type_),
     "id": @json.to_json(self.id),
     "mpeg4_url": @json.to_json(self.mpeg4_url),
     "thumbnail_url": @json.to_json(self.thumbnail_url),
   }
   if self.mpeg4_width is Some(v) {
-    obj["mpeg4_width"] = @json.to_json(v)
+    object["mpeg4_width"] = @json.to_json(v)
   }
   if self.mpeg4_height is Some(v) {
-    obj["mpeg4_height"] = @json.to_json(v)
+    object["mpeg4_height"] = @json.to_json(v)
   }
   if self.mpeg4_duration is Some(v) {
-    obj["mpeg4_duration"] = @json.to_json(v)
+    object["mpeg4_duration"] = @json.to_json(v)
   }
   if self.thumbnail_mime_type is Some(v) {
-    obj["thumbnail_mime_type"] = @json.to_json(v)
+    object["thumbnail_mime_type"] = @json.to_json(v)
   }
   if self.title is Some(v) {
-    obj["title"] = @json.to_json(v)
+    object["title"] = @json.to_json(v)
   }
   if self.caption is Some(v) {
-    obj["caption"] = @json.to_json(v)
+    object["caption"] = @json.to_json(v)
   }
   if self.parse_mode is Some(v) {
-    obj["parse_mode"] = @json.to_json(v)
+    object["parse_mode"] = @json.to_json(v)
   }
   if self.caption_entities is Some(v) {
-    obj["caption_entities"] = @json.to_json(v)
+    object["caption_entities"] = @json.to_json(v)
   }
   if self.show_caption_above_media is Some(v) {
-    obj["show_caption_above_media"] = @json.to_json(v)
+    object["show_caption_above_media"] = @json.to_json(v)
   }
   if self.reply_markup is Some(v) {
-    obj["reply_markup"] = @json.to_json(v)
+    object["reply_markup"] = @json.to_json(v)
   }
   if self.input_message_content is Some(v) {
-    obj["input_message_content"] = @json.to_json(v)
+    object["input_message_content"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for InlineQueryResultMpeg4Gif with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for InlineQueryResultMpeg4Gif",
     )
   }
-  let type_ : String = @json.from_json(obj["type"], path~)
-  let id : String = @json.from_json(obj["id"], path~)
-  let mpeg4_url : String = @json.from_json(obj["mpeg4_url"], path~)
-  let thumbnail_url : String = @json.from_json(obj["thumbnail_url"], path~)
-  let mpeg4_width : Int? = if obj.get("mpeg4_width") is Some(v) {
+  let type_ : String = @json.from_json(object["type"], path~)
+  let id : String = @json.from_json(object["id"], path~)
+  let mpeg4_url : String = @json.from_json(object["mpeg4_url"], path~)
+  let thumbnail_url : String = @json.from_json(object["thumbnail_url"], path~)
+  let mpeg4_width : Int? = if object.get("mpeg4_width") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let mpeg4_height : Int? = if obj.get("mpeg4_height") is Some(v) {
+  let mpeg4_height : Int? = if object.get("mpeg4_height") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let mpeg4_duration : Int? = if obj.get("mpeg4_duration") is Some(v) {
+  let mpeg4_duration : Int? = if object.get("mpeg4_duration") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let thumbnail_mime_type : String? = if obj.get("thumbnail_mime_type")
+  let thumbnail_mime_type : String? = if object.get("thumbnail_mime_type")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let title : String? = if obj.get("title") is Some(v) {
+  let title : String? = if object.get("title") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let caption : String? = if obj.get("caption") is Some(v) {
+  let caption : String? = if object.get("caption") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let parse_mode : String? = if obj.get("parse_mode") is Some(v) {
+  let parse_mode : String? = if object.get("parse_mode") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if obj.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let show_caption_above_media : Bool? = if obj.get("show_caption_above_media")
+  let show_caption_above_media : Bool? = if object.get("show_caption_above_media")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let reply_markup : InlineKeyboardMarkup? = if obj.get("reply_markup")
+  let reply_markup : InlineKeyboardMarkup? = if object.get("reply_markup")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let input_message_content : InputTextMessageContent? = if obj.get(
+  let input_message_content : InputTextMessageContent? = if object.get(
       "input_message_content",
     )
     is Some(v) {
@@ -621,7 +621,7 @@ pub fn InlineQueryResultVideo::new(
 
 ///|
 pub impl @json.ToJson for InlineQueryResultVideo with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "type": @json.to_json(self.type_),
     "id": @json.to_json(self.id),
     "video_url": @json.to_json(self.video_url),
@@ -630,101 +630,101 @@ pub impl @json.ToJson for InlineQueryResultVideo with to_json(self) {
     "title": @json.to_json(self.title),
   }
   if self.caption is Some(v) {
-    obj["caption"] = @json.to_json(v)
+    object["caption"] = @json.to_json(v)
   }
   if self.parse_mode is Some(v) {
-    obj["parse_mode"] = @json.to_json(v)
+    object["parse_mode"] = @json.to_json(v)
   }
   if self.caption_entities is Some(v) {
-    obj["caption_entities"] = @json.to_json(v)
+    object["caption_entities"] = @json.to_json(v)
   }
   if self.show_caption_above_media is Some(v) {
-    obj["show_caption_above_media"] = @json.to_json(v)
+    object["show_caption_above_media"] = @json.to_json(v)
   }
   if self.video_width is Some(v) {
-    obj["video_width"] = @json.to_json(v)
+    object["video_width"] = @json.to_json(v)
   }
   if self.video_height is Some(v) {
-    obj["video_height"] = @json.to_json(v)
+    object["video_height"] = @json.to_json(v)
   }
   if self.video_duration is Some(v) {
-    obj["video_duration"] = @json.to_json(v)
+    object["video_duration"] = @json.to_json(v)
   }
   if self.description is Some(v) {
-    obj["description"] = @json.to_json(v)
+    object["description"] = @json.to_json(v)
   }
   if self.reply_markup is Some(v) {
-    obj["reply_markup"] = @json.to_json(v)
+    object["reply_markup"] = @json.to_json(v)
   }
   if self.input_message_content is Some(v) {
-    obj["input_message_content"] = @json.to_json(v)
+    object["input_message_content"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for InlineQueryResultVideo with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(
       path~,
       "Expected object for InlineQueryResultVideo",
     )
   }
-  let type_ : String = @json.from_json(obj["type"], path~)
-  let id : String = @json.from_json(obj["id"], path~)
-  let video_url : String = @json.from_json(obj["video_url"], path~)
-  let mime_type : String = @json.from_json(obj["mime_type"], path~)
-  let thumbnail_url : String = @json.from_json(obj["thumbnail_url"], path~)
-  let title : String = @json.from_json(obj["title"], path~)
-  let caption : String? = if obj.get("caption") is Some(v) {
+  let type_ : String = @json.from_json(object["type"], path~)
+  let id : String = @json.from_json(object["id"], path~)
+  let video_url : String = @json.from_json(object["video_url"], path~)
+  let mime_type : String = @json.from_json(object["mime_type"], path~)
+  let thumbnail_url : String = @json.from_json(object["thumbnail_url"], path~)
+  let title : String = @json.from_json(object["title"], path~)
+  let caption : String? = if object.get("caption") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let parse_mode : String? = if obj.get("parse_mode") is Some(v) {
+  let parse_mode : String? = if object.get("parse_mode") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if obj.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let show_caption_above_media : Bool? = if obj.get("show_caption_above_media")
+  let show_caption_above_media : Bool? = if object.get("show_caption_above_media")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let video_width : Int? = if obj.get("video_width") is Some(v) {
+  let video_width : Int? = if object.get("video_width") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let video_height : Int? = if obj.get("video_height") is Some(v) {
+  let video_height : Int? = if object.get("video_height") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let video_duration : Int? = if obj.get("video_duration") is Some(v) {
+  let video_duration : Int? = if object.get("video_duration") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let description : String? = if obj.get("description") is Some(v) {
+  let description : String? = if object.get("description") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let reply_markup : InlineKeyboardMarkup? = if obj.get("reply_markup")
+  let reply_markup : InlineKeyboardMarkup? = if object.get("reply_markup")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let input_message_content : InputTextMessageContent? = if obj.get(
+  let input_message_content : InputTextMessageContent? = if object.get(
       "input_message_content",
     )
     is Some(v) {

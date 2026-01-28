@@ -16,29 +16,29 @@ pub fn PollOption::new(
 
 ///|
 pub impl @json.ToJson for PollOption with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "text": @json.to_json(self.text),
     "voter_count": @json.to_json(self.voter_count),
   }
   if self.text_entities is Some(v) {
-    obj["text_entities"] = @json.to_json(v)
+    object["text_entities"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for PollOption with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for PollOption")
   }
-  let text : String = @json.from_json(obj["text"], path~)
-  let text_entities : Array[MessageEntity]? = if obj.get("text_entities")
+  let text : String = @json.from_json(object["text"], path~)
+  let text_entities : Array[MessageEntity]? = if object.get("text_entities")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let voter_count : Int = @json.from_json(obj["voter_count"], path~)
+  let voter_count : Int = @json.from_json(object["voter_count"], path~)
   { text, text_entities, voter_count }
 }
 
@@ -60,28 +60,28 @@ pub fn InputPollOption::new(
 
 ///|
 pub impl @json.ToJson for InputPollOption with to_json(self) {
-  let obj : Map[String, Json] = { "text": @json.to_json(self.text) }
+  let object : Map[String, Json] = { "text": @json.to_json(self.text) }
   if self.text_parse_mode is Some(v) {
-    obj["text_parse_mode"] = @json.to_json(v)
+    object["text_parse_mode"] = @json.to_json(v)
   }
   if self.text_entities is Some(v) {
-    obj["text_entities"] = @json.to_json(v)
+    object["text_entities"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for InputPollOption with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for InputPollOption")
   }
-  let text : String = @json.from_json(obj["text"], path~)
-  let text_parse_mode : String? = if obj.get("text_parse_mode") is Some(v) {
+  let text : String = @json.from_json(object["text"], path~)
+  let text_parse_mode : String? = if object.get("text_parse_mode") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let text_entities : Array[MessageEntity]? = if obj.get("text_entities")
+  let text_entities : Array[MessageEntity]? = if object.get("text_entities")
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -145,7 +145,7 @@ pub fn Poll::new(
 
 ///|
 pub impl @json.ToJson for Poll with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "id": @json.to_json(self.id),
     "question": @json.to_json(self.question),
     "options": @json.to_json(self.options),
@@ -156,34 +156,34 @@ pub impl @json.ToJson for Poll with to_json(self) {
     "allows_multiple_answers": @json.to_json(self.allows_multiple_answers),
   }
   if self.question_entities is Some(v) {
-    obj["question_entities"] = @json.to_json(v)
+    object["question_entities"] = @json.to_json(v)
   }
   if self.correct_option_id is Some(v) {
-    obj["correct_option_id"] = @json.to_json(v)
+    object["correct_option_id"] = @json.to_json(v)
   }
   if self.explanation is Some(v) {
-    obj["explanation"] = @json.to_json(v)
+    object["explanation"] = @json.to_json(v)
   }
   if self.explanation_entities is Some(v) {
-    obj["explanation_entities"] = @json.to_json(v)
+    object["explanation_entities"] = @json.to_json(v)
   }
   if self.open_period is Some(v) {
-    obj["open_period"] = @json.to_json(v)
+    object["open_period"] = @json.to_json(v)
   }
   if self.close_date is Some(v) {
-    obj["close_date"] = @json.to_json(v)
+    object["close_date"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for Poll with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for Poll")
   }
-  let id : String = @json.from_json(obj["id"], path~)
-  let question : String = @json.from_json(obj["question"], path~)
-  let question_entities : Array[MessageEntity]? = if obj.get(
+  let id : String = @json.from_json(object["id"], path~)
+  let question : String = @json.from_json(object["question"], path~)
+  let question_entities : Array[MessageEntity]? = if object.get(
       "question_entities",
     )
     is Some(v) {
@@ -191,26 +191,26 @@ pub impl @json.FromJson for Poll with from_json(json, path) {
   } else {
     None
   }
-  let options : Array[PollOption] = @json.from_json(obj["options"], path~)
-  let total_voter_count : Int = @json.from_json(obj["total_voter_count"], path~)
-  let is_closed : Bool = @json.from_json(obj["is_closed"], path~)
-  let is_anonymous : Bool = @json.from_json(obj["is_anonymous"], path~)
-  let type_ : String = @json.from_json(obj["type"], path~)
+  let options : Array[PollOption] = @json.from_json(object["options"], path~)
+  let total_voter_count : Int = @json.from_json(object["total_voter_count"], path~)
+  let is_closed : Bool = @json.from_json(object["is_closed"], path~)
+  let is_anonymous : Bool = @json.from_json(object["is_anonymous"], path~)
+  let type_ : String = @json.from_json(object["type"], path~)
   let allows_multiple_answers : Bool = @json.from_json(
-    obj["allows_multiple_answers"],
+    object["allows_multiple_answers"],
     path~,
   )
-  let correct_option_id : Int? = if obj.get("correct_option_id") is Some(v) {
+  let correct_option_id : Int? = if object.get("correct_option_id") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let explanation : String? = if obj.get("explanation") is Some(v) {
+  let explanation : String? = if object.get("explanation") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let explanation_entities : Array[MessageEntity]? = if obj.get(
+  let explanation_entities : Array[MessageEntity]? = if object.get(
       "explanation_entities",
     )
     is Some(v) {
@@ -218,12 +218,12 @@ pub impl @json.FromJson for Poll with from_json(json, path) {
   } else {
     None
   }
-  let open_period : Int? = if obj.get("open_period") is Some(v) {
+  let open_period : Int? = if object.get("open_period") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let close_date : Int? = if obj.get("close_date") is Some(v) {
+  let close_date : Int? = if object.get("close_date") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -266,35 +266,35 @@ pub fn PollAnswer::new(
 
 ///|
 pub impl @json.ToJson for PollAnswer with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "poll_id": @json.to_json(self.poll_id),
     "option_ids": @json.to_json(self.option_ids),
   }
   if self.voter_chat is Some(v) {
-    obj["voter_chat"] = @json.to_json(v)
+    object["voter_chat"] = @json.to_json(v)
   }
   if self.user is Some(v) {
-    obj["user"] = @json.to_json(v)
+    object["user"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for PollAnswer with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for PollAnswer")
   }
-  let poll_id : String = @json.from_json(obj["poll_id"], path~)
-  let voter_chat : Chat? = if obj.get("voter_chat") is Some(v) {
+  let poll_id : String = @json.from_json(object["poll_id"], path~)
+  let voter_chat : Chat? = if object.get("voter_chat") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let user : User? = if obj.get("user") is Some(v) {
+  let user : User? = if object.get("user") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let option_ids : Array[Int] = @json.from_json(obj["option_ids"], path~)
+  let option_ids : Array[Int] = @json.from_json(object["option_ids"], path~)
   { poll_id, voter_chat, user, option_ids }
 }

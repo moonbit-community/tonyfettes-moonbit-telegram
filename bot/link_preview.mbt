@@ -20,51 +20,51 @@ pub fn LinkPreviewOptions::new(
 
 ///|
 pub impl @json.ToJson for LinkPreviewOptions with to_json(self) {
-  let obj : Map[String, Json] = {}
+  let object : Map[String, Json] = {}
   if self.is_disabled is Some(v) {
-    obj["is_disabled"] = @json.to_json(v)
+    object["is_disabled"] = @json.to_json(v)
   }
   if self.url is Some(v) {
-    obj["url"] = @json.to_json(v)
+    object["url"] = @json.to_json(v)
   }
   if self.prefer_small_media is Some(v) {
-    obj["prefer_small_media"] = @json.to_json(v)
+    object["prefer_small_media"] = @json.to_json(v)
   }
   if self.prefer_large_media is Some(v) {
-    obj["prefer_large_media"] = @json.to_json(v)
+    object["prefer_large_media"] = @json.to_json(v)
   }
   if self.show_above_text is Some(v) {
-    obj["show_above_text"] = @json.to_json(v)
+    object["show_above_text"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for LinkPreviewOptions with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for LinkPreviewOptions")
   }
-  let is_disabled : Bool? = if obj.get("is_disabled") is Some(v) {
+  let is_disabled : Bool? = if object.get("is_disabled") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let url : String? = if obj.get("url") is Some(v) {
+  let url : String? = if object.get("url") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let prefer_small_media : Bool? = if obj.get("prefer_small_media") is Some(v) {
+  let prefer_small_media : Bool? = if object.get("prefer_small_media") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let prefer_large_media : Bool? = if obj.get("prefer_large_media") is Some(v) {
+  let prefer_large_media : Bool? = if object.get("prefer_large_media") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let show_above_text : Bool? = if obj.get("show_above_text") is Some(v) {
+  let show_above_text : Bool? = if object.get("show_above_text") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -92,32 +92,32 @@ pub fn TextQuote::new(
 
 ///|
 pub impl @json.ToJson for TextQuote with to_json(self) {
-  let obj : Map[String, Json] = {
+  let object : Map[String, Json] = {
     "text": @json.to_json(self.text),
     "position": @json.to_json(self.position),
   }
   if self.entities is Some(v) {
-    obj["entities"] = @json.to_json(v)
+    object["entities"] = @json.to_json(v)
   }
   if self.is_manual is Some(v) {
-    obj["is_manual"] = @json.to_json(v)
+    object["is_manual"] = @json.to_json(v)
   }
-  @json.to_json(obj)
+  @json.to_json(object)
 }
 
 ///|
 pub impl @json.FromJson for TextQuote with from_json(json, path) {
-  guard json is Object(obj) else {
+  guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for TextQuote")
   }
-  let text : String = @json.from_json(obj["text"], path~)
-  let entities : Array[MessageEntity]? = if obj.get("entities") is Some(v) {
+  let text : String = @json.from_json(object["text"], path~)
+  let entities : Array[MessageEntity]? = if object.get("entities") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let position : Int = @json.from_json(obj["position"], path~)
-  let is_manual : Bool? = if obj.get("is_manual") is Some(v) {
+  let position : Int = @json.from_json(object["position"], path~)
+  let is_manual : Bool? = if object.get("is_manual") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None

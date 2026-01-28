@@ -145,13 +145,13 @@ test "Poll type field serializes as 'type'" {
     allows_multiple_answers=false,
   )
   let json = @json.to_json(poll)
-  guard json is Object(obj) else { fail("Expected object") }
-  guard obj.get("type") is Some(String(type_val)) else {
+  guard json is Object(object) else { fail("Expected object") }
+  guard object.get("type") is Some(String(type_val)) else {
     fail("Expected 'type' field in JSON")
   }
   inspect(type_val, content="quiz")
   // Ensure type_ is not serialized
-  inspect(obj.get("type_"), content="None")
+  inspect(object.get("type_"), content="None")
 }
 
 ///|
