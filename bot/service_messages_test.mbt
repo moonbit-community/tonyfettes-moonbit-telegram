@@ -65,7 +65,9 @@ test "VideoChatParticipantsInvited JSON round-trip" {
 
 ///|
 test "MessageAutoDeleteTimerChanged JSON round-trip" {
-  let object = MessageAutoDeleteTimerChanged::new(message_auto_delete_time=86400)
+  let object = MessageAutoDeleteTimerChanged::new(
+    message_auto_delete_time=86400,
+  )
   let json = @json.to_json(object)
   let parsed : MessageAutoDeleteTimerChanged = @json.from_json(json)
   inspect(parsed.message_auto_delete_time, content="86400")

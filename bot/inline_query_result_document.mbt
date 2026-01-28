@@ -130,7 +130,9 @@ pub impl @json.FromJson for InlineQueryResultAudio with from_json(json, path) {
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -266,7 +268,9 @@ pub impl @json.FromJson for InlineQueryResultVoice with from_json(json, path) {
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -419,7 +423,9 @@ pub impl @json.FromJson for InlineQueryResultDocument with from_json(json, path)
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {

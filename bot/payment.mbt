@@ -37,7 +37,10 @@ pub impl @json.FromJson for Invoice with from_json(json, path) {
   }
   let title : String = @json.from_json(object["title"], path~)
   let description : String = @json.from_json(object["description"], path~)
-  let start_parameter : String = @json.from_json(object["start_parameter"], path~)
+  let start_parameter : String = @json.from_json(
+    object["start_parameter"],
+    path~,
+  )
   let currency : String = @json.from_json(object["currency"], path~)
   let total_amount : Int = @json.from_json(object["total_amount"], path~)
   { title, description, start_parameter, currency, total_amount }
@@ -281,8 +284,12 @@ pub impl @json.FromJson for SuccessfulPayment with from_json(json, path) {
   }
   let currency : String = @json.from_json(object["currency"], path~)
   let total_amount : Int = @json.from_json(object["total_amount"], path~)
-  let invoice_payload : String = @json.from_json(object["invoice_payload"], path~)
-  let shipping_option_id : String? = if object.get("shipping_option_id") is Some(v) {
+  let invoice_payload : String = @json.from_json(
+    object["invoice_payload"],
+    path~,
+  )
+  let shipping_option_id : String? = if object.get("shipping_option_id")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -358,7 +365,10 @@ pub impl @json.FromJson for RefundedPayment with from_json(json, path) {
   }
   let currency : String = @json.from_json(object["currency"], path~)
   let total_amount : Int = @json.from_json(object["total_amount"], path~)
-  let invoice_payload : String = @json.from_json(object["invoice_payload"], path~)
+  let invoice_payload : String = @json.from_json(
+    object["invoice_payload"],
+    path~,
+  )
   let telegram_payment_charge_id : String = @json.from_json(
     object["telegram_payment_charge_id"],
     path~,

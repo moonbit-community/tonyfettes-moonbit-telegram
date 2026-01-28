@@ -57,7 +57,9 @@ pub fn ReplyParameters::new(
 
 ///|
 pub impl @json.ToJson for ReplyParameters with to_json(self) {
-  let object : Map[String, Json] = { "message_id": @json.to_json(self.message_id) }
+  let object : Map[String, Json] = {
+    "message_id": @json.to_json(self.message_id),
+  }
   if self.chat_id is Some(v) {
     object["chat_id"] = @json.to_json(v)
   }
@@ -402,7 +404,10 @@ pub impl @json.FromJson for ExternalReplyInfo with from_json(json, path) {
   guard json is Object(object) else {
     raise @json.JsonDecodeError(path~, "Expected object for ExternalReplyInfo")
   }
-  let origin : MessageOriginPlaceholder = @json.from_json(object["origin"], path~)
+  let origin : MessageOriginPlaceholder = @json.from_json(
+    object["origin"],
+    path~,
+  )
   let chat : Chat? = if object.get("chat") is Some(v) {
     Some(@json.from_json(v, path~))
   } else {

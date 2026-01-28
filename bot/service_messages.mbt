@@ -151,7 +151,9 @@ pub fn VideoChatScheduled::new(start_date~ : Int) -> VideoChatScheduled {
 
 ///|
 pub impl @json.ToJson for VideoChatScheduled with to_json(self) {
-  let object : Map[String, Json] = { "start_date": @json.to_json(self.start_date) }
+  let object : Map[String, Json] = {
+    "start_date": @json.to_json(self.start_date),
+  }
   @json.to_json(object)
 }
 

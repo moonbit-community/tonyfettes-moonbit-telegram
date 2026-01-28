@@ -134,7 +134,8 @@ pub impl @json.FromJson for SwitchInlineQueryChosenChat with from_json(
   } else {
     None
   }
-  let allow_channel_chats : Bool? = if object.get("allow_channel_chats") is Some(v) {
+  let allow_channel_chats : Bool? = if object.get("allow_channel_chats")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None

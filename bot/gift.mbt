@@ -108,7 +108,9 @@ pub fn Gifts::new(gifts~ : Array[Gift]) -> Gifts {
 
 ///|
 pub impl @json.ToJson for Gifts with to_json(self) {
-  let object : Map[String, Json] = { "gifts": @json.ToJson::to_json(self.gifts) }
+  let object : Map[String, Json] = {
+    "gifts": @json.ToJson::to_json(self.gifts),
+  }
   @json.to_json(object)
 }
 

@@ -141,13 +141,17 @@ pub impl @json.FromJson for InlineQueryResultCachedPhoto with from_json(
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let show_caption_above_media : Bool? = if object.get("show_caption_above_media")
+  let show_caption_above_media : Bool? = if object.get(
+      "show_caption_above_media",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -282,13 +286,17 @@ pub impl @json.FromJson for InlineQueryResultCachedGif with from_json(
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let show_caption_above_media : Bool? = if object.get("show_caption_above_media")
+  let show_caption_above_media : Bool? = if object.get(
+      "show_caption_above_media",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -422,13 +430,17 @@ pub impl @json.FromJson for InlineQueryResultCachedMpeg4Gif with from_json(
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let show_caption_above_media : Bool? = if object.get("show_caption_above_media")
+  let show_caption_above_media : Bool? = if object.get(
+      "show_caption_above_media",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -510,7 +522,10 @@ pub impl @json.FromJson for InlineQueryResultCachedSticker with from_json(
   }
   let type_ : String = @json.from_json(object["type"], path~)
   let id : String = @json.from_json(object["id"], path~)
-  let sticker_file_id : String = @json.from_json(object["sticker_file_id"], path~)
+  let sticker_file_id : String = @json.from_json(
+    object["sticker_file_id"],
+    path~,
+  )
   let reply_markup : InlineKeyboardMarkup? = if object.get("reply_markup")
     is Some(v) {
     Some(@json.from_json(v, path~))
@@ -630,7 +645,9 @@ pub impl @json.FromJson for InlineQueryResultCachedDocument with from_json(
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -769,13 +786,17 @@ pub impl @json.FromJson for InlineQueryResultCachedVideo with from_json(
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let show_caption_above_media : Bool? = if object.get("show_caption_above_media")
+  let show_caption_above_media : Bool? = if object.get(
+      "show_caption_above_media",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -898,7 +919,9 @@ pub impl @json.FromJson for InlineQueryResultCachedVoice with from_json(
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -1014,7 +1037,9 @@ pub impl @json.FromJson for InlineQueryResultCachedAudio with from_json(
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {

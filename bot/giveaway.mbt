@@ -112,12 +112,14 @@ pub impl @json.FromJson for Giveaway with from_json(json, path) {
   } else {
     None
   }
-  let has_public_winners : Bool? = if object.get("has_public_winners") is Some(v) {
+  let has_public_winners : Bool? = if object.get("has_public_winners")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let prize_description : String? = if object.get("prize_description") is Some(v) {
+  let prize_description : String? = if object.get("prize_description")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -284,7 +286,8 @@ pub impl @json.FromJson for GiveawayWinners with from_json(json, path) {
   } else {
     None
   }
-  let prize_description : String? = if object.get("prize_description") is Some(v) {
+  let prize_description : String? = if object.get("prize_description")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None

@@ -136,6 +136,9 @@ pub impl @json.FromJson for PaidMediaInfo with from_json(json, path) {
     raise @json.JsonDecodeError(path~, "Expected object for PaidMediaInfo")
   }
   let star_count : Int = @json.from_json(object["star_count"], path~)
-  let paid_media : Array[PaidMedia] = @json.from_json(object["paid_media"], path~)
+  let paid_media : Array[PaidMedia] = @json.from_json(
+    object["paid_media"],
+    path~,
+  )
   { star_count, paid_media }
 }

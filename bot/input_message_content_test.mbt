@@ -42,7 +42,9 @@ test "InputTextMessageContent JSON round-trip" {
 ///|
 test "InputTextMessageContent with entities JSON round-trip" {
   let entity = MessageEntity::new(type_="bold", offset=0, length=5)
-  let object = InputTextMessageContent::new(message_text="Hello", entities=[entity])
+  let object = InputTextMessageContent::new(message_text="Hello", entities=[
+    entity,
+  ])
   let json = @json.to_json(object)
   let parsed : InputTextMessageContent = @json.from_json(json)
   inspect(parsed.message_text, content="Hello")

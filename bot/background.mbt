@@ -125,7 +125,10 @@ pub impl @json.FromJson for BackgroundFill with from_json(json, path) {
     "gradient" => {
       let top_color : Int = @json.from_json(object["top_color"], path~)
       let bottom_color : Int = @json.from_json(object["bottom_color"], path~)
-      let rotation_angle : Int = @json.from_json(object["rotation_angle"], path~)
+      let rotation_angle : Int = @json.from_json(
+        object["rotation_angle"],
+        path~,
+      )
       Gradient({ top_color, bottom_color, rotation_angle })
     }
     "freeform_gradient" => {

@@ -192,7 +192,10 @@ pub impl @json.FromJson for Poll with from_json(json, path) {
     None
   }
   let options : Array[PollOption] = @json.from_json(object["options"], path~)
-  let total_voter_count : Int = @json.from_json(object["total_voter_count"], path~)
+  let total_voter_count : Int = @json.from_json(
+    object["total_voter_count"],
+    path~,
+  )
   let is_closed : Bool = @json.from_json(object["is_closed"], path~)
   let is_anonymous : Bool = @json.from_json(object["is_anonymous"], path~)
   let type_ : String = @json.from_json(object["type"], path~)

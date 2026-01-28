@@ -67,7 +67,9 @@ pub fn KeyboardButtonRequestUsers::new(
 
 ///|
 pub impl @json.ToJson for KeyboardButtonRequestUsers with to_json(self) {
-  let object : Map[String, Json] = { "request_id": @json.to_json(self.request_id) }
+  let object : Map[String, Json] = {
+    "request_id": @json.to_json(self.request_id),
+  }
   if self.user_is_bot is Some(v) {
     object["user_is_bot"] = @json.to_json(v)
   }
@@ -330,7 +332,9 @@ pub impl @json.FromJson for KeyboardButton with from_json(json, path) {
     raise @json.JsonDecodeError(path~, "Expected object for KeyboardButton")
   }
   let text : String = @json.from_json(object["text"], path~)
-  let request_users : KeyboardButtonRequestUsers? = if object.get("request_users")
+  let request_users : KeyboardButtonRequestUsers? = if object.get(
+      "request_users",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {

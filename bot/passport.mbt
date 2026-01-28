@@ -198,7 +198,8 @@ pub impl @json.FromJson for EncryptedPassportElement with from_json(json, path) 
   } else {
     None
   }
-  let translation : Array[PassportFile]? = if object.get("translation") is Some(v) {
+  let translation : Array[PassportFile]? = if object.get("translation")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None

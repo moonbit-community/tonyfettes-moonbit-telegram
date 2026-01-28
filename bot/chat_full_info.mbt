@@ -131,7 +131,10 @@ pub impl @json.FromJson for ReactionTypeCustomEmoji with from_json(json, path) {
       "Expected object for ReactionTypeCustomEmoji",
     )
   }
-  let custom_emoji_id : String = @json.from_json(object["custom_emoji_id"], path~)
+  let custom_emoji_id : String = @json.from_json(
+    object["custom_emoji_id"],
+    path~,
+  )
   { custom_emoji_id, }
 }
 
@@ -493,7 +496,8 @@ pub impl @json.FromJson for ChatFullInfo with from_json(json, path) {
   } else {
     None
   }
-  let business_intro : BusinessIntro? = if object.get("business_intro") is Some(v) {
+  let business_intro : BusinessIntro? = if object.get("business_intro")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -613,7 +617,8 @@ pub impl @json.FromJson for ChatFullInfo with from_json(json, path) {
   } else {
     None
   }
-  let can_send_paid_media : Bool? = if object.get("can_send_paid_media") is Some(v) {
+  let can_send_paid_media : Bool? = if object.get("can_send_paid_media")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -629,7 +634,9 @@ pub impl @json.FromJson for ChatFullInfo with from_json(json, path) {
   } else {
     None
   }
-  let message_auto_delete_time : Int? = if object.get("message_auto_delete_time")
+  let message_auto_delete_time : Int? = if object.get(
+      "message_auto_delete_time",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -643,7 +650,8 @@ pub impl @json.FromJson for ChatFullInfo with from_json(json, path) {
   } else {
     None
   }
-  let has_hidden_members : Bool? = if object.get("has_hidden_members") is Some(v) {
+  let has_hidden_members : Bool? = if object.get("has_hidden_members")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -654,7 +662,8 @@ pub impl @json.FromJson for ChatFullInfo with from_json(json, path) {
   } else {
     None
   }
-  let has_visible_history : Bool? = if object.get("has_visible_history") is Some(v) {
+  let has_visible_history : Bool? = if object.get("has_visible_history")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -664,7 +673,8 @@ pub impl @json.FromJson for ChatFullInfo with from_json(json, path) {
   } else {
     None
   }
-  let can_set_sticker_set : Bool? = if object.get("can_set_sticker_set") is Some(v) {
+  let can_set_sticker_set : Bool? = if object.get("can_set_sticker_set")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None

@@ -54,12 +54,14 @@ pub impl @json.FromJson for LinkPreviewOptions with from_json(json, path) {
   } else {
     None
   }
-  let prefer_small_media : Bool? = if object.get("prefer_small_media") is Some(v) {
+  let prefer_small_media : Bool? = if object.get("prefer_small_media")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let prefer_large_media : Bool? = if object.get("prefer_large_media") is Some(v) {
+  let prefer_large_media : Bool? = if object.get("prefer_large_media")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None

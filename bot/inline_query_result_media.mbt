@@ -133,13 +133,17 @@ pub impl @json.FromJson for InlineQueryResultPhoto with from_json(json, path) {
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let show_caption_above_media : Bool? = if object.get("show_caption_above_media")
+  let show_caption_above_media : Bool? = if object.get(
+      "show_caption_above_media",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -324,13 +328,17 @@ pub impl @json.FromJson for InlineQueryResultGif with from_json(json, path) {
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let show_caption_above_media : Bool? = if object.get("show_caption_above_media")
+  let show_caption_above_media : Bool? = if object.get(
+      "show_caption_above_media",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -516,13 +524,17 @@ pub impl @json.FromJson for InlineQueryResultMpeg4Gif with from_json(json, path)
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let show_caption_above_media : Bool? = if object.get("show_caption_above_media")
+  let show_caption_above_media : Bool? = if object.get(
+      "show_caption_above_media",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -686,13 +698,17 @@ pub impl @json.FromJson for InlineQueryResultVideo with from_json(json, path) {
   } else {
     None
   }
-  let caption_entities : Array[MessageEntity]? = if object.get("caption_entities")
+  let caption_entities : Array[MessageEntity]? = if object.get(
+      "caption_entities",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
   }
-  let show_caption_above_media : Bool? = if object.get("show_caption_above_media")
+  let show_caption_above_media : Bool? = if object.get(
+      "show_caption_above_media",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {

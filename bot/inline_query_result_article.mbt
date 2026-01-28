@@ -581,7 +581,8 @@ pub impl @json.FromJson for InlineQueryResultVenue with from_json(json, path) {
   } else {
     None
   }
-  let google_place_type : String? = if object.get("google_place_type") is Some(v) {
+  let google_place_type : String? = if object.get("google_place_type")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None

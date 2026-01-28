@@ -138,7 +138,8 @@ pub impl @json.FromJson for MessageOrigin with from_json(json, path) {
     "chat" => {
       let date : Int = @json.from_json(object["date"], path~)
       let sender_chat : Chat = @json.from_json(object["sender_chat"], path~)
-      let author_signature : String? = if object.get("author_signature") is Some(v) {
+      let author_signature : String? = if object.get("author_signature")
+        is Some(v) {
         Some(@json.from_json(v, path~))
       } else {
         None
@@ -149,7 +150,8 @@ pub impl @json.FromJson for MessageOrigin with from_json(json, path) {
       let date : Int = @json.from_json(object["date"], path~)
       let chat : Chat = @json.from_json(object["chat"], path~)
       let message_id : Int = @json.from_json(object["message_id"], path~)
-      let author_signature : String? = if object.get("author_signature") is Some(v) {
+      let author_signature : String? = if object.get("author_signature")
+        is Some(v) {
         Some(@json.from_json(v, path~))
       } else {
         None

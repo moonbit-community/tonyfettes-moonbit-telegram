@@ -243,7 +243,8 @@ pub impl @json.FromJson for InputVenueMessageContent with from_json(json, path) 
   } else {
     None
   }
-  let google_place_type : String? = if object.get("google_place_type") is Some(v) {
+  let google_place_type : String? = if object.get("google_place_type")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -473,7 +474,9 @@ pub impl @json.FromJson for InputInvoiceMessageContent with from_json(
   } else {
     None
   }
-  let suggested_tip_amounts : Array[Int]? = if object.get("suggested_tip_amounts")
+  let suggested_tip_amounts : Array[Int]? = if object.get(
+      "suggested_tip_amounts",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {

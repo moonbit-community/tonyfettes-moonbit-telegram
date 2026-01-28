@@ -1,8 +1,0 @@
-{
-  "import": [
-    "tonyfettes/telegram/tl/ast"
-  ],
-  "test-import": [
-    "tonyfettes/telegram/tl/ast"
-  ]
-}

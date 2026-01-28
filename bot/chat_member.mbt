@@ -351,22 +351,26 @@ pub impl @json.FromJson for ChatMember with from_json(json, path) {
         object["can_delete_stories"],
         path~,
       )
-      let can_post_messages : Bool? = if object.get("can_post_messages") is Some(v) {
+      let can_post_messages : Bool? = if object.get("can_post_messages")
+        is Some(v) {
         Some(@json.from_json(v, path~))
       } else {
         None
       }
-      let can_edit_messages : Bool? = if object.get("can_edit_messages") is Some(v) {
+      let can_edit_messages : Bool? = if object.get("can_edit_messages")
+        is Some(v) {
         Some(@json.from_json(v, path~))
       } else {
         None
       }
-      let can_pin_messages : Bool? = if object.get("can_pin_messages") is Some(v) {
+      let can_pin_messages : Bool? = if object.get("can_pin_messages")
+        is Some(v) {
         Some(@json.from_json(v, path~))
       } else {
         None
       }
-      let can_manage_topics : Bool? = if object.get("can_manage_topics") is Some(v) {
+      let can_manage_topics : Bool? = if object.get("can_manage_topics")
+        is Some(v) {
         Some(@json.from_json(v, path~))
       } else {
         None
@@ -439,7 +443,10 @@ pub impl @json.FromJson for ChatMember with from_json(json, path) {
         object["can_send_voice_notes"],
         path~,
       )
-      let can_send_polls : Bool = @json.from_json(object["can_send_polls"], path~)
+      let can_send_polls : Bool = @json.from_json(
+        object["can_send_polls"],
+        path~,
+      )
       let can_send_other_messages : Bool = @json.from_json(
         object["can_send_other_messages"],
         path~,
@@ -617,7 +624,8 @@ pub impl @json.FromJson for ChatPermissions with from_json(json, path) {
   } else {
     None
   }
-  let can_send_documents : Bool? = if object.get("can_send_documents") is Some(v) {
+  let can_send_documents : Bool? = if object.get("can_send_documents")
+    is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
     None
@@ -814,9 +822,18 @@ pub impl @json.FromJson for ChatAdministratorRights with from_json(json, path) {
     path~,
   )
   let can_change_info : Bool = @json.from_json(object["can_change_info"], path~)
-  let can_invite_users : Bool = @json.from_json(object["can_invite_users"], path~)
-  let can_post_stories : Bool = @json.from_json(object["can_post_stories"], path~)
-  let can_edit_stories : Bool = @json.from_json(object["can_edit_stories"], path~)
+  let can_invite_users : Bool = @json.from_json(
+    object["can_invite_users"],
+    path~,
+  )
+  let can_post_stories : Bool = @json.from_json(
+    object["can_post_stories"],
+    path~,
+  )
+  let can_edit_stories : Bool = @json.from_json(
+    object["can_edit_stories"],
+    path~,
+  )
   let can_delete_stories : Bool = @json.from_json(
     object["can_delete_stories"],
     path~,

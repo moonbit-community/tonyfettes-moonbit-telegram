@@ -77,7 +77,9 @@ pub impl @json.FromJson for ReplyKeyboardMarkup with from_json(json, path) {
   } else {
     None
   }
-  let input_field_placeholder : String? = if object.get("input_field_placeholder")
+  let input_field_placeholder : String? = if object.get(
+      "input_field_placeholder",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
@@ -176,7 +178,9 @@ pub impl @json.FromJson for ForceReply with from_json(json, path) {
     raise @json.JsonDecodeError(path~, "Expected object for ForceReply")
   }
   let force_reply : Bool = @json.from_json(object["force_reply"], path~)
-  let input_field_placeholder : String? = if object.get("input_field_placeholder")
+  let input_field_placeholder : String? = if object.get(
+      "input_field_placeholder",
+    )
     is Some(v) {
     Some(@json.from_json(v, path~))
   } else {
