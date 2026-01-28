@@ -344,17 +344,6 @@ fn resolve_arg(
         nat_var_used,
       )
     }
-    @ast.Arg::Optional(opt) =>
-      // Optional args introduce new type/nat variables - they're already collected
-      resolve_type_expr(
-        table,
-        opt.type_,
-        span,
-        type_vars,
-        nat_vars,
-        type_var_used,
-        nat_var_used,
-      )
     @ast.Arg::Multiplicity(mult) => {
       // Check multiplicity count variable
       resolve_nat_expr(mult.count, span, nat_vars, nat_var_used)

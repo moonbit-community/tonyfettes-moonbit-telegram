@@ -211,7 +211,6 @@ fn type_ident_to_string(ident : @ast.TypeIdent) -> String {
 fn arg_to_string(arg : @ast.Arg) -> String {
   match arg {
     @ast.Arg::Named(named) => named_arg_to_string(named)
-    @ast.Arg::Optional(opt) => optional_arg_to_string(opt)
     @ast.Arg::Multiplicity(mult) => multiplicity_arg_to_string(mult)
     @ast.Arg::Grouped(grouped) => grouped_arg_to_string(grouped)
     @ast.Arg::Anonymous(anon) => {
@@ -238,20 +237,6 @@ fn named_arg_to_string(arg : @ast.NamedArg) -> String {
     sb.write_char('!')
   }
   sb.write_string(type_expr_to_string(arg.type_))
-  sb.to_string()
-}
-
-///|
-fn optional_arg_to_string(opt : @ast.OptionalArg) -> String {
-  let sb = StringBuilder::new()
-  sb.write_char('{')
-  sb.write_string(opt.names.join(" "))
-  sb.write_char(':')
-  if opt.bang {
-    sb.write_char('!')
-  }
-  sb.write_string(type_expr_to_string(opt.type_))
-  sb.write_char('}')
   sb.to_string()
 }
 

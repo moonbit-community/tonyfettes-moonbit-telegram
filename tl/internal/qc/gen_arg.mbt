@@ -124,14 +124,12 @@ fn gen_arg_sized(size : Int) -> @qc.Gen[@ast.Arg] {
     // Non-recursive variants only
     @qc.frequency([
       (4, gen_named_arg().fmap(fn(x) { @ast.Arg::Named(x) })),
-      (2, gen_optional_arg().fmap(fn(x) { @ast.Arg::Optional(x) })),
       (2, gen_grouped_arg().fmap(fn(x) { @ast.Arg::Grouped(x) })),
       (2, gen_anonymous_arg().fmap(fn(x) { @ast.Arg::Anonymous(x) })),
     ])
   } else {
     @qc.frequency([
       (4, gen_named_arg().fmap(fn(x) { @ast.Arg::Named(x) })),
-      (2, gen_optional_arg().fmap(fn(x) { @ast.Arg::Optional(x) })),
       (
         1,
         gen_multiplicity_arg_sized(size / 2).fmap(fn(x) {

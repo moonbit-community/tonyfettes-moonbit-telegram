@@ -50,8 +50,6 @@ pub(all) struct AnonymousArg {
 pub(all) enum Arg {
   // Named arg: name:Type or name:flags.N?Type
   Named(NamedArg)
-  // Optional/generic param: {t:Type} or {n:#}
-  Optional(OptionalArg)
   // Multiplicity: 4*[int] or n*[type]
   Multiplicity(MultiplicityArg)
   // Grouped args: (x y : Type)

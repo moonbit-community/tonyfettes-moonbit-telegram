@@ -170,8 +170,6 @@ pub fn multiplicity_arg_equal(
 pub fn arg_equal(a : @ast.Arg, b : @ast.Arg) -> Bool {
   match (a, b) {
     (@ast.Arg::Named(n1), @ast.Arg::Named(n2)) => named_arg_equal(n1, n2)
-    (@ast.Arg::Optional(o1), @ast.Arg::Optional(o2)) =>
-      optional_arg_equal(o1, o2)
     (@ast.Arg::Multiplicity(m1), @ast.Arg::Multiplicity(m2)) =>
       multiplicity_arg_equal(m1, m2)
     (@ast.Arg::Grouped(g1), @ast.Arg::Grouped(g2)) => grouped_arg_equal(g1, g2)
