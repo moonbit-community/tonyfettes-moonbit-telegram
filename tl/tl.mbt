@@ -38,6 +38,11 @@ pub using @lexer {type TokenKind, type Token, type Lexer}
 ///|
 pub using @parser {type Parser}
 
+// Re-export typer types
+
+///|
+pub using @typer {type TLTypeError, type ResolvedType, type SymbolTable}
+
 ///|
 /// Parses a TL schema from source text.
 ///
@@ -50,6 +55,20 @@ pub fn parse(source~ : String) -> @ast.Schema raise @error.TLParseError {
   let tokens = lexer.tokenize()
   let parser = @parser.Parser::new(tokens)
   parser.parse_schema()
+}
+
+///|
+/// Type checks a TL schema and builds a symbol table.
+///
+/// Example:
+/// ```
+/// let schema = @tl.parse(source="user id:long = User;")
+/// let table = @tl.type_schema(schema)
+/// ```
+pub fn type_schema(
+  schema : @ast.Schema,
+) -> @typer.SymbolTable raise @typer.TLTypeError {
+  @typer.type_schema(schema)
 }
 
 ///|

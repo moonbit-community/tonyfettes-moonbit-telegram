@@ -6,12 +6,15 @@ import {
   "tonyfettes/telegram/tl/error",
   "tonyfettes/telegram/tl/lexer",
   "tonyfettes/telegram/tl/parser",
+  "tonyfettes/telegram/tl/typer",
 }
 
 // Values
 pub fn parse(source~ : String) -> @ast.Schema raise @error.TLParseError
 
 pub fn schema_to_string(@ast.Schema) -> String
+
+pub fn type_schema(@ast.Schema) -> @typer.SymbolTable raise @typer.TLTypeError
 
 // Errors
 
@@ -46,13 +49,19 @@ pub using @parser {type Parser}
 
 pub using @ast {type Position}
 
+pub using @typer {type ResolvedType}
+
 pub using @ast {type ResultType}
 
 pub using @ast {type Schema}
 
 pub using @ast {type Span}
 
+pub using @typer {type SymbolTable}
+
 pub using @error {type TLParseError}
+
+pub using @typer {type TLTypeError}
 
 pub using @lexer {type Token}
 

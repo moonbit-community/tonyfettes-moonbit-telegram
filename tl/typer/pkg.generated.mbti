@@ -1,0 +1,51 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "tonyfettes/telegram/tl/typer"
+
+import {
+  "tonyfettes/telegram/tl/ast",
+}
+
+// Values
+pub fn combinator_full_name(@ast.Combinator) -> String
+
+pub fn type_ident_full_name(@ast.TypeIdent) -> String
+
+pub fn type_schema(@ast.Schema) -> SymbolTable raise TLTypeError
+
+// Errors
+pub(all) suberror TLTypeError {
+  UndefinedType(pos~ : @ast.Span, name~ : String)
+  DuplicateConstructorId(pos~ : @ast.Span, id~ : UInt, first~ : String, second~ : String)
+  DuplicateConstructorName(pos~ : @ast.Span, name~ : String)
+  UndefinedFlagsField(pos~ : @ast.Span, conditional~ : String, ctor~ : String)
+  UnboundTypeVariable(pos~ : @ast.Span, variable~ : String)
+  UnboundNatVariable(pos~ : @ast.Span, variable~ : String)
+}
+pub impl Eq for TLTypeError
+pub impl Show for TLTypeError
+
+// Types and methods
+pub(all) struct ResolvedType {
+  name : @ast.TypeIdent
+  constructors : Array[@ast.Combinator]
+  is_final : Bool
+  is_empty : Bool
+}
+pub fn ResolvedType::new(name~ : @ast.TypeIdent, constructors? : Array[@ast.Combinator], is_final? : Bool, is_empty? : Bool) -> Self
+pub impl Eq for ResolvedType
+pub impl Show for ResolvedType
+
+pub(all) struct SymbolTable {
+  types : Map[String, ResolvedType]
+  ids : Map[UInt, @ast.Combinator]
+  constructors : Map[String, @ast.Combinator]
+  builtins : Map[String, Unit]
+}
+pub fn SymbolTable::new() -> Self
+pub impl Eq for SymbolTable
+pub impl Show for SymbolTable
+
+// Type aliases
+
+// Traits
+

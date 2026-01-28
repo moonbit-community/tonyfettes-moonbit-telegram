@@ -1,0 +1,10 @@
+import {
+  "tonyfettes/telegram/tl/ast",
+}
+
+import "test" {
+  "tonyfettes/telegram/tl/ast",
+  "tonyfettes/telegram/tl/error",
+  "tonyfettes/telegram/tl/lexer",
+  "tonyfettes/telegram/tl/parser",
+}

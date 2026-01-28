@@ -229,3 +229,15 @@ async test "Integration: parse Telegram MTProto schema" {
   assert_true(schema.types.length() > 1000)
   assert_true(schema.functions.length() > 500)
 }
+
+///|
+async test "Integration: type Telegram MTProto schema" {
+  let source = @fs.read_file("tl/testdata/api.tl").text()
+  let schema = parse(source~)
+  let table = type_schema(schema)
+  println("Resolved types: \{table.types.length()}")
+  println("Constructors: \{table.constructors.length()}")
+  println("Constructor IDs: \{table.ids.length()}")
+  // Expect substantial number of resolved types
+  assert_true(table.types.length() > 500)
+}

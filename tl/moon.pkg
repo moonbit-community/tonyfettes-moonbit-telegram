@@ -3,10 +3,12 @@ import {
   "tonyfettes/telegram/tl/error",
   "tonyfettes/telegram/tl/lexer",
   "tonyfettes/telegram/tl/parser",
+  "tonyfettes/telegram/tl/typer",
 }
 
 import "test" {
   "tonyfettes/telegram/tl/ast",
+  "tonyfettes/telegram/tl/typer",
   "moonbitlang/async",
   "moonbitlang/async/fs",
 }
