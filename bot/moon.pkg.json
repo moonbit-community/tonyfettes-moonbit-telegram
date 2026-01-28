@@ -6,12 +6,13 @@
     {
       "path": "moonbitlang/core/encoding/utf8",
       "alias": "encoding/utf8"
+    },
+    {
+      "path": "moonbitlang/core/json",
+      "alias": "_"
     }
   ],
-  "test-import": [
-    "moonbitlang/async",
-    "moonbitlang/async/socket"
-  ],
+  "test-import": ["moonbitlang/async", "moonbitlang/async/socket"],
   "targets": {
     "integration_test.mbt": ["native"]
   }
