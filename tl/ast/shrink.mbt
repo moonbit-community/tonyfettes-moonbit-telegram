@@ -48,15 +48,14 @@ pub impl @qc.Shrink for TypeIdent with shrink(self) {
 /// Shrink implementation for Term.
 pub impl @qc.Shrink for Term with shrink(self) {
   match self {
-    Paren(e) =>
-      @qc.Shrink::shrink(e).map(fn(e) { Term::Paren(e) })
+    Paren(e) => @qc.Shrink::shrink(e).map(fn(e) { Term::Paren(e) })
     Ident(i) => @qc.Shrink::shrink(i).map(fn(i) { Term::Ident(i) })
     Var(s) => @qc.Shrink::shrink(s).map(fn(s) { Term::Var(s) })
-    NatConst(n) =>
-      @qc.Shrink::shrink(n).map(fn(n) { Term::NatConst(n) })
+    NatConst(n) => @qc.Shrink::shrink(n).map(fn(n) { Term::NatConst(n) })
     Percent(t) =>
-      Iter::singleton(t)
-      .concat(@qc.Shrink::shrink(t).map(fn(t) { Term::Percent(t) }))
+      Iter::singleton(t).concat(
+        @qc.Shrink::shrink(t).map(fn(t) { Term::Percent(t) }),
+      )
     Apply(i, params) =>
       Iter::singleton(Term::Ident(i))
       .concat(@qc.Shrink::shrink(i).map(fn(i) { Term::Apply(i, params) }))
@@ -73,20 +72,12 @@ pub impl @qc.Shrink for Subexpr with shrink(self) {
     Term(t) => @qc.Shrink::shrink(t).map(fn(t) { Subexpr::Term(t) })
     AddLeft(n, right) =>
       Iter::singleton(right)
-      .concat(
-        @qc.Shrink::shrink(n).map(fn(n) { Subexpr::AddLeft(n, right) }),
-      )
-      .concat(
-        @qc.Shrink::shrink(right).map(fn(r) { Subexpr::AddLeft(n, r) }),
-      )
+      .concat(@qc.Shrink::shrink(n).map(fn(n) { Subexpr::AddLeft(n, right) }))
+      .concat(@qc.Shrink::shrink(right).map(fn(r) { Subexpr::AddLeft(n, r) }))
     AddRight(left, n) =>
       Iter::singleton(left)
-      .concat(
-        @qc.Shrink::shrink(left).map(fn(l) { Subexpr::AddRight(l, n) }),
-      )
-      .concat(
-        @qc.Shrink::shrink(n).map(fn(n) { Subexpr::AddRight(left, n) }),
-      )
+      .concat(@qc.Shrink::shrink(left).map(fn(l) { Subexpr::AddRight(l, n) }))
+      .concat(@qc.Shrink::shrink(n).map(fn(n) { Subexpr::AddRight(left, n) }))
   }
 }
 

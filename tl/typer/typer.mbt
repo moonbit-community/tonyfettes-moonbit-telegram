@@ -343,13 +343,7 @@ fn resolve_result_type(
       resolve_subexpr_nat(table, param, span, nat_vars, nat_var_used)
     } else {
       resolve_subexpr_type(
-        table,
-        param,
-        span,
-        type_vars,
-        nat_vars,
-        type_var_used,
-        nat_var_used,
+        table, param, span, type_vars, nat_vars, type_var_used, nat_var_used,
       )
     }
   }
@@ -441,13 +435,7 @@ fn resolve_expr_auto(
       resolve_subexpr_nat(table, item, span, nat_vars, nat_var_used)
     } else {
       resolve_subexpr_type(
-        table,
-        item,
-        span,
-        type_vars,
-        nat_vars,
-        type_var_used,
-        nat_var_used,
+        table, item, span, type_vars, nat_vars, type_var_used, nat_var_used,
       )
     }
   }
@@ -481,13 +469,7 @@ fn resolve_subexpr_type(
   match expr {
     @ast.Subexpr::Term(term) =>
       resolve_term_type(
-        table,
-        term,
-        span,
-        type_vars,
-        nat_vars,
-        type_var_used,
-        nat_var_used,
+        table, term, span, type_vars, nat_vars, type_var_used, nat_var_used,
       )
     @ast.Subexpr::AddLeft(_, _) | @ast.Subexpr::AddRight(_, _) =>
       resolve_subexpr_nat(table, expr, span, nat_vars, nat_var_used)
@@ -527,23 +509,11 @@ fn resolve_term_type(
   match term {
     @ast.Term::Paren(expr) =>
       resolve_expr_auto(
-        table,
-        expr,
-        span,
-        type_vars,
-        nat_vars,
-        type_var_used,
-        nat_var_used,
+        table, expr, span, type_vars, nat_vars, type_var_used, nat_var_used,
       )
     @ast.Term::Percent(inner) =>
       resolve_term_type(
-        table,
-        inner,
-        span,
-        type_vars,
-        nat_vars,
-        type_var_used,
-        nat_var_used,
+        table, inner, span, type_vars, nat_vars, type_var_used, nat_var_used,
       )
     @ast.Term::Apply(ident, params) => {
       let name = type_ident_full_name(ident)
@@ -552,13 +522,7 @@ fn resolve_term_type(
       }
       for param in params {
         resolve_expr_auto(
-          table,
-          param,
-          span,
-          type_vars,
-          nat_vars,
-          type_var_used,
-          nat_var_used,
+          table, param, span, type_vars, nat_vars, type_var_used, nat_var_used,
         )
       }
     }
@@ -572,21 +536,18 @@ fn resolve_term_type(
         raise UndefinedType(pos=span, name~)
       }
     }
-    @ast.Term::Var(name) => {
+    @ast.Term::Var(name) =>
       if type_vars.contains(name) {
         type_var_used[name] = true
       } else if nat_vars.contains(name) {
         nat_var_used[name] = true
       } else if table.builtins.contains(name) || table.types.contains(name) {
         ()
+      } else if is_upper_name(name) {
+        raise UndefinedType(pos=span, name~)
       } else {
-        if is_upper_name(name) {
-          raise UndefinedType(pos=span, name~)
-        } else {
-          raise UnboundTypeVariable(pos=span, variable=name)
-        }
+        raise UnboundTypeVariable(pos=span, variable=name)
       }
-    }
     @ast.Term::NatConst(_) => ()
   }
 }
@@ -601,9 +562,10 @@ fn resolve_term_nat(
   nat_var_used : Map[String, Bool],
 ) -> Unit raise TLTypeError {
   match term {
-    @ast.Term::Paren(expr) => resolve_expr_nat(table, expr, span, nat_vars, nat_var_used)
+    @ast.Term::Paren(expr) =>
+      resolve_expr_nat(table, expr, span, nat_vars, nat_var_used)
     @ast.Term::NatConst(_) => ()
-    @ast.Term::Var(name) => {
+    @ast.Term::Var(name) =>
       if nat_vars.contains(name) {
         nat_var_used[name] = true
       } else if name == "O" || name == "S" {
@@ -611,16 +573,14 @@ fn resolve_term_nat(
       } else {
         raise UnboundNatVariable(pos=span, variable=name)
       }
-    }
-    @ast.Term::Ident(ident) => {
+    @ast.Term::Ident(ident) =>
       if ident.ns is None && (ident.name == "O" || ident.name == "S") {
         ()
       } else {
         let name = type_ident_full_name(ident)
         raise UndefinedType(pos=span, name~)
       }
-    }
-    @ast.Term::Apply(ident, params) => {
+    @ast.Term::Apply(ident, params) =>
       if ident.ns is None && (ident.name == "O" || ident.name == "S") {
         for param in params {
           resolve_expr_nat(table, param, span, nat_vars, nat_var_used)
@@ -629,7 +589,6 @@ fn resolve_term_nat(
         let name = type_ident_full_name(ident)
         raise UndefinedType(pos=span, name~)
       }
-    }
     @ast.Term::Percent(_) => raise UndefinedType(pos=span, name="%")
   }
 }

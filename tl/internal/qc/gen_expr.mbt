@@ -1,6 +1,10 @@
 ///|
 fn abs_int(n : Int) -> Int {
-  if n < 0 { -n } else { n }
+  if n < 0 {
+    -n
+  } else {
+    n
+  }
 }
 
 ///|
@@ -29,7 +33,9 @@ fn gen_term_type_ident() -> @qc.Gen[@ast.TypeIdent] {
     match ns {
       None => gen_upper_ident().fmap(fn(name) { @ast.TypeIdent::simple(name) })
       Some(ns_name) =>
-        gen_upper_ident().fmap(fn(name) { @ast.TypeIdent::new(name~, ns=ns_name) })
+        gen_upper_ident().fmap(fn(name) {
+          @ast.TypeIdent::new(name~, ns=ns_name)
+        })
     }
   })
 }
@@ -52,10 +58,7 @@ pub fn gen_simple_type_ident() -> @qc.Gen[@ast.TypeIdent] {
 
 ///|
 fn gen_type_name() -> @qc.Gen[String] {
-  @qc.frequency([
-    (2, gen_upper_ident()),
-    (1, gen_lower_ident()),
-  ])
+  @qc.frequency([(2, gen_upper_ident()), (1, gen_lower_ident())])
 }
 
 ///|
@@ -79,14 +82,8 @@ fn gen_term_sized(size : Int) -> @qc.Gen[@ast.Term] {
       (3, gen_lower_ident().fmap(fn(s) { @ast.Term::Var(s) })),
       (2, gen_term_type_ident().fmap(fn(i) { @ast.Term::Ident(i) })),
       (2, @qc.small_int().fmap(fn(n) { @ast.Term::NatConst(abs_int(n)) })),
-      (
-        1,
-        gen_term_sized(smaller).fmap(fn(t) { @ast.Term::Percent(t) }),
-      ),
-      (
-        1,
-        gen_expr_sized(smaller).fmap(fn(e) { @ast.Term::Paren(e) }),
-      ),
+      (1, gen_term_sized(smaller).fmap(fn(t) { @ast.Term::Percent(t) })),
+      (1, gen_expr_sized(smaller).fmap(fn(e) { @ast.Term::Paren(e) })),
       (
         1,
         @qc.liftA2(
@@ -124,7 +121,9 @@ fn gen_subexpr_sized(size : Int) -> @qc.Gen[@ast.Subexpr] {
       (
         1,
         @qc.liftA2(
-          fn(left, n) { @ast.Subexpr::AddRight(wrap_add_right_left(left), abs_int(n)) },
+          fn(left, n) {
+            @ast.Subexpr::AddRight(wrap_add_right_left(left), abs_int(n))
+          },
           gen_subexpr_sized(smaller),
           @qc.small_int(),
         ),

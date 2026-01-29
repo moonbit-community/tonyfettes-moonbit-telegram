@@ -62,8 +62,11 @@ pub fn gen_upper_ident() -> @qc.Gen[String] {
       sb.write_char(c)
       sb.write_string(s)
       let name = sb.to_string()
-      if name == "O" || name == "S" ||
-        name == "New" || name == "Final" || name == "Empty" {
+      if name == "O" ||
+        name == "S" ||
+        name == "New" ||
+        name == "Final" ||
+        name == "Empty" {
         name + "1"
       } else {
         name

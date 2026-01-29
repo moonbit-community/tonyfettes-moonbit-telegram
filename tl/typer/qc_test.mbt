@@ -278,3 +278,42 @@ test "New type violation detected" {
     max_size=10,
   )
 }
+
+///|
+/// Property: CRC32 is deterministic.
+/// Computing CRC32 of the same normalized combinator should always yield the same result.
+test "CRC32 is deterministic" {
+  @qc.quick_check(
+    @qc.forall(@internal_qc.gen_combinator(), fn(combinator) {
+      let norm1 = normalize_combinator(combinator)
+      let norm2 = normalize_combinator(combinator)
+      let crc1 = crc32(norm1)
+      let crc2 = crc32(norm2)
+      crc1 == crc2
+    }),
+    max_success=100,
+    max_size=20,
+  )
+}
+
+///|
+/// Property: CRC32 ignores span differences.
+/// Two combinators that differ only in their span should have the same CRC32.
+test "CRC32 ignores spans" {
+  @qc.quick_check(
+    @qc.forall(@internal_qc.gen_combinator(), fn(combinator) {
+      // Create same combinator with different spans
+      let c1 = { ..combinator, span: @internal_qc.dummy_span() }
+      let c2 = {
+        ..combinator,
+        span: @ast.Span::new(
+          start=@ast.Position::new(line=999, column=999, offset=999),
+          end=@ast.Position::new(line=1000, column=1000, offset=1000),
+        ),
+      }
+      crc32(normalize_combinator(c1)) == crc32(normalize_combinator(c2))
+    }),
+    max_success=100,
+    max_size=20,
+  )
+}

@@ -1,3 +1,4 @@
+///|
 /// Generates a simple Term without variable references.
 fn gen_simple_term() -> @qc.Gen[@ast.Term] {
   @qc.frequency([
@@ -6,7 +7,9 @@ fn gen_simple_term() -> @qc.Gen[@ast.Term] {
     (1, @qc.pure(@ast.Term::Ident(@ast.TypeIdent::simple("#")))),
     (
       1,
-      gen_term_type_ident().fmap(fn(i) { @ast.Term::Percent(@ast.Term::Ident(i)) }),
+      gen_term_type_ident().fmap(fn(i) {
+        @ast.Term::Percent(@ast.Term::Ident(i))
+      }),
     ),
   ])
 }
@@ -27,7 +30,9 @@ fn gen_simple_subexpr() -> @qc.Gen[@ast.Subexpr] {
     (
       1,
       @qc.liftA2(
-        fn(left, n) { @ast.Subexpr::AddRight(wrap_add_right_left(left), abs_int(n)) },
+        fn(left, n) {
+          @ast.Subexpr::AddRight(wrap_add_right_left(left), abs_int(n))
+        },
         gen_simple_subexpr(),
         @qc.small_int(),
       ),
@@ -60,11 +65,7 @@ fn gen_simple_named_arg() -> @qc.Gen[@ast.NamedArg] {
 ///|
 /// Generates a simple AnonymousArg without variable references.
 fn gen_simple_anonymous_arg() -> @qc.Gen[@ast.AnonymousArg] {
-  @qc.liftA2(
-    fn(bang, type_) { { bang, type_ } },
-    gen_bool(),
-    gen_simple_term(),
-  )
+  @qc.liftA2(fn(bang, type_) { { bang, type_ } }, gen_bool(), gen_simple_term())
 }
 
 ///|

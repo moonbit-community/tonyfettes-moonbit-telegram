@@ -134,7 +134,7 @@ fn Parser::parse_combinator(self : Parser) -> @ast.Combinator raise ParseError {
   let name_end = self.tokens[self.pos - 1].span.end
   // Parse optional hex ID: #hexdigits
   let id : UInt? = if self.peek() is Hash &&
-      self.current().span.start.offset == name_end.offset {
+    self.current().span.start.offset == name_end.offset {
     let _ = self.advance()
     match self.peek() {
       HexNumber(n) => {
@@ -144,7 +144,7 @@ fn Parser::parse_combinator(self : Parser) -> @ast.Combinator raise ParseError {
       _ => None
     }
   } else if self.peek() is HexNumber(n) &&
-      self.current().span.start.offset == name_end.offset {
+    self.current().span.start.offset == name_end.offset {
     let _ = self.advance()
     Some(n)
   } else {
@@ -313,7 +313,8 @@ fn Parser::parse_arg(self : Parser) -> @ast.Arg raise ParseError {
       if self.lookahead_is_named_arg() {
         let parsed = self.parse_named_arg()
         match parsed {
-          @ast.Arg::Named(named) if named.conditional is None && not(named.bang) &&
+          @ast.Arg::Named(named) if named.conditional is None &&
+            not(named.bang) &&
             self.peek() is Star => {
             let _ = self.advance()
             let _ = self.expect(LBracket)
@@ -384,9 +385,7 @@ fn Parser::lookahead_is_grouped_arg(self : Parser) -> Bool {
   let mut i = self.pos
   while i < self.tokens.length() {
     match self.tokens[i].kind {
-      LParen => {
-        depth += 1
-      }
+      LParen => depth += 1
       RParen => {
         if depth == 1 {
           self.pos = saved
@@ -394,10 +393,7 @@ fn Parser::lookahead_is_grouped_arg(self : Parser) -> Bool {
         }
         depth -= 1
       }
-      Colon =>
-        if depth == 1 {
-          found_colon = true
-        }
+      Colon => if depth == 1 { found_colon = true }
       _ => ()
     }
     i += 1
@@ -780,6 +776,7 @@ fn Parser::parse_result_type(self : Parser) -> @ast.ResultType raise ParseError 
       params.push(self.parse_subexpr())
     }
     let _ = self.expect(RAngle)
+
   } else {
     while not(self.peek() is Semicolon) && not(self.is_at_end()) {
       params.push(self.parse_subexpr())

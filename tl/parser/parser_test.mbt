@@ -169,8 +169,7 @@ test "Parser anonymous multiplicity" {
   guard schema.types[0] is Combinator(c) else { fail("expected Combinator") }
   // Should have # as first arg and [t] as second arg
   inspect(c.args.length(), content="2")
-  guard c.args[0] is Anonymous({ type_: Ident(ident), .. }) &&
-    ident.name == "#" else {
+  guard c.args[0] is Anonymous({ type_: Ident(ident), .. }) && ident.name == "#" else {
     fail("expected Anonymous Nat")
   }
   guard c.args[1] is Multiplicity(_) else { fail("expected Multiplicity") }
@@ -247,8 +246,7 @@ test "Parser multiple optional args" {
   inspect(c.opt_args.length(), content="2")
   inspect(c.opt_args[0].names[0], content="t")
   inspect(c.opt_args[1].names[0], content="n")
-  guard c.opt_args[1].type_.items[0] is Term(Ident(ident)) &&
-    ident.name == "#" else {
+  guard c.opt_args[1].type_.items[0] is Term(Ident(ident)) && ident.name == "#" else {
     fail("expected # type for n")
   }
 }

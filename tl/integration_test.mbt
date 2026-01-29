@@ -94,8 +94,9 @@ test "Integration: tuple definition" {
   let schema = parse(source~)
   guard schema.types[0] is Combinator(c) else { fail("expected Combinator") }
   inspect(c.opt_args.length(), content="2")
-  guard c.opt_args[1].type_.items[0] is Term(Ident(ident)) &&
-    ident.name == "#" else { fail("expected # type") }
+  guard c.opt_args[1].type_.items[0] is Term(Ident(ident)) && ident.name == "#" else {
+    fail("expected # type")
+  }
 }
 
 ///|

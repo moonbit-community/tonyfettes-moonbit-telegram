@@ -9,16 +9,12 @@ pub fn type_ident_equal(a : @ast.TypeIdent, b : @ast.TypeIdent) -> Bool {
 pub fn term_equal(a : @ast.Term, b : @ast.Term) -> Bool {
   match (a, b) {
     (@ast.Term::Paren(e1), @ast.Term::Paren(e2)) => expr_equal(e1, e2)
-    (@ast.Term::Ident(i1), @ast.Term::Ident(i2)) =>
-      type_ident_equal(i1, i2)
-    (@ast.Term::Ident(i1), @ast.Term::Var(s2)) =>
-      i1.ns == None && i1.name == s2
+    (@ast.Term::Ident(i1), @ast.Term::Ident(i2)) => type_ident_equal(i1, i2)
+    (@ast.Term::Ident(i1), @ast.Term::Var(s2)) => i1.ns == None && i1.name == s2
     (@ast.Term::Var(s1), @ast.Term::Var(s2)) => s1 == s2
-    (@ast.Term::Var(s1), @ast.Term::Ident(i2)) =>
-      i2.ns == None && i2.name == s1
+    (@ast.Term::Var(s1), @ast.Term::Ident(i2)) => i2.ns == None && i2.name == s1
     (@ast.Term::NatConst(n1), @ast.Term::NatConst(n2)) => n1 == n2
-    (@ast.Term::Percent(t1), @ast.Term::Percent(t2)) =>
-      term_equal(t1, t2)
+    (@ast.Term::Percent(t1), @ast.Term::Percent(t2)) => term_equal(t1, t2)
     (@ast.Term::Apply(i1, p1), @ast.Term::Apply(i2, p2)) =>
       type_ident_equal(i1, i2) && expr_array_equal(p1, p2)
     _ => false

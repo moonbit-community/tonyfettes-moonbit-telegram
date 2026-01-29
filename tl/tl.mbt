@@ -171,6 +171,7 @@ fn uint_to_hex(n : UInt) -> String {
 }
 
 ///|
+
 ///|
 fn type_ident_to_string(ident : @ast.TypeIdent) -> String {
   if ident.ns is Some(ns) {
