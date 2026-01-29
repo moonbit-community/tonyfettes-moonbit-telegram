@@ -12,7 +12,7 @@ MoonBit Telegram Bot API library (`tonyfettes/telegram`). Provides typed wrapper
 moon check          # Type check
 moon fmt            # Format code
 moon test           # Run all tests
-moon test -p bot -f "User JSON"  # Run specific test by name pattern
+moon test -p bot -F "User JSON"  # Run specific test by name pattern
 moon info           # Generate .mbti interface files
 ```
 
