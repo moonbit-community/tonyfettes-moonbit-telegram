@@ -3056,7 +3056,7 @@ pub async fn Bot::delete_webhook(
 ///|
 /// Use this method to get current webhook status.
 /// On success, returns a WebhookInfo object.
-pub async fn Bot::get_webhook_info(self : Bot) -> Json raise TelegramError {
+pub async fn Bot::get_webhook_info(self : Bot) -> WebhookInfo raise TelegramError {
   let url = self.api_url("getWebhookInfo")
   let (response, data) = @http.get(url, headers={
     "Content-Type": "application/json",
