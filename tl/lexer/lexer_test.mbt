@@ -332,7 +332,7 @@ test "Lexer hex number edge cases" {
 test "Lexer unexpected char error" {
   let lexer = Lexer::new(source="@")
   let result : Result[Array[Token], _] = try? lexer.tokenize()
-  guard result is Err(@error.TLParseError::UnexpectedChar(pos~, char~)) else {
+  guard result is Err(LexError::UnexpectedChar(pos~, char~)) else {
     fail("expected UnexpectedChar error")
   }
   inspect(pos.line, content="1")
@@ -344,7 +344,7 @@ test "Lexer unexpected char error" {
 test "Lexer unclosed block comment error" {
   let lexer = Lexer::new(source="/* unclosed")
   let result : Result[Array[Token], _] = try? lexer.tokenize()
-  guard result is Err(@error.TLParseError::UnexpectedEof(_)) else {
+  guard result is Err(LexError::UnexpectedEof(_)) else {
     fail("expected UnexpectedEof error")
   }
 }

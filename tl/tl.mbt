@@ -24,20 +24,15 @@ pub using @ast {
   type Schema,
 }
 
-// Re-export error types
-
-///|
-pub using @error {type TLParseError}
-
 // Re-export lexer types
 
 ///|
-pub using @lexer {type TokenKind, type Token, type Lexer}
+pub using @lexer {type TokenKind, type Token, type Lexer, type LexError}
 
 // Re-export parser types
 
 ///|
-pub using @parser {type Parser}
+pub using @parser {type Parser, type ParseError}
 
 // Re-export typer types and functions
 
@@ -57,7 +52,7 @@ pub using @typer {
 /// ```
 /// let schema = @tl.parse(source="user id:long = User;")
 /// ```
-pub fn parse(source~ : String) -> @ast.Schema raise @error.TLParseError {
+pub fn parse(source~ : String) -> @ast.Schema raise {
   let lexer = @lexer.Lexer::new(source~)
   let tokens = lexer.tokenize()
   let parser = @parser.Parser::new(tokens)

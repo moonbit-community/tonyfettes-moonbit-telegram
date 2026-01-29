@@ -3,12 +3,19 @@ package "tonyfettes/telegram/tl/lexer"
 
 import {
   "tonyfettes/telegram/tl/ast",
-  "tonyfettes/telegram/tl/error",
 }
 
 // Values
 
 // Errors
+pub(all) suberror LexError {
+  UnexpectedChar(pos~ : @ast.Position, char~ : Char)
+  UnexpectedEof(pos~ : @ast.Position)
+  InvalidHexId(pos~ : @ast.Position, value~ : String)
+  InvalidNumber(pos~ : @ast.Position, value~ : String)
+}
+pub impl Eq for LexError
+pub impl Show for LexError
 
 // Types and methods
 pub(all) struct Lexer {
@@ -18,8 +25,8 @@ pub(all) struct Lexer {
   mut column : Int
 }
 pub fn Lexer::new(source~ : String) -> Self
-pub fn Lexer::next_token(Self) -> Token raise @error.TLParseError
-pub fn Lexer::tokenize(Self) -> Array[Token] raise @error.TLParseError
+pub fn Lexer::next_token(Self) -> Token raise LexError
+pub fn Lexer::tokenize(Self) -> Array[Token] raise LexError
 
 pub(all) struct Token {
   kind : TokenKind

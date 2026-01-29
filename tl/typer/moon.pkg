@@ -4,7 +4,6 @@ import {
 
 import "test" {
   "tonyfettes/telegram/tl/ast",
-  "tonyfettes/telegram/tl/error",
   "tonyfettes/telegram/tl/lexer",
   "tonyfettes/telegram/tl/parser",
   "tonyfettes/telegram/tl/internal/qc" as @internal_qc,

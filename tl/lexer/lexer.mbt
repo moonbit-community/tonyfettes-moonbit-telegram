@@ -1,4 +1,13 @@
 ///|
+/// Errors that can occur during TL lexing.
+pub(all) suberror LexError {
+  UnexpectedChar(pos~ : @ast.Position, char~ : Char)
+  UnexpectedEof(pos~ : @ast.Position)
+  InvalidHexId(pos~ : @ast.Position, value~ : String)
+  InvalidNumber(pos~ : @ast.Position, value~ : String)
+} derive(Show, Eq)
+
+///|
 /// The lexer state for tokenizing TL source code.
 pub(all) struct Lexer {
   source : String
@@ -124,7 +133,7 @@ fn Lexer::scan_identifier(self : Lexer) -> Token {
 
 ///|
 /// Scans a decimal number.
-fn Lexer::scan_number(self : Lexer) -> Token raise @error.TLParseError {
+fn Lexer::scan_number(self : Lexer) -> Token raise LexError {
   let start = self.current_position()
   let buf = StringBuilder::new()
   // Handle optional leading minus
@@ -141,7 +150,7 @@ fn Lexer::scan_number(self : Lexer) -> Token raise @error.TLParseError {
   let num_str = buf.to_string()
   let result : Result[Int, _] = try? @strconv.parse_int(num_str)
   guard result is Ok(n) else {
-    raise @error.TLParseError::InvalidNumber(pos=start, value=num_str)
+    raise LexError::InvalidNumber(pos=start, value=num_str)
   }
   { kind: TokenKind::Number(n), span: self.make_span(start) }
 }
@@ -151,7 +160,7 @@ fn Lexer::scan_number(self : Lexer) -> Token raise @error.TLParseError {
 fn Lexer::scan_hex_number(
   self : Lexer,
   start : @ast.Position,
-) -> Token raise @error.TLParseError {
+) -> Token raise LexError {
   let buf = StringBuilder::new()
   while self.peek() is Some(ch) && is_hex_digit(ch) {
     buf.write_char(ch)
@@ -165,7 +174,7 @@ fn Lexer::scan_hex_number(
   }
   let result : Result[UInt, _] = try? @strconv.parse_uint(hex_str, base=16)
   guard result is Ok(n) else {
-    raise @error.TLParseError::InvalidHexId(pos=start, value=hex_str)
+    raise LexError::InvalidHexId(pos=start, value=hex_str)
   }
   { kind: TokenKind::HexNumber(n), span: self.make_span(start) }
 }
@@ -187,11 +196,11 @@ fn Lexer::scan_line_comment(self : Lexer, start : @ast.Position) -> Token {
 fn Lexer::scan_block_comment(
   self : Lexer,
   start : @ast.Position,
-) -> Token raise @error.TLParseError {
+) -> Token raise LexError {
   let buf = StringBuilder::new()
   while true {
     guard self.peek() is Some(ch) else {
-      raise @error.TLParseError::UnexpectedEof(pos=self.current_position())
+      raise LexError::UnexpectedEof(pos=self.current_position())
     }
     if ch == '*' && self.peek_at(1) is Some('/') {
       let _ = self.advance() // consume *
@@ -210,7 +219,7 @@ fn Lexer::scan_block_comment(
 
 ///|
 /// Scans the next token from the source.
-pub fn Lexer::next_token(self : Lexer) -> Token raise @error.TLParseError {
+pub fn Lexer::next_token(self : Lexer) -> Token raise LexError {
   self.skip_whitespace()
   let start = self.current_position()
   guard self.peek() is Some(ch) else {
@@ -312,7 +321,7 @@ pub fn Lexer::next_token(self : Lexer) -> Token raise @error.TLParseError {
         // Negative number
         self.scan_number()
       } else {
-        raise @error.TLParseError::UnexpectedChar(pos=start, char=ch)
+        raise LexError::UnexpectedChar(pos=start, char=ch)
       }
     '/' =>
       // Check for // or /*
@@ -325,15 +334,15 @@ pub fn Lexer::next_token(self : Lexer) -> Token raise @error.TLParseError {
         let _ = self.advance() // consume *
         self.scan_block_comment(start)
       } else {
-        raise @error.TLParseError::UnexpectedChar(pos=start, char=ch)
+        raise LexError::UnexpectedChar(pos=start, char=ch)
       }
-    _ => raise @error.TLParseError::UnexpectedChar(pos=start, char=ch)
+    _ => raise LexError::UnexpectedChar(pos=start, char=ch)
   }
 }
 
 ///|
 /// Tokenizes the entire source and returns all tokens.
-pub fn Lexer::tokenize(self : Lexer) -> Array[Token] raise @error.TLParseError {
+pub fn Lexer::tokenize(self : Lexer) -> Array[Token] raise LexError {
   let tokens : Array[Token] = []
   while true {
     let token = self.next_token()

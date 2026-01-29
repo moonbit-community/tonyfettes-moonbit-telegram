@@ -1,7 +1,0 @@
-import {
-  "tonyfettes/telegram/tl/ast",
-}
-
-import "test" {
-  "tonyfettes/telegram/tl/ast",
-}

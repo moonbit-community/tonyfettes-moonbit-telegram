@@ -3,13 +3,18 @@ package "tonyfettes/telegram/tl/parser"
 
 import {
   "tonyfettes/telegram/tl/ast",
-  "tonyfettes/telegram/tl/error",
   "tonyfettes/telegram/tl/lexer",
 }
 
 // Values
 
 // Errors
+pub(all) suberror ParseError {
+  UnexpectedToken(pos~ : @ast.Position, expected~ : String, found~ : String)
+  UnexpectedEof(pos~ : @ast.Position)
+}
+pub impl Eq for ParseError
+pub impl Show for ParseError
 
 // Types and methods
 pub(all) struct Parser {
@@ -18,7 +23,7 @@ pub(all) struct Parser {
   comments : Array[(@ast.Span, String)]
 }
 pub fn Parser::new(Array[@lexer.Token]) -> Self
-pub fn Parser::parse_schema(Self) -> @ast.Schema raise @error.TLParseError
+pub fn Parser::parse_schema(Self) -> @ast.Schema raise ParseError
 
 // Type aliases
 

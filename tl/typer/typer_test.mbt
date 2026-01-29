@@ -1,6 +1,6 @@
 ///|
 /// Helper to parse TL source into a schema
-fn parse_tl(source : String) -> @ast.Schema raise @error.TLParseError {
+fn parse_tl(source : String) -> @ast.Schema raise {
   let lexer = @lexer.Lexer::new(source~)
   let tokens = lexer.tokenize()
   let parser = @parser.Parser::new(tokens)

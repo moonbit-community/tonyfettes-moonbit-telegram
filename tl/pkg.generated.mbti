@@ -3,7 +3,6 @@ package "tonyfettes/telegram/tl"
 
 import {
   "tonyfettes/telegram/tl/ast",
-  "tonyfettes/telegram/tl/error",
   "tonyfettes/telegram/tl/lexer",
   "tonyfettes/telegram/tl/parser",
   "tonyfettes/telegram/tl/typer",
@@ -14,7 +13,7 @@ pub fn crc32(String) -> UInt
 
 pub fn normalize_combinator(@ast.Combinator) -> String
 
-pub fn parse(source~ : String) -> @ast.Schema raise @error.TLParseError
+pub fn parse(source~ : String) -> @ast.Schema raise
 
 pub fn schema_to_string(@ast.Schema) -> String
 
@@ -41,6 +40,8 @@ pub using @ast {type FinalDecl}
 
 pub using @ast {type GroupedArg}
 
+pub using @lexer {type LexError}
+
 pub using @lexer {type Lexer}
 
 pub using @ast {type MultiplicityArg}
@@ -50,6 +51,8 @@ pub using @ast {type NamedArg}
 pub using @ast {type NatExpr}
 
 pub using @ast {type OptionalArg}
+
+pub using @parser {type ParseError}
 
 pub using @parser {type Parser}
 
@@ -64,8 +67,6 @@ pub using @ast {type Schema}
 pub using @ast {type Span}
 
 pub using @typer {type SymbolTable}
-
-pub using @error {type TLParseError}
 
 pub using @typer {type TLTypeError}
 
