@@ -87,3 +87,136 @@ test "AcceptedGiftTypes JSON round-trip" {
   inspect(parsed.unique_gifts, content="true")
   inspect(parsed.premium_subscription, content="false")
 }
+
+///|
+test "UniqueGiftColors JSON round-trip" {
+  let colors = UniqueGiftColors::new(
+    background_icon_color=16711680,
+    text_color=16777215,
+    hint_color=12345678,
+    link_color=9876543,
+    button_color=5555555,
+    button_text_color=11111111,
+  )
+  let json = @json.to_json(colors)
+  let parsed : UniqueGiftColors = @json.from_json(json)
+  inspect(parsed.background_icon_color, content="16711680")
+  inspect(parsed.text_color, content="16777215")
+  inspect(parsed.hint_color, content="12345678")
+  inspect(parsed.link_color, content="9876543")
+  inspect(parsed.button_color, content="5555555")
+  inspect(parsed.button_text_color, content="11111111")
+}
+
+///|
+test "GiftBackground JSON round-trip with fill" {
+  let bg = GiftBackground::new(type_="fill", fill_color=255)
+  let json = @json.to_json(bg)
+  let parsed : GiftBackground = @json.from_json(json)
+  inspect(parsed.type_, content="fill")
+  inspect(parsed.fill_color, content="Some(255)")
+  inspect(parsed.gradient_top_color, content="None")
+  inspect(parsed.gradient_bottom_color, content="None")
+}
+
+///|
+test "GiftBackground JSON round-trip with gradient" {
+  let bg = GiftBackground::new(
+    type_="gradient",
+    gradient_top_color=100,
+    gradient_bottom_color=200,
+  )
+  let json = @json.to_json(bg)
+  let parsed : GiftBackground = @json.from_json(json)
+  inspect(parsed.type_, content="gradient")
+  inspect(parsed.fill_color, content="None")
+  inspect(parsed.gradient_top_color, content="Some(100)")
+  inspect(parsed.gradient_bottom_color, content="Some(200)")
+}
+
+///|
+test "UniqueGiftInfo JSON round-trip" {
+  let info = UniqueGiftInfo::new(
+    gift_id="gift123",
+    next_transfer_date=1703980800,
+    last_resale_amount=500,
+    origin="resale",
+    is_from_blockchain=true,
+  )
+  let json = @json.to_json(info)
+  let parsed : UniqueGiftInfo = @json.from_json(json)
+  inspect(parsed.gift_id, content="gift123")
+  inspect(parsed.next_transfer_date, content="Some(1703980800)")
+  inspect(parsed.last_resale_amount, content="Some(500)")
+  inspect(parsed.origin, content="Some(resale)")
+  inspect(parsed.is_from_blockchain, content="Some(true)")
+}
+
+///|
+test "UniqueGiftInfo JSON round-trip minimal" {
+  let info = UniqueGiftInfo::new(gift_id="gift456")
+  let json = @json.to_json(info)
+  let parsed : UniqueGiftInfo = @json.from_json(json)
+  inspect(parsed.gift_id, content="gift456")
+  inspect(parsed.next_transfer_date, content="None")
+  inspect(parsed.last_resale_amount, content="None")
+  inspect(parsed.origin, content="None")
+  inspect(parsed.is_from_blockchain, content="None")
+}
+
+///|
+test "StarBalance JSON round-trip" {
+  let balance = StarBalance::new(balance=10000)
+  let json = @json.to_json(balance)
+  let parsed : StarBalance = @json.from_json(json)
+  inspect(parsed.balance, content="10000")
+}
+
+///|
+test "Gift with all new fields JSON round-trip" {
+  let sticker = StickerPlaceholder::new(
+    file_id="sticker_full",
+    file_unique_id="unique_full",
+    width=512,
+    height=512,
+  )
+  let chat = Chat::new(
+    id=123456789,
+    type_=ChatType::Channel,
+    title~="Test Channel",
+  )
+  let colors = UniqueGiftColors::new(
+    background_icon_color=123456,
+    text_color=234567,
+    hint_color=345678,
+    link_color=456789,
+    button_color=567890,
+    button_text_color=678901,
+  )
+  let bg = GiftBackground::new(type_="gradient", gradient_top_color=100, gradient_bottom_color=200)
+  let gift = Gift::new(
+    id="gift_full",
+    sticker~,
+    star_count=150,
+    total_count=500,
+    remaining_count=250,
+    publisher_chat=chat,
+    colors=colors,
+    background=bg,
+    unique_gift_variant_count=5,
+    unique_gift_number=3,
+    gifts_from_channels=true,
+    is_premium=false,
+    has_colors=true,
+  )
+  let json = @json.to_json(gift)
+  let parsed : Gift = @json.from_json(json)
+  inspect(parsed.id, content="gift_full")
+  inspect(parsed.star_count, content="150")
+  inspect(parsed.total_count, content="Some(500)")
+  inspect(parsed.unique_gift_variant_count, content="Some(5)")
+  inspect(parsed.unique_gift_number, content="Some(3)")
+  inspect(parsed.gifts_from_channels, content="Some(true)")
+  inspect(parsed.is_premium, content="Some(false)")
+  inspect(parsed.has_colors, content="Some(true)")
+}
