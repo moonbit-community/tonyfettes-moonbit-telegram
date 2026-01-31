@@ -22,7 +22,7 @@ test "parse/print round-trip preserves schema structure" {
       let printed = @tl.schema_to_string(schema)
       let reparsed = try? @tl.parse(source=printed)
       match reparsed {
-        Ok(parsed_schema) => @internal_qc.schema_equal(schema, parsed_schema)
+        Ok(parsed_schema) => schema == parsed_schema
         Err(_) => false
       }
     }),

@@ -6,6 +6,5 @@ import {
 import "test" {
   "tonyfettes/telegram/tl/ast",
   "tonyfettes/telegram/tl",
-  "tonyfettes/telegram/tl/internal/qc" as @internal_qc,
   "moonbitlang/quickcheck" as @qc,
 }
