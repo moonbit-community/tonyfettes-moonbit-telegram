@@ -148,7 +148,12 @@ test "UniqueGiftInfo JSON round-trip" {
   inspect(parsed.gift_id, content="gift123")
   inspect(parsed.next_transfer_date, content="Some(1703980800)")
   inspect(parsed.last_resale_amount, content="Some(500)")
-  inspect(parsed.origin, content="Some(resale)")
+  inspect(
+    parsed.origin,
+    content=(
+      #|Some("resale")
+    ),
+  )
   inspect(parsed.is_from_blockchain, content="Some(true)")
 }
 

@@ -33,22 +33,14 @@ test "Message with new fields JSON round-trip" {
     name="Support",
     icon_color=16711680,
   )
-
   let sticker = StickerPlaceholder::new(
     file_id="abc123",
     file_unique_id="unique123",
     width=512,
     height=512,
   )
-
-  let gift = Gift::new(
-    id="gift_id_123",
-    sticker~,
-    star_count=100,
-  )
-
+  let gift = Gift::new(id="gift_id_123", sticker~, star_count=100)
   let gift_info = GiftInfo::new(gift~)
-
   let message : Message = Message::new(
     message_id=790,
     date=1640000001,
@@ -67,10 +59,8 @@ test "Message with new fields JSON round-trip" {
     gift_id="gift_123",
     is_from_blockchain=true,
   )
-
   let json = @json.to_json(message)
   let parsed : Message = @json.from_json(json)
-
   inspect(parsed.message_id, content="790")
   inspect(parsed.message_thread_id, content="Some(5)")
   inspect(parsed.is_topic_message, content="Some(true)")
@@ -85,23 +75,15 @@ test "Message with direct_messages_topic field" {
     name="General",
     icon_color=65280,
   )
-
   let message : Message = Message::new(
     message_id=791,
     date=1640000002,
-    chat=Chat::new(
-      id=458L,
-      type_=Private,
-      username="bob",
-      first_name="Bob",
-    ),
+    chat=Chat::new(id=458L, type_=Private, username="bob", first_name="Bob"),
     text="Message with topic",
     direct_messages_topic~,
   )
-
   let json = @json.to_json(message)
   let reconstructed : Message = @json.from_json(json)
-
   inspect(reconstructed.direct_messages_topic is Some(_), content="true")
   guard reconstructed.direct_messages_topic is Some(topic) else { return }
   inspect(topic.id, content="2")
