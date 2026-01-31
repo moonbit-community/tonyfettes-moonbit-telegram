@@ -1,5 +1,4 @@
 import {
   "moonbitlang/quickcheck" as @qc,
   "moonbitlang/core/quickcheck" as @quickcheck,
-  "moonbitlang/core/quickcheck/splitmix" as @splitmix,
 }

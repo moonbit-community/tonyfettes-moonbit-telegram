@@ -8,8 +8,7 @@ pub(all) struct Schema {
 ///|
 /// Custom equality that ignores comments field for property-based testing.
 pub impl Eq for Schema with equal(self, other) {
-  self.types == other.types &&
-  self.functions == other.functions
+  self.types == other.types && self.functions == other.functions
   // Intentionally ignoring comments as they involve Span
 }
 

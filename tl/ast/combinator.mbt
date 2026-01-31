@@ -117,8 +117,7 @@ pub(all) struct ResultType {
 
 ///|
 pub impl Eq for ResultType with equal(self, other) {
-  self.type_ident == other.type_ident &&
-  self.params == other.params
+  self.type_ident == other.type_ident && self.params == other.params
 }
 
 ///|

@@ -1,23 +1,21 @@
 // Helper generators using Arbitrary trait
 
+///|
 fn gen_lower_ident() -> @qc.Gen[@ast.LowerIdent] {
-  @qc.Gen::new(fn(size, rs) {
-    @quickcheck.Arbitrary::arbitrary(size, rs)
-  })
+  @qc.Gen::new(fn(size, rs) { @quickcheck.Arbitrary::arbitrary(size, rs) })
 }
 
+///|
 fn gen_upper_ident() -> @qc.Gen[@ast.UpperIdent] {
-  @qc.Gen::new(fn(size, rs) {
-    @quickcheck.Arbitrary::arbitrary(size, rs)
-  })
+  @qc.Gen::new(fn(size, rs) { @quickcheck.Arbitrary::arbitrary(size, rs) })
 }
 
+///|
 fn gen_combinator() -> @qc.Gen[@ast.Combinator] {
-  @qc.Gen::new(fn(size, rs) {
-    @quickcheck.Arbitrary::arbitrary(size, rs)
-  })
+  @qc.Gen::new(fn(size, rs) { @quickcheck.Arbitrary::arbitrary(size, rs) })
 }
 
+///|
 fn dummy_span() -> @ast.Span {
   @ast.Span::new(
     start=@ast.Position::new(line=0, column=0, offset=0),
