@@ -4,7 +4,7 @@ fn gen_simple_term() -> @qc.Gen[@ast.Term] {
   @qc.frequency([
     (4, gen_term_type_ident().fmap(fn(i) { @ast.Term::Ident(i) })),
     (2, @qc.small_int().fmap(fn(n) { @ast.Term::NatConst(abs_int(n)) })),
-    (1, @qc.pure(@ast.Term::Ident(@ast.TypeIdent::simple("#")))),
+    (1, @qc.pure(@ast.Term::Ident(@ast.TypeIdent::simple(@ast.UpperIdent::new(value="#"))))),
     (
       1,
       gen_term_type_ident().fmap(fn(i) {

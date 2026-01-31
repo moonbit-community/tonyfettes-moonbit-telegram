@@ -49,10 +49,10 @@ fn gen_args_array() -> @qc.Gen[Array[@ast.Arg]] {
 }
 
 ///|
-fn gen_optional_uint() -> @qc.Gen[UInt?] {
+fn gen_optional_uint() -> @qc.Gen[@ast.ConstructorId?] {
   @qc.frequency([
     (2, @qc.pure(None)),
-    (1, @qc.nat().fmap(fn(n) { Some(n.reinterpret_as_uint()) })),
+    (1, @qc.nat().fmap(fn(n) { Some(@ast.ConstructorId::new(value=n.reinterpret_as_uint())) })),
   ])
 }
 

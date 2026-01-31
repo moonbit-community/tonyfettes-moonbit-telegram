@@ -109,21 +109,21 @@ fn combinator_to_string(c : @ast.Combinator) -> String {
 
   // Namespace.name
   if c.ns is Some(ns) {
-    sb.write_string(ns)
+    sb.write_string(ns.value)
     sb.write_char('.')
   }
-  sb.write_string(c.name)
+  sb.write_string(c.name.value)
 
   // Optional hex ID
   if c.id is Some(id) {
     sb.write_char('#')
-    sb.write_string(uint_to_hex(id))
+    sb.write_string(uint_to_hex(id.value))
   }
 
   // Optional args
   for opt in c.opt_args {
     sb.write_string(" {")
-    sb.write_string(opt.names.join(" "))
+    sb.write_string(opt.names.map(fn(n) { n.value }).join(" "))
     sb.write_char(':')
     if opt.bang {
       sb.write_char('!')
@@ -175,9 +175,9 @@ fn uint_to_hex(n : UInt) -> String {
 ///|
 fn type_ident_to_string(ident : @ast.TypeIdent) -> String {
   if ident.ns is Some(ns) {
-    ns + "." + ident.name
+    ns.value + "." + ident.name.value
   } else {
-    ident.name
+    ident.name.value
   }
 }
 
@@ -197,10 +197,10 @@ fn arg_to_string(arg : @ast.Arg) -> String {
 ///|
 fn named_arg_to_string(arg : @ast.NamedArg) -> String {
   let sb = StringBuilder::new()
-  sb.write_string(arg.name)
+  sb.write_string(arg.name.value)
   sb.write_char(':')
   if arg.conditional is Some(cond) {
-    sb.write_string(cond.var_name)
+    sb.write_string(cond.var_name.value)
     if cond.bit_index is Some(idx) {
       sb.write_char('.')
       sb.write_string(idx.to_string())
@@ -218,7 +218,7 @@ fn named_arg_to_string(arg : @ast.NamedArg) -> String {
 fn multiplicity_arg_to_string(mult : @ast.MultiplicityArg) -> String {
   let sb = StringBuilder::new()
   if mult.name is Some(name) {
-    sb.write_string(name)
+    sb.write_string(name.value)
     sb.write_char(':')
   }
   sb.write_string(term_to_string(mult.count))
@@ -237,7 +237,7 @@ fn multiplicity_arg_to_string(mult : @ast.MultiplicityArg) -> String {
 fn grouped_arg_to_string(grouped : @ast.GroupedArg) -> String {
   let sb = StringBuilder::new()
   sb.write_char('(')
-  sb.write_string(grouped.names.join(" "))
+  sb.write_string(grouped.names.map(fn(n) { n.value }).join(" "))
   sb.write_char(':')
   if grouped.bang {
     sb.write_char('!')
@@ -252,7 +252,7 @@ fn term_to_string(term : @ast.Term) -> String {
   match term {
     @ast.Term::Paren(expr) => "(" + expr_to_string(expr) + ")"
     @ast.Term::Ident(ident) => type_ident_to_string(ident)
-    @ast.Term::Var(name) => name
+    @ast.Term::Var(name) => name.value
     @ast.Term::NatConst(n) => n.to_string()
     @ast.Term::Percent(inner) => "%" + term_to_string(inner)
     @ast.Term::Apply(ident, params) => {

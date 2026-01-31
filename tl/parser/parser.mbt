@@ -133,20 +133,20 @@ fn Parser::parse_combinator(self : Parser) -> @ast.Combinator raise ParseError {
   let (ns, name) = self.parse_combinator_name()
   let name_end = self.tokens[self.pos - 1].span.end
   // Parse optional hex ID: #hexdigits
-  let id : UInt? = if self.peek() is Hash &&
+  let id : @ast.ConstructorId? = if self.peek() is Hash &&
     self.current().span.start.offset == name_end.offset {
     let _ = self.advance()
     match self.peek() {
       HexNumber(n) => {
         let _ = self.advance()
-        Some(n)
+        Some(@ast.ConstructorId::new(value=n))
       }
       _ => None
     }
   } else if self.peek() is HexNumber(n) &&
     self.current().span.start.offset == name_end.offset {
     let _ = self.advance()
-    Some(n)
+    Some(@ast.ConstructorId::new(value=n))
   } else {
     None
   }
@@ -195,11 +195,11 @@ fn Parser::parse_combinator(self : Parser) -> @ast.Combinator raise ParseError {
 /// Parses a combinator name: lc-ident-ns (namespace.name) or _ or just lc-ident.
 fn Parser::parse_combinator_name(
   self : Parser,
-) -> (String?, String) raise ParseError {
+) -> (@ast.LowerIdent?, @ast.LowerIdent) raise ParseError {
   match self.peek() {
     Underscore => {
       let _ = self.advance()
-      (None, "_")
+      (None, @ast.LowerIdent::new(value="_"))
     }
     LowerIdent(name) => {
       let _ = self.advance()
@@ -208,11 +208,11 @@ fn Parser::parse_combinator_name(
         match self.peek() {
           LowerIdent(n) => {
             let _ = self.advance()
-            (Some(name), n)
+            (Some(@ast.LowerIdent::new(value=name)), @ast.LowerIdent::new(value=n))
           }
           Underscore => {
             let _ = self.advance()
-            (Some(name), "_")
+            (Some(@ast.LowerIdent::new(value=name)), @ast.LowerIdent::new(value="_"))
           }
           _ => {
             let token = self.current()
@@ -224,7 +224,7 @@ fn Parser::parse_combinator_name(
           }
         }
       } else {
-        (None, name)
+        (None, @ast.LowerIdent::new(value=name))
       }
     }
     _ => {
@@ -246,13 +246,13 @@ fn Parser::parse_opt_args(
   let result : Array[@ast.OptionalArg] = []
   while self.peek() is LBrace {
     let _ = self.advance() // {
-    let names : Array[String] = []
+    let names : Array[@ast.LowerIdent] = []
     // Collect names
     while true {
       match self.peek() {
         LowerIdent(s) | UpperIdent(s) => {
           let _ = self.advance()
-          names.push(s)
+          names.push(@ast.LowerIdent::new(value=s))
         }
         _ => break
       }
@@ -436,7 +436,7 @@ fn Parser::parse_named_arg(self : Parser) -> @ast.Arg raise ParseError {
       Number(bit_idx) => {
         let _ = self.advance()
         let _ = self.expect(Question)
-        Some({ var_name: name, bit_index: Some(bit_idx) })
+        Some({ var_name: @ast.LowerIdent::new(value=name), bit_index: Some(bit_idx) })
       }
       _ => {
         let token = self.current()
@@ -449,7 +449,7 @@ fn Parser::parse_named_arg(self : Parser) -> @ast.Arg raise ParseError {
     }
   } else if self.peek() is Question {
     let _ = self.advance()
-    Some({ var_name: name, bit_index: None })
+    Some({ var_name: @ast.LowerIdent::new(value=name), bit_index: None })
   } else {
     None
   }
@@ -479,7 +479,7 @@ fn Parser::parse_named_arg(self : Parser) -> @ast.Arg raise ParseError {
       false
     }
     let type_ = self.parse_term()
-    @ast.Arg::Named({ name: actual_name, conditional: Some(cond), bang, type_ })
+    @ast.Arg::Named({ name: @ast.LowerIdent::new(value=actual_name), conditional: Some(cond), bang, type_ })
   } else {
     // name is the field name, check for :
     let _ = self.expect(Colon)
@@ -494,7 +494,7 @@ fn Parser::parse_named_arg(self : Parser) -> @ast.Arg raise ParseError {
             let _ = self.advance()
             if self.peek() is Question {
               let _ = self.advance()
-              Some({ var_name, bit_index: Some(bit_idx) })
+              Some({ var_name: @ast.LowerIdent::new(value=var_name), bit_index: Some(bit_idx) })
             } else {
               // Not a conditional, restore
               self.pos = saved
@@ -509,7 +509,7 @@ fn Parser::parse_named_arg(self : Parser) -> @ast.Arg raise ParseError {
         }
       } else if self.peek() is Question {
         let _ = self.advance()
-        Some({ var_name, bit_index: None })
+        Some({ var_name: @ast.LowerIdent::new(value=var_name), bit_index: None })
       } else {
         // Just a type, restore
         self.pos = saved
@@ -525,7 +525,7 @@ fn Parser::parse_named_arg(self : Parser) -> @ast.Arg raise ParseError {
       false
     }
     let type_ = self.parse_term()
-    @ast.Arg::Named({ name, conditional: cond2, bang, type_ })
+    @ast.Arg::Named({ name: @ast.LowerIdent::new(value=name), conditional: cond2, bang, type_ })
   }
 }
 
@@ -533,13 +533,13 @@ fn Parser::parse_named_arg(self : Parser) -> @ast.Arg raise ParseError {
 /// Parses a grouped argument: (x y : Type).
 fn Parser::parse_grouped_arg(self : Parser) -> @ast.Arg raise ParseError {
   let _ = self.advance() // (
-  let names : Array[String] = []
+  let names : Array[@ast.LowerIdent] = []
   // Collect names until :
   while not(self.peek() is Colon) && not(self.is_at_end()) {
     match self.peek() {
       LowerIdent(s) | UpperIdent(s) => {
         let _ = self.advance()
-        names.push(s)
+        names.push(@ast.LowerIdent::new(value=s))
       }
       _ => break
     }
@@ -607,7 +607,7 @@ fn Parser::parse_term(self : Parser) -> @ast.Term raise ParseError {
     }
     Hash => {
       let _ = self.advance()
-      @ast.Term::Ident(@ast.TypeIdent::simple("#"))
+      @ast.Term::Ident(@ast.TypeIdent::simple(@ast.UpperIdent::new(value="#")))
     }
     Number(n) => {
       let _ = self.advance()
@@ -618,13 +618,13 @@ fn Parser::parse_term(self : Parser) -> @ast.Term raise ParseError {
       if self.peek() is Dot {
         let _ = self.advance()
         let type_name = self.parse_ident_name()
-        let ident = @ast.TypeIdent::new(name=type_name, ns=name)
+        let ident = @ast.TypeIdent::new(name=@ast.UpperIdent::new(value=type_name), ns=@ast.LowerIdent::new(value=name))
         self.parse_term_apply(ident)
       } else if self.peek() is LAngle {
-        let ident = @ast.TypeIdent::simple(name)
+        let ident = @ast.TypeIdent::simple(@ast.UpperIdent::new(value=name))
         self.parse_term_apply(ident)
       } else {
-        @ast.Term::Var(name)
+        @ast.Term::Var(@ast.LowerIdent::new(value=name))
       }
     }
     UpperIdent(name) => {
@@ -632,13 +632,13 @@ fn Parser::parse_term(self : Parser) -> @ast.Term raise ParseError {
       if self.peek() is Dot {
         let _ = self.advance()
         let type_name = self.parse_ident_name()
-        let ident = @ast.TypeIdent::new(name=type_name, ns=name)
+        let ident = @ast.TypeIdent::new(name=@ast.UpperIdent::new(value=type_name), ns=@ast.LowerIdent::new(value=name))
         self.parse_term_apply(ident)
       } else if self.peek() is LAngle {
-        let ident = @ast.TypeIdent::simple(name)
+        let ident = @ast.TypeIdent::simple(@ast.UpperIdent::new(value=name))
         self.parse_term_apply(ident)
       } else {
-        @ast.Term::Ident(@ast.TypeIdent::simple(name))
+        @ast.Term::Ident(@ast.TypeIdent::simple(@ast.UpperIdent::new(value=name)))
       }
     }
     _ => {
@@ -789,22 +789,22 @@ fn Parser::parse_result_type(self : Parser) -> @ast.ResultType raise ParseError 
 /// Parses a type identifier name with optional namespace: ns.Name or Name.
 fn Parser::parse_type_ident_name(
   self : Parser,
-) -> (String?, String) raise ParseError {
+) -> (@ast.LowerIdent?, @ast.UpperIdent) raise ParseError {
   match self.peek() {
     LowerIdent(ns) => {
       let _ = self.advance()
       if self.peek() is Dot {
         let _ = self.advance()
         let name = self.parse_ident_name()
-        (Some(ns), name)
+        (Some(@ast.LowerIdent::new(value=ns)), @ast.UpperIdent::new(value=name))
       } else {
         // It's actually a bare type name, lowercase allowed in result
-        (None, ns)
+        (None, @ast.UpperIdent::new(value=ns))
       }
     }
     UpperIdent(name) => {
       let _ = self.advance()
-      (None, name)
+      (None, @ast.UpperIdent::new(value=name))
     }
     _ => {
       let token = self.current()

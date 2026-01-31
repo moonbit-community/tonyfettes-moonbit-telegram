@@ -6,11 +6,11 @@ test "Parser simple combinator" {
   let schema = parser.parse_schema()
   inspect(schema.types.length(), content="1")
   guard schema.types[0] is Combinator(c) else { fail("expected Combinator") }
-  inspect(c.name, content="user")
+  inspect(c.name.value, content="user")
   inspect(c.ns, content="None")
   inspect(c.args.length(), content="1")
   guard c.args[0] is Named(arg) else { fail("expected Named arg") }
-  inspect(arg.name, content="id")
+  inspect(arg.name.value, content="id")
 }
 
 ///|
@@ -21,7 +21,7 @@ test "Parser combinator with hex id" {
   let schema = parser.parse_schema()
   guard schema.types[0] is Combinator(c) else { fail("expected Combinator") }
   guard c.id is Some(id) else { fail("expected hex id") }
-  inspect(id, content="3527180707")
+  inspect(id.value, content="3527180707")
 }
 
 ///|
@@ -32,11 +32,11 @@ test "Parser optional args" {
   let schema = parser.parse_schema()
   guard schema.types[0] is Combinator(c) else { fail("expected Combinator") }
   inspect(c.opt_args.length(), content="1")
-  inspect(c.opt_args[0].names[0], content="t")
+  inspect(c.opt_args[0].names[0].value, content="t")
   guard c.opt_args[0].type_.items[0] is Term(Ident(ident)) else {
     fail("expected type ident")
   }
-  inspect(ident.name, content="Type")
+  inspect(ident.name.value, content="Type")
 }
 
 ///|
@@ -53,17 +53,17 @@ test "Parser conditional field" {
   guard c.args[0] is Named(flags_arg) else {
     fail("expected Named arg for flags")
   }
-  inspect(flags_arg.name, content="flags")
-  guard flags_arg.type_ is Ident(ident) && ident.name == "#" else {
+  inspect(flags_arg.name.value, content="flags")
+  guard flags_arg.type_ is Ident(ident) && ident.name.value == "#" else {
     fail("expected # type for flags")
   }
   // Second arg is first_name:flags.0?string
   guard c.args[1] is Named(name_arg) else {
     fail("expected Named arg for first_name")
   }
-  inspect(name_arg.name, content="first_name")
+  inspect(name_arg.name.value, content="first_name")
   guard name_arg.conditional is Some(cond) else { fail("expected conditional") }
-  inspect(cond.var_name, content="flags")
+  inspect(cond.var_name.value, content="flags")
   inspect(cond.bit_index, content="Some(0)")
 }
 
@@ -94,8 +94,9 @@ test "Parser functions section" {
   guard schema.types[0] is Combinator(c1) else {
     fail("expected Combinator in types")
   }
-  inspect(c1.name, content="user")
-  inspect(schema.functions[0].name, content="getUser")
+  inspect(c1.name.value, content="user")
+  let c2 = schema.functions[0]
+  inspect(c2.name.value, content="getUser")
 }
 
 ///|
@@ -127,10 +128,10 @@ test "Parser namespaced combinator" {
   let schema = parser.parse_schema()
   guard schema.types[0] is Combinator(c) else { fail("expected Combinator") }
   guard c.ns is Some(ns) else { fail("expected namespace") }
-  inspect(ns, content="auth")
-  inspect(c.name, content="sentCode")
-  inspect(c.result.type_ident.ns, content="Some(\"auth\")")
-  inspect(c.result.type_ident.name, content="SentCode")
+  inspect(ns.value, content="auth")
+  inspect(c.name.value, content="sentCode")
+  inspect(c.result.type_ident.ns.map(fn(x) { x.value }), content="Some(\"auth\")")
+  inspect(c.result.type_ident.name.value, content="SentCode")
 }
 
 ///|
@@ -154,7 +155,7 @@ test "Parser type application" {
   let parser = Parser::new(tokens)
   let schema = parser.parse_schema()
   guard schema.types[0] is Combinator(c) else { fail("expected Combinator") }
-  guard c.result.type_ident.name == "Result" else {
+  guard c.result.type_ident.name.value == "Result" else {
     fail("expected Result type")
   }
   inspect(c.result.params.length(), content="1")
@@ -169,7 +170,7 @@ test "Parser anonymous multiplicity" {
   guard schema.types[0] is Combinator(c) else { fail("expected Combinator") }
   // Should have # as first arg and [t] as second arg
   inspect(c.args.length(), content="2")
-  guard c.args[0] is Anonymous({ type_: Ident(ident), .. }) && ident.name == "#" else {
+  guard c.args[0] is Anonymous({ type_: Ident(ident), .. }) && ident.name.value == "#" else {
     fail("expected Anonymous Nat")
   }
   guard c.args[1] is Multiplicity(_) else { fail("expected Multiplicity") }
@@ -246,7 +247,7 @@ test "Parser multiple optional args" {
   inspect(c.opt_args.length(), content="2")
   inspect(c.opt_args[0].names[0], content="t")
   inspect(c.opt_args[1].names[0], content="n")
-  guard c.opt_args[1].type_.items[0] is Term(Ident(ident)) && ident.name == "#" else {
+  guard c.opt_args[1].type_.items[0] is Term(Ident(ident)) && ident.name.value == "#" else {
     fail("expected # type for n")
   }
 }

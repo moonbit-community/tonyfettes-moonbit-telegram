@@ -10,9 +10,9 @@ pub fn term_equal(a : @ast.Term, b : @ast.Term) -> Bool {
   match (a, b) {
     (@ast.Term::Paren(e1), @ast.Term::Paren(e2)) => expr_equal(e1, e2)
     (@ast.Term::Ident(i1), @ast.Term::Ident(i2)) => type_ident_equal(i1, i2)
-    (@ast.Term::Ident(i1), @ast.Term::Var(s2)) => i1.ns == None && i1.name == s2
+    (@ast.Term::Ident(i1), @ast.Term::Var(s2)) => i1.ns == None && i1.name.value == s2.value
     (@ast.Term::Var(s1), @ast.Term::Var(s2)) => s1 == s2
-    (@ast.Term::Var(s1), @ast.Term::Ident(i2)) => i2.ns == None && i2.name == s1
+    (@ast.Term::Var(s1), @ast.Term::Ident(i2)) => i2.ns == None && i2.name.value == s1.value
     (@ast.Term::NatConst(n1), @ast.Term::NatConst(n2)) => n1 == n2
     (@ast.Term::Percent(t1), @ast.Term::Percent(t2)) => term_equal(t1, t2)
     (@ast.Term::Apply(i1, p1), @ast.Term::Apply(i2, p2)) =>
@@ -37,9 +37,9 @@ pub fn subexpr_equal(a : @ast.Subexpr, b : @ast.Subexpr) -> Bool {
 ///|
 fn type_ident_to_string(ident : @ast.TypeIdent) -> String {
   if ident.ns is Some(ns) {
-    ns + "." + ident.name
+    ns.value + "." + ident.name.value
   } else {
-    ident.name
+    ident.name.value
   }
 }
 
@@ -48,7 +48,7 @@ fn term_to_string(term : @ast.Term) -> String {
   match term {
     @ast.Term::Paren(expr) => "(" + expr_to_string(expr) + ")"
     @ast.Term::Ident(ident) => type_ident_to_string(ident)
-    @ast.Term::Var(name) => name
+    @ast.Term::Var(name) => name.value
     @ast.Term::NatConst(n) => n.to_string()
     @ast.Term::Percent(inner) => "%" + term_to_string(inner)
     @ast.Term::Apply(ident, params) => {
@@ -155,13 +155,13 @@ pub fn named_arg_equal(a : @ast.NamedArg, b : @ast.NamedArg) -> Bool {
 ///|
 /// Compares two OptionalArg values for equality.
 pub fn optional_arg_equal(a : @ast.OptionalArg, b : @ast.OptionalArg) -> Bool {
-  string_array_equal(a.names, b.names) &&
+  lower_ident_array_equal(a.names, b.names) &&
   a.bang == b.bang &&
   expr_equal(a.type_, b.type_)
 }
 
 ///|
-fn string_array_equal(a : Array[String], b : Array[String]) -> Bool {
+fn lower_ident_array_equal(a : Array[@ast.LowerIdent], b : Array[@ast.LowerIdent]) -> Bool {
   if a.length() != b.length() {
     return false
   }
@@ -192,7 +192,7 @@ fn optional_arg_array_equal(
 ///|
 /// Compares two GroupedArg values for equality.
 pub fn grouped_arg_equal(a : @ast.GroupedArg, b : @ast.GroupedArg) -> Bool {
-  string_array_equal(a.names, b.names) &&
+  lower_ident_array_equal(a.names, b.names) &&
   a.bang == b.bang &&
   term_equal(a.type_, b.type_)
 }

@@ -1,14 +1,14 @@
 ///|
 /// Conditional field specifier (e.g., flags.N? or flags?)
 pub(all) struct Conditional {
-  var_name : String // "flags", "flags2"
+  var_name : LowerIdent // "flags", "flags2"
   bit_index : Int? // None for flags?, Some(N) for flags.N?
 } derive(Show, Eq)
 
 ///|
 /// Named argument: name:Type or name:flags.N?Type
 pub(all) struct NamedArg {
-  name : String
+  name : LowerIdent
   conditional : Conditional?
   bang : Bool // ! prefix
   type_ : Term
@@ -17,7 +17,7 @@ pub(all) struct NamedArg {
 ///|
 /// Optional/generic param: {t:Type} or {n:#}
 pub(all) struct OptionalArg {
-  names : Array[String] // Can have multiple: {x y : Type}
+  names : Array[LowerIdent] // Can have multiple: {x y : Type}
   bang : Bool
   type_ : Expr
 } derive(Show, Eq)
@@ -25,7 +25,7 @@ pub(all) struct OptionalArg {
 ///|
 /// Multiplicity: 4*[int] or n*[type]
 pub(all) struct MultiplicityArg {
-  name : String? // Optional name before :
+  name : LowerIdent? // Optional name before :
   count : Term // nat-term
   args : Array[Arg] // Nested args in [ ]
 } derive(Show, Eq)
@@ -33,7 +33,7 @@ pub(all) struct MultiplicityArg {
 ///|
 /// Grouped args: (x y : Type)
 pub(all) struct GroupedArg {
-  names : Array[String]
+  names : Array[LowerIdent]
   bang : Bool
   type_ : Term
 } derive(Show, Eq)
@@ -68,9 +68,9 @@ pub(all) struct ResultType {
 ///|
 /// A constructor or function
 pub(all) struct Combinator {
-  ns : String? // namespace
-  name : String // "_" for anonymous
-  id : UInt? // Hex ID after #
+  ns : LowerIdent? // namespace
+  name : LowerIdent // "_" for anonymous
+  id : ConstructorId? // Hex ID after #
   opt_args : Array[OptionalArg]
   args : Array[Arg]
   result : ResultType

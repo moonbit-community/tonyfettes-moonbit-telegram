@@ -6,13 +6,13 @@ fn gen_schema_with_undefined_type() -> @qc.Gen[@ast.Schema] {
   // Generate a combinator that uses an undefined type in an argument
   let undefined_type_gen = @internal_qc.gen_upper_ident().fmap(fn(name) {
     // Use an unlikely namespace prefix to ensure it's undefined
-    @ast.TypeIdent::namespaced("__undefined__", name)
+    @ast.TypeIdent::namespaced(@ast.LowerIdent::new(value="__undefined__"), name)
   })
   @qc.liftA3(
     fn(undefined_ident, combinator_name, result_type_name) {
       // The argument references an undefined type
       let arg : @ast.Arg = @ast.Arg::Named({
-        name: "x",
+        name: @ast.LowerIdent::new(value="x"),
         conditional: None,
         bang: false,
         type_: @ast.Term::Ident(undefined_ident),
@@ -54,7 +54,7 @@ fn gen_schema_with_duplicate_name() -> @qc.Gen[@ast.Schema] {
       let combinator1 : @ast.Combinator = {
         ns: None,
         name,
-        id: Some(0x12345678U),
+        id: Some(@ast.ConstructorId::new(value=0x12345678U)),
         opt_args: [],
         args: [],
         result,
@@ -63,7 +63,7 @@ fn gen_schema_with_duplicate_name() -> @qc.Gen[@ast.Schema] {
       let combinator2 : @ast.Combinator = {
         ns: None,
         name, // Same name = duplicate!
-        id: Some(0x87654321U), // Different ID
+        id: Some(@ast.ConstructorId::new(value=0x87654321U)), // Different ID
         opt_args: [],
         args: [],
         result,
@@ -96,7 +96,7 @@ fn gen_schema_with_final_violation() -> @qc.Gen[@ast.Schema] {
       let combinator1 : @ast.Combinator = {
         ns: None,
         name: ctor1_name,
-        id: Some(0x11111111U),
+        id: Some(@ast.ConstructorId::new(value=0x11111111U)),
         opt_args: [],
         args: [],
         result,
@@ -113,7 +113,7 @@ fn gen_schema_with_final_violation() -> @qc.Gen[@ast.Schema] {
       let combinator2 : @ast.Combinator = {
         ns: None,
         name: ctor2_name,
-        id: Some(0x22222222U),
+        id: Some(@ast.ConstructorId::new(value=0x22222222U)),
         opt_args: [],
         args: [],
         result,
@@ -132,7 +132,7 @@ fn gen_schema_with_final_violation() -> @qc.Gen[@ast.Schema] {
     @internal_qc.gen_upper_ident(),
     @internal_qc.gen_lower_ident(),
     // Ensure second constructor has a different name
-    @internal_qc.gen_lower_ident().fmap(fn(name) { name + "_2" }),
+    @internal_qc.gen_lower_ident().fmap(fn(name) { @ast.LowerIdent::new(value=(name.value + "_2")) }),
   )
 }
 
@@ -155,7 +155,7 @@ fn gen_schema_with_empty_violation() -> @qc.Gen[@ast.Schema] {
       let combinator : @ast.Combinator = {
         ns: None,
         name: ctor_name,
-        id: Some(0x33333333U),
+        id: Some(@ast.ConstructorId::new(value=0x33333333U)),
         opt_args: [],
         args: [],
         result,
@@ -188,7 +188,7 @@ fn gen_schema_with_new_violation() -> @qc.Gen[@ast.Schema] {
       let combinator : @ast.Combinator = {
         ns: None,
         name: ctor_name,
-        id: Some(0x44444444U),
+        id: Some(@ast.ConstructorId::new(value=0x44444444U)),
         opt_args: [],
         args: [],
         result,

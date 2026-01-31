@@ -1,4 +1,25 @@
 ///|
+/// Shrink implementation for LowerIdent.
+/// Shrinks the inner string value.
+pub impl @qc.Shrink for LowerIdent with shrink(self) {
+  @qc.Shrink::shrink(self.value).map(fn(value) { LowerIdent::new(value~) })
+}
+
+///|
+/// Shrink implementation for UpperIdent.
+/// Shrinks the inner string value.
+pub impl @qc.Shrink for UpperIdent with shrink(self) {
+  @qc.Shrink::shrink(self.value).map(fn(value) { UpperIdent::new(value~) })
+}
+
+///|
+/// Shrink implementation for ConstructorId.
+/// Shrinks the inner UInt value.
+pub impl @qc.Shrink for ConstructorId with shrink(self) {
+  @qc.Shrink::shrink(self.value).map(fn(value) { ConstructorId::new(value~) })
+}
+
+///|
 /// Shrink implementation for Position.
 /// Shrinks each field independently toward smaller values.
 pub impl @qc.Shrink for Position with shrink(self) {

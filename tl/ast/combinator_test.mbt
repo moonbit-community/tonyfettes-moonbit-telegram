@@ -1,29 +1,29 @@
 ///|
 test "Conditional creation" {
-  let cond = Conditional::{ var_name: "flags", bit_index: Some(0) }
-  inspect(cond.var_name, content="flags")
+  let cond = Conditional::{ var_name: LowerIdent::new(value="flags"), bit_index: Some(0) }
+  inspect(cond.var_name.value, content="flags")
   inspect(cond.bit_index, content="Some(0)")
 }
 
 ///|
 test "NamedArg creation" {
   let arg = NamedArg::{
-    name: "id",
+    name: LowerIdent::new(value="id"),
     conditional: None,
     bang: false,
-    type_: Term::Ident(TypeIdent::{ ns: None, name: "long" }),
+    type_: Term::Ident(TypeIdent::{ ns: None, name: UpperIdent::new(value="long") }),
   }
-  inspect(arg.name, content="id")
+  inspect(arg.name.value, content="id")
   assert_false(arg.bang)
 }
 
 ///|
 test "NamedArg with conditional" {
   let arg = NamedArg::{
-    name: "first_name",
-    conditional: Some(Conditional::{ var_name: "flags", bit_index: Some(0) }),
+    name: LowerIdent::new(value="first_name"),
+    conditional: Some(Conditional::{ var_name: LowerIdent::new(value="flags"), bit_index: Some(0) }),
     bang: false,
-    type_: Term::Ident(TypeIdent::{ ns: None, name: "string" }),
+    type_: Term::Ident(TypeIdent::{ ns: None, name: UpperIdent::new(value="string") }),
   }
   guard arg.conditional is Some(cond) else { fail("expected conditional") }
   inspect(cond.bit_index, content="Some(0)")
@@ -32,10 +32,10 @@ test "NamedArg with conditional" {
 ///|
 test "OptionalArg creation" {
   let arg = OptionalArg::{
-    names: ["t"],
+    names: [LowerIdent::new(value="t")],
     bang: false,
     type_: Expr::new(items=[
-      Subexpr::Term(Term::Ident(TypeIdent::{ ns: None, name: "Type" })),
+      Subexpr::Term(Term::Ident(TypeIdent::{ ns: None, name: UpperIdent::new(value="Type") })),
     ]),
   }
   inspect(arg.names.length(), content="1")
@@ -49,7 +49,7 @@ test "MultiplicityArg creation" {
     args: [
       Arg::Anonymous({
         bang: false,
-        type_: Term::Ident(TypeIdent::{ ns: None, name: "int" }),
+        type_: Term::Ident(TypeIdent::{ ns: None, name: UpperIdent::new(value="int") }),
       }),
     ],
   }
@@ -59,10 +59,10 @@ test "MultiplicityArg creation" {
 ///|
 test "ResultType creation" {
   let result = ResultType::{
-    type_ident: TypeIdent::{ ns: None, name: "User" },
+    type_ident: TypeIdent::{ ns: None, name: UpperIdent::new(value="User") },
     params: [],
   }
-  inspect(result.type_ident.name, content="User")
+  inspect(result.type_ident.name.value, content="User")
 }
 
 ///|
@@ -73,17 +73,17 @@ test "Combinator creation" {
   }
   let combinator = Combinator::{
     ns: None,
-    name: "user",
-    id: Some(0xd23c81a3),
+    name: LowerIdent::new(value="user"),
+    id: Some(ConstructorId::new(value=0xd23c81a3)),
     opt_args: [],
     args: [],
     result: ResultType::{
-      type_ident: TypeIdent::{ ns: None, name: "User" },
+      type_ident: TypeIdent::{ ns: None, name: UpperIdent::new(value="User") },
       params: [],
     },
     span,
   }
-  inspect(combinator.name, content="user")
+  inspect(combinator.name.value, content="user")
   guard combinator.id is Some(_) else { fail("expected id") }
 }
 
@@ -94,15 +94,15 @@ test "FinalDecl variants" {
     end=Position::new(line=1, column=1, offset=0),
   )
   let new_decl = FinalDecl::New(FinalDeclData::{
-    type_ident: TypeIdent::{ ns: None, name: "UserStatus" },
+    type_ident: TypeIdent::{ ns: None, name: UpperIdent::new(value="UserStatus") },
     span: dummy_span,
   })
   let final_decl = FinalDecl::Final(FinalDeclData::{
-    type_ident: TypeIdent::{ ns: None, name: "UserStatus" },
+    type_ident: TypeIdent::{ ns: None, name: UpperIdent::new(value="UserStatus") },
     span: dummy_span,
   })
   let empty_decl = FinalDecl::Empty(FinalDeclData::{
-    type_ident: TypeIdent::{ ns: None, name: "SomeType" },
+    type_ident: TypeIdent::{ ns: None, name: UpperIdent::new(value="SomeType") },
     span: dummy_span,
   })
   guard new_decl is New(_) else { fail("expected New") }

@@ -62,8 +62,8 @@ let builtin_types : Array[String] = [
 /// Returns the full name of a type identifier.
 pub fn type_ident_full_name(ident : @ast.TypeIdent) -> String {
   match ident.ns {
-    Some(ns) => ns + "." + ident.name
-    None => ident.name
+    Some(ns) => ns.value + "." + ident.name.value
+    None => ident.name.value
   }
 }
 
@@ -71,7 +71,7 @@ pub fn type_ident_full_name(ident : @ast.TypeIdent) -> String {
 /// Returns the full name of a combinator.
 pub fn combinator_full_name(c : @ast.Combinator) -> String {
   match c.ns {
-    Some(ns) => ns + "." + c.name
-    None => c.name
+    Some(ns) => ns.value + "." + c.name.value
+    None => c.name.value
   }
 }

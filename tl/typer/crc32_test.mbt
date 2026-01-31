@@ -21,18 +21,18 @@ test "normalize_combinator: simple" {
   let span = @ast.Span::new(start=pos, end=pos)
   let c : @ast.Combinator = {
     ns: None,
-    name: "foo",
-    id: Some(0x12345678),
+    name: @ast.LowerIdent::new(value="foo"),
+    id: Some(@ast.ConstructorId::new(value=0x12345678)),
     opt_args: [],
     args: [
       @ast.Arg::Named({
-        name: "x",
+        name: @ast.LowerIdent::new(value="x"),
         conditional: None,
         bang: false,
-        type_: @ast.Term::Var("int"),
+        type_: @ast.Term::Var(@ast.LowerIdent::new(value="int")),
       }),
     ],
-    result: { type_ident: { ns: None, name: "Foo" }, params: [] },
+    result: { type_ident: { ns: None, name: @ast.UpperIdent::new(value="Foo") }, params: [] },
     span,
   }
   // Should not include #id in normalized form

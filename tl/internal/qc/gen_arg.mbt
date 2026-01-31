@@ -51,7 +51,7 @@ pub fn gen_optional_arg() -> @qc.Gen[@ast.OptionalArg] {
 }
 
 ///|
-fn gen_names_array() -> @qc.Gen[Array[String]] {
+fn gen_names_array() -> @qc.Gen[Array[@ast.LowerIdent]] {
   @qc.int_range(1, 4).bind(fn(len) {
     @qc.Gen::new(fn(size, rs) {
       Array::makei(len, fn(_) { gen_lower_ident().run(size, rs) })
@@ -76,7 +76,7 @@ fn gen_multiplicity_arg_sized(size : Int) -> @qc.Gen[@ast.MultiplicityArg] {
 }
 
 ///|
-fn gen_optional_name() -> @qc.Gen[String?] {
+fn gen_optional_name() -> @qc.Gen[@ast.LowerIdent?] {
   @qc.frequency([
     (2, @qc.pure(None)),
     (1, gen_lower_ident().fmap(fn(x) { Some(x) })),

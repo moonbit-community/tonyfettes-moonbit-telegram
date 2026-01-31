@@ -1,6 +1,6 @@
 ///|
 /// Generates a lowercase identifier: [a-z][a-z0-9_]*
-pub fn gen_lower_ident() -> @qc.Gen[String] {
+pub fn gen_lower_ident() -> @qc.Gen[@ast.LowerIdent] {
   let first = @qc.char_range('a', 'z')
   let rest = @qc.sized(fn(size) {
     let len = if size > 0 { size } else { 0 }
@@ -14,11 +14,12 @@ pub fn gen_lower_ident() -> @qc.Gen[String] {
       sb.write_char(c)
       sb.write_string(s)
       let name = sb.to_string()
-      if name == "functions" || name == "types" {
+      let value = if name == "functions" || name == "types" {
         name + "_x"
       } else {
         name
       }
+      @ast.LowerIdent::new(value~)
     },
     first,
     rest,
@@ -48,7 +49,7 @@ fn gen_lower_rest_chars(len : Int) -> @qc.Gen[String] {
 
 ///|
 /// Generates an uppercase identifier: [A-Z][a-zA-Z0-9_]*
-pub fn gen_upper_ident() -> @qc.Gen[String] {
+pub fn gen_upper_ident() -> @qc.Gen[@ast.UpperIdent] {
   let first = @qc.char_range('A', 'Z')
   let rest = @qc.sized(fn(size) {
     let len = if size > 0 { size } else { 0 }
@@ -62,7 +63,7 @@ pub fn gen_upper_ident() -> @qc.Gen[String] {
       sb.write_char(c)
       sb.write_string(s)
       let name = sb.to_string()
-      if name == "O" ||
+      let value = if name == "O" ||
         name == "S" ||
         name == "New" ||
         name == "Final" ||
@@ -71,6 +72,7 @@ pub fn gen_upper_ident() -> @qc.Gen[String] {
       } else {
         name
       }
+      @ast.UpperIdent::new(value~)
     },
     first,
     rest,
@@ -101,7 +103,7 @@ fn gen_upper_rest_chars(len : Int) -> @qc.Gen[String] {
 
 ///|
 /// Generates an optional namespace (lowercase identifier).
-pub fn gen_namespace() -> @qc.Gen[String?] {
+pub fn gen_namespace() -> @qc.Gen[@ast.LowerIdent?] {
   @qc.frequency([
     (3, @qc.pure(None)),
     (1, gen_lower_ident().fmap(fn(x) { Some(x) })),

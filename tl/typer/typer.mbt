@@ -54,7 +54,7 @@ fn collect_combinator(
   // Note: Telegram schema allows duplicate IDs where "Prefix" versions are
   // placeholders that get overwritten by the real declarations
   let id = match c.id {
-    Some(id) => id
+    Some(id) => id.value
     None => {
       let normalized = normalize_combinator(c)
       crc32(normalized)
@@ -100,7 +100,7 @@ fn collect_function(
   // Register function ID
   // Compute ID from CRC32 if not explicitly provided
   let id = match f.id {
-    Some(id) => id
+    Some(id) => id.value
     None => {
       let normalized = normalize_combinator(f)
       crc32(normalized)
@@ -175,11 +175,11 @@ fn resolve_combinator(
     let is_nat = is_hash_expr(opt.type_)
     for name in opt.names {
       if is_nat {
-        nat_vars[name] = ()
-        nat_var_used[name] = false
+        nat_vars[name.value] = ()
+        nat_var_used[name.value] = false
       } else {
-        type_vars[name] = ()
-        type_var_used[name] = false
+        type_vars[name.value] = ()
+        type_var_used[name.value] = false
       }
     }
   }
@@ -190,8 +190,8 @@ fn resolve_combinator(
     match arg {
       @ast.Arg::Named(named) =>
         if is_hash_term(named.type_) {
-          flags_fields[named.name] = ()
-          nat_vars[named.name] = ()
+          flags_fields[named.name.value] = ()
+          nat_vars[named.name.value] = ()
         }
       _ => ()
     }
@@ -267,10 +267,10 @@ fn resolve_arg(
     @ast.Arg::Named(named) => {
       // Check conditional field reference
       if named.conditional is Some(cond) {
-        if not(flags_fields.contains(cond.var_name)) {
+        if not(flags_fields.contains(cond.var_name.value)) {
           raise UndefinedFlagsField(
             pos=span,
-            conditional=cond.var_name,
+            conditional=cond.var_name.value,
             ctor="",
           )
         }
@@ -353,7 +353,7 @@ fn resolve_result_type(
 /// Returns true if a term is the builtin "#" type.
 fn is_hash_term(term : @ast.Term) -> Bool {
   match term {
-    @ast.Term::Ident(ident) => ident.ns is None && ident.name == "#"
+    @ast.Term::Ident(ident) => ident.ns is None && ident.name.value == "#"
     _ => false
   }
 }
@@ -384,12 +384,12 @@ fn term_has_nat_hint(term : @ast.Term, nat_vars : Map[String, Unit]) -> Bool {
   match term {
     @ast.Term::NatConst(_) => true
     @ast.Term::Var(name) =>
-      nat_vars.contains(name) || name == "O" || name == "S"
+      nat_vars.contains(name.value) || name.value == "O" || name.value == "S"
     @ast.Term::Ident(ident) =>
       ident.ns is None &&
-      (ident.name == "O" || ident.name == "S" || nat_vars.contains(ident.name))
+      (ident.name.value == "O" || ident.name.value == "S" || nat_vars.contains(ident.name.value))
     @ast.Term::Apply(ident, _) =>
-      ident.ns is None && (ident.name == "O" || ident.name == "S")
+      ident.ns is None && (ident.name.value == "O" || ident.name.value == "S")
     @ast.Term::Paren(expr) => expr_has_nat_hint(expr, nat_vars)
     @ast.Term::Percent(_) => false
   }
@@ -537,16 +537,16 @@ fn resolve_term_type(
       }
     }
     @ast.Term::Var(name) =>
-      if type_vars.contains(name) {
-        type_var_used[name] = true
-      } else if nat_vars.contains(name) {
-        nat_var_used[name] = true
-      } else if table.builtins.contains(name) || table.types.contains(name) {
+      if type_vars.contains(name.value) {
+        type_var_used[name.value] = true
+      } else if nat_vars.contains(name.value) {
+        nat_var_used[name.value] = true
+      } else if table.builtins.contains(name.value) || table.types.contains(name.value) {
         ()
-      } else if is_upper_name(name) {
-        raise UndefinedType(pos=span, name~)
+      } else if is_upper_name(name.value) {
+        raise UndefinedType(pos=span, name=name.value)
       } else {
-        raise UnboundTypeVariable(pos=span, variable=name)
+        raise UnboundTypeVariable(pos=span, variable=name.value)
       }
     @ast.Term::NatConst(_) => ()
   }
@@ -566,22 +566,22 @@ fn resolve_term_nat(
       resolve_expr_nat(table, expr, span, nat_vars, nat_var_used)
     @ast.Term::NatConst(_) => ()
     @ast.Term::Var(name) =>
-      if nat_vars.contains(name) {
-        nat_var_used[name] = true
-      } else if name == "O" || name == "S" {
+      if nat_vars.contains(name.value) {
+        nat_var_used[name.value] = true
+      } else if name.value == "O" || name.value == "S" {
         ()
       } else {
-        raise UnboundNatVariable(pos=span, variable=name)
+        raise UnboundNatVariable(pos=span, variable=name.value)
       }
     @ast.Term::Ident(ident) =>
-      if ident.ns is None && (ident.name == "O" || ident.name == "S") {
+      if ident.ns is None && (ident.name.value == "O" || ident.name.value == "S") {
         ()
       } else {
         let name = type_ident_full_name(ident)
         raise UndefinedType(pos=span, name~)
       }
     @ast.Term::Apply(ident, params) =>
-      if ident.ns is None && (ident.name == "O" || ident.name == "S") {
+      if ident.ns is None && (ident.name.value == "O" || ident.name.value == "S") {
         for param in params {
           resolve_expr_nat(table, param, span, nat_vars, nat_var_used)
         }

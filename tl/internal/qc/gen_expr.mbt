@@ -57,8 +57,8 @@ pub fn gen_simple_type_ident() -> @qc.Gen[@ast.TypeIdent] {
 }
 
 ///|
-fn gen_type_name() -> @qc.Gen[String] {
-  @qc.frequency([(2, gen_upper_ident()), (1, gen_lower_ident())])
+fn gen_type_name() -> @qc.Gen[@ast.UpperIdent] {
+  gen_upper_ident()
 }
 
 ///|
@@ -74,7 +74,7 @@ fn gen_term_sized(size : Int) -> @qc.Gen[@ast.Term] {
       (3, gen_lower_ident().fmap(fn(s) { @ast.Term::Var(s) })),
       (2, gen_term_type_ident().fmap(fn(i) { @ast.Term::Ident(i) })),
       (2, @qc.small_int().fmap(fn(n) { @ast.Term::NatConst(abs_int(n)) })),
-      (1, @qc.pure(@ast.Term::Ident(@ast.TypeIdent::simple("#")))),
+      (1, @qc.pure(@ast.Term::Ident(@ast.TypeIdent::simple(@ast.UpperIdent::new(value="#"))))),
     ])
   } else {
     let smaller = size / 2

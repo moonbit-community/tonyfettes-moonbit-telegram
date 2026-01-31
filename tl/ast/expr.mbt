@@ -1,25 +1,25 @@
 ///|
 /// Type identifier with optional namespace.
 pub(all) struct TypeIdent {
-  ns : String? // e.g., "auth" in auth.SentCode
-  name : String // e.g., "SentCode" or "User"
+  ns : LowerIdent? // e.g., "auth" in auth.SentCode
+  name : UpperIdent // e.g., "SentCode" or "User"
 } derive(Show, Eq)
 
 ///|
 /// Creates a new TypeIdent with optional namespace.
-pub fn TypeIdent::new(name~ : String, ns? : String) -> TypeIdent {
+pub fn TypeIdent::new(name~ : UpperIdent, ns? : LowerIdent) -> TypeIdent {
   { ns, name }
 }
 
 ///|
 /// Creates a simple TypeIdent without namespace.
-pub fn TypeIdent::simple(name : String) -> TypeIdent {
+pub fn TypeIdent::simple(name : UpperIdent) -> TypeIdent {
   { ns: None, name }
 }
 
 ///|
 /// Creates a TypeIdent with a namespace.
-pub fn TypeIdent::namespaced(ns : String, name : String) -> TypeIdent {
+pub fn TypeIdent::namespaced(ns : LowerIdent, name : UpperIdent) -> TypeIdent {
   { ns: Some(ns), name }
 }
 
@@ -28,7 +28,7 @@ pub fn TypeIdent::namespaced(ns : String, name : String) -> TypeIdent {
 pub(all) enum Term {
   Paren(Expr) // (expr)
   Ident(TypeIdent) // type-ident (including "#")
-  Var(String) // var-ident
+  Var(LowerIdent) // var-ident
   NatConst(Int) // nat-const
   Percent(Term) // % term
   Apply(TypeIdent, Array[Expr]) // type-ident<expr, ...>
