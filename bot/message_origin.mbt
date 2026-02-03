@@ -73,7 +73,7 @@ pub impl @json.ToJson for MessageOrigin with to_json(self) {
   match self {
     User(v) => {
       let object : Map[String, Json] = {
-        "type": "user",
+        "type": @json.to_json("user"),
         "date": @json.to_json(v.date),
         "sender_user": @json.to_json(v.sender_user),
       }
@@ -81,7 +81,7 @@ pub impl @json.ToJson for MessageOrigin with to_json(self) {
     }
     HiddenUser(v) => {
       let object : Map[String, Json] = {
-        "type": "hidden_user",
+        "type": @json.to_json("hidden_user"),
         "date": @json.to_json(v.date),
         "sender_user_name": @json.to_json(v.sender_user_name),
       }
@@ -89,7 +89,7 @@ pub impl @json.ToJson for MessageOrigin with to_json(self) {
     }
     Chat(v) => {
       let object : Map[String, Json] = {
-        "type": "chat",
+        "type": @json.to_json("chat"),
         "date": @json.to_json(v.date),
         "sender_chat": @json.to_json(v.sender_chat),
       }
@@ -100,7 +100,7 @@ pub impl @json.ToJson for MessageOrigin with to_json(self) {
     }
     Channel(v) => {
       let object : Map[String, Json] = {
-        "type": "channel",
+        "type": @json.to_json("channel"),
         "date": @json.to_json(v.date),
         "chat": @json.to_json(v.chat),
         "message_id": @json.to_json(v.message_id),

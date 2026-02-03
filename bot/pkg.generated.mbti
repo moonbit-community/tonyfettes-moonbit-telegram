@@ -3,6 +3,7 @@ package "tonyfettes/telegram/bot"
 
 import {
   "moonbitlang/core/encoding/utf8",
+  "tonyfettes/json",
 }
 
 // Values
@@ -12,9 +13,9 @@ pub(all) suberror TelegramError {
   HttpError(code~ : Int, body~ : String)
   ApiError(code~ : Int, description~ : String)
   InvalidUtf8(@utf8.Malformed)
-  InvalidJson(@moonbitlang/core/json.ParseError)
-  InvalidResponse(Json)
-  InvalidResult(Json, @tonyfettes/json.JsonDecodeError)
+  InvalidJson(@json.ParseError)
+  InvalidResponse(@json.Json)
+  InvalidResult(@json.Json, @json.JsonDecodeError)
   ParseError(message~ : String)
 }
 
@@ -28,8 +29,8 @@ pub struct AcceptedGiftTypes {
 pub fn AcceptedGiftTypes::new(unlimited_gifts~ : Bool, limited_gifts~ : Bool, unique_gifts~ : Bool, premium_subscription~ : Bool) -> Self
 pub impl Eq for AcceptedGiftTypes
 pub impl Show for AcceptedGiftTypes
-pub impl @tonyfettes/json.FromJson for AcceptedGiftTypes
-pub impl @tonyfettes/json.ToJson for AcceptedGiftTypes
+pub impl @json.FromJson for AcceptedGiftTypes
+pub impl @json.ToJson for AcceptedGiftTypes
 
 pub struct Animation {
   file_id : String
@@ -45,8 +46,8 @@ pub struct Animation {
 pub fn Animation::new(file_id~ : String, file_unique_id~ : String, width~ : Int, height~ : Int, duration~ : Int, thumbnail? : PhotoSize, file_name? : String, mime_type? : String, file_size? : Int64) -> Self
 pub impl Eq for Animation
 pub impl Show for Animation
-pub impl @tonyfettes/json.FromJson for Animation
-pub impl @tonyfettes/json.ToJson for Animation
+pub impl @json.FromJson for Animation
+pub impl @json.ToJson for Animation
 
 pub struct Audio {
   file_id : String
@@ -62,8 +63,8 @@ pub struct Audio {
 pub fn Audio::new(file_id~ : String, file_unique_id~ : String, duration~ : Int, performer? : String, title? : String, file_name? : String, mime_type? : String, file_size? : Int64, thumbnail? : PhotoSize) -> Self
 pub impl Eq for Audio
 pub impl Show for Audio
-pub impl @tonyfettes/json.FromJson for Audio
-pub impl @tonyfettes/json.ToJson for Audio
+pub impl @json.FromJson for Audio
+pub impl @json.ToJson for Audio
 
 pub(all) enum BackgroundFill {
   Solid(BackgroundFillSolid)
@@ -72,8 +73,8 @@ pub(all) enum BackgroundFill {
 }
 pub impl Eq for BackgroundFill
 pub impl Show for BackgroundFill
-pub impl @tonyfettes/json.FromJson for BackgroundFill
-pub impl @tonyfettes/json.ToJson for BackgroundFill
+pub impl @json.FromJson for BackgroundFill
+pub impl @json.ToJson for BackgroundFill
 
 pub struct BackgroundFillFreeformGradient {
   colors : Array[Int]
@@ -106,8 +107,8 @@ pub(all) enum BackgroundType {
 }
 pub impl Eq for BackgroundType
 pub impl Show for BackgroundType
-pub impl @tonyfettes/json.FromJson for BackgroundType
-pub impl @tonyfettes/json.ToJson for BackgroundType
+pub impl @json.FromJson for BackgroundType
+pub impl @json.ToJson for BackgroundType
 
 pub struct BackgroundTypeChatTheme {
   theme_name : String
@@ -153,26 +154,26 @@ pub struct Birthdate {
 pub fn Birthdate::new(day~ : Int, month~ : Int, year? : Int) -> Self
 pub impl Eq for Birthdate
 pub impl Show for Birthdate
-pub impl @tonyfettes/json.FromJson for Birthdate
-pub impl @tonyfettes/json.ToJson for Birthdate
+pub impl @json.FromJson for Birthdate
+pub impl @json.ToJson for Birthdate
 
 pub struct Bot {
   token : String
   base_url : String
 }
 pub async fn Bot::answer_callback_query(Self, callback_query_id~ : String, text? : String, show_alert? : Bool) -> Bool raise TelegramError
-pub async fn Bot::answer_inline_query(Self, inline_query_id~ : String, results~ : Array[Json], cache_time? : Int, is_personal? : Bool, next_offset? : String, button? : InlineQueryResultsButton) -> Bool raise TelegramError
+pub async fn Bot::answer_inline_query(Self, inline_query_id~ : String, results~ : Array[@json.Json], cache_time? : Int, is_personal? : Bool, next_offset? : String, button? : InlineQueryResultsButton) -> Bool raise TelegramError
 pub async fn Bot::answer_pre_checkout_query(Self, pre_checkout_query_id~ : String, ok~ : Bool, error_message? : String) -> Bool raise TelegramError
 pub async fn Bot::answer_shipping_query(Self, shipping_query_id~ : String, ok~ : Bool, shipping_options? : Array[ShippingOption], error_message? : String) -> Bool raise TelegramError
-pub async fn Bot::answer_web_app_query(Self, web_app_query_id~ : String, result~ : Json) -> Json raise TelegramError
+pub async fn Bot::answer_web_app_query(Self, web_app_query_id~ : String, result~ : @json.Json) -> @json.Json raise TelegramError
 pub async fn Bot::approve_chat_join_request(Self, chat_id~ : Int64, user_id~ : Int64) -> Bool raise TelegramError
 pub async fn Bot::approve_suggested_post(Self, chat_id~ : Int64, user_id~ : Int64, inline_message_id? : String, message_id? : Int) -> Bool raise TelegramError
 pub async fn Bot::ban_chat_member(Self, chat_id~ : Int64, user_id~ : Int64, until_date? : Int, revoke_messages? : Bool) -> Bool raise TelegramError
 pub async fn Bot::close_forum_topic(Self, chat_id~ : Int64, message_thread_id~ : Int) -> Bool raise TelegramError
 pub async fn Bot::close_general_forum_topic(Self, chat_id~ : Int64) -> Bool raise TelegramError
 pub async fn Bot::copy_message(Self, chat_id~ : Int64, from_chat_id~ : Int64, message_id~ : Int, disable_notification? : Bool, reply_markup? : InlineKeyboardMarkup) -> MessageId raise TelegramError
-pub async fn Bot::create_chat_invite_link(Self, chat_id~ : Int64, name? : String, expire_date? : Int, member_limit? : Int, creates_join_request? : Bool) -> Json raise TelegramError
-pub async fn Bot::create_forum_topic(Self, chat_id~ : Int64, name~ : String, icon_color? : Int, icon_custom_emoji_id? : String) -> Json raise TelegramError
+pub async fn Bot::create_chat_invite_link(Self, chat_id~ : Int64, name? : String, expire_date? : Int, member_limit? : Int, creates_join_request? : Bool) -> @json.Json raise TelegramError
+pub async fn Bot::create_forum_topic(Self, chat_id~ : Int64, name~ : String, icon_color? : Int, icon_custom_emoji_id? : String) -> @json.Json raise TelegramError
 pub async fn Bot::create_invoice_link(Self, title~ : String, description~ : String, payload~ : String, currency~ : String, prices~ : Array[LabeledPrice], provider_token? : String, max_tip_amount? : Int, suggested_tip_amounts? : Array[Int], provider_data? : String, photo_url? : String, photo_size? : Int, photo_width? : Int, photo_height? : Int, need_name? : Bool, need_phone_number? : Bool, need_email? : Bool, need_shipping_address? : Bool, send_phone_number_to_provider? : Bool, send_email_to_provider? : Bool, is_flexible? : Bool, subscription_period? : Int, business_connection_id? : String) -> String raise TelegramError
 pub async fn Bot::decline_chat_join_request(Self, chat_id~ : Int64, user_id~ : Int64) -> Bool raise TelegramError
 pub async fn Bot::decline_suggested_post(Self, chat_id~ : Int64, user_id~ : Int64, inline_message_id? : String, message_id? : Int) -> Bool raise TelegramError
@@ -180,42 +181,42 @@ pub async fn Bot::delete_chat_photo(Self, chat_id~ : Int64) -> Bool raise Telegr
 pub async fn Bot::delete_forum_topic(Self, chat_id~ : Int64, message_thread_id~ : Int) -> Bool raise TelegramError
 pub async fn Bot::delete_message(Self, chat_id~ : Int64, message_id~ : Int) -> Bool raise TelegramError
 pub async fn Bot::delete_messages(Self, chat_id~ : Int64, message_ids~ : Array[Int]) -> Bool raise TelegramError
-pub async fn Bot::delete_my_commands(Self, scope? : Json, language_code? : String) -> Bool raise TelegramError
+pub async fn Bot::delete_my_commands(Self, scope? : @json.Json, language_code? : String) -> Bool raise TelegramError
 pub async fn Bot::delete_sticker_from_set(Self, sticker~ : String) -> Bool raise TelegramError
 pub async fn Bot::delete_sticker_set(Self, name~ : String) -> Bool raise TelegramError
 pub async fn Bot::delete_webhook(Self, drop_pending_updates? : Bool) -> Bool raise TelegramError
-pub async fn Bot::edit_chat_invite_link(Self, chat_id~ : Int64, invite_link~ : String, name? : String, expire_date? : Int, member_limit? : Int, creates_join_request? : Bool) -> Json raise TelegramError
+pub async fn Bot::edit_chat_invite_link(Self, chat_id~ : Int64, invite_link~ : String, name? : String, expire_date? : Int, member_limit? : Int, creates_join_request? : Bool) -> @json.Json raise TelegramError
 pub async fn Bot::edit_forum_topic(Self, chat_id~ : Int64, message_thread_id~ : Int, name? : String, icon_custom_emoji_id? : String) -> Bool raise TelegramError
 pub async fn Bot::edit_general_forum_topic(Self, chat_id~ : Int64, name~ : String) -> Bool raise TelegramError
 pub async fn Bot::edit_message_caption(Self, business_connection_id? : String, chat_id? : Int64, message_id? : Int, inline_message_id? : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], show_caption_above_media? : Bool, reply_markup? : InlineKeyboardMarkup) -> Message raise TelegramError
 pub async fn Bot::edit_message_checklist(Self, business_connection_id? : String, chat_id? : Int64, message_id? : Int, inline_message_id? : String, reply_to_message_id? : Int, checklist~ : InputChecklist) -> Message raise TelegramError
 pub async fn Bot::edit_message_live_location(Self, latitude~ : Double, longitude~ : Double, business_connection_id? : String, chat_id? : Int64, message_id? : Int, inline_message_id? : String, live_period? : Int, horizontal_accuracy? : Double, heading? : Int, proximity_alert_radius? : Int, reply_markup? : InlineKeyboardMarkup) -> Message raise TelegramError
-pub async fn Bot::edit_message_media(Self, media~ : Json, business_connection_id? : String, chat_id? : Int64, message_id? : Int, inline_message_id? : String, reply_markup? : InlineKeyboardMarkup) -> Message raise TelegramError
+pub async fn Bot::edit_message_media(Self, media~ : @json.Json, business_connection_id? : String, chat_id? : Int64, message_id? : Int, inline_message_id? : String, reply_markup? : InlineKeyboardMarkup) -> Message raise TelegramError
 pub async fn Bot::edit_message_reply_markup(Self, chat_id~ : Int64, message_id~ : Int, reply_markup? : InlineKeyboardMarkup) -> Message raise TelegramError
 pub async fn Bot::edit_message_text(Self, chat_id~ : Int64, message_id~ : Int, text~ : String, parse_mode? : String, reply_markup? : InlineKeyboardMarkup) -> Message raise TelegramError
 pub async fn Bot::export_chat_invite_link(Self, chat_id~ : Int64) -> String raise TelegramError
 pub async fn Bot::forward_message(Self, chat_id~ : Int64, from_chat_id~ : Int64, message_id~ : Int, message_thread_id? : Int, disable_notification? : Bool, protect_content? : Bool) -> Message raise TelegramError
 pub async fn Bot::forward_messages(Self, chat_id~ : Int64, from_chat_id~ : Int64, message_ids~ : Array[Int], message_thread_id? : Int, disable_notification? : Bool, protect_content? : Bool) -> Array[MessageId] raise TelegramError
 pub async fn Bot::get_chat(Self, chat_id~ : Int64) -> ChatFullInfo raise TelegramError
-pub async fn Bot::get_chat_administrators(Self, chat_id~ : ChatId) -> Array[Json] raise TelegramError
+pub async fn Bot::get_chat_administrators(Self, chat_id~ : ChatId) -> Array[@json.Json] raise TelegramError
 pub async fn Bot::get_chat_gifts(Self, chat_id~ : ChatId, offset? : Int, limit? : Int) -> Gifts raise TelegramError
-pub async fn Bot::get_chat_member(Self, chat_id~ : ChatId, user_id~ : Int64) -> Json raise TelegramError
+pub async fn Bot::get_chat_member(Self, chat_id~ : ChatId, user_id~ : Int64) -> @json.Json raise TelegramError
 pub async fn Bot::get_chat_member_count(Self, chat_id~ : ChatId) -> Int raise TelegramError
-pub async fn Bot::get_chat_menu_button(Self, chat_id? : Int64) -> Json raise TelegramError
+pub async fn Bot::get_chat_menu_button(Self, chat_id? : Int64) -> @json.Json raise TelegramError
 pub async fn Bot::get_custom_emoji_stickers(Self, custom_emoji_ids~ : Array[String]) -> Array[Sticker] raise TelegramError
 pub async fn Bot::get_file(Self, file_id~ : String) -> File raise TelegramError
 pub async fn Bot::get_forum_topic_icon_stickers(Self) -> Array[Sticker] raise TelegramError
-pub async fn Bot::get_game_high_scores(Self, user_id~ : Int64, chat_id? : Int64, message_id? : Int, inline_message_id? : String) -> Array[Json] raise TelegramError
+pub async fn Bot::get_game_high_scores(Self, user_id~ : Int64, chat_id? : Int64, message_id? : Int, inline_message_id? : String) -> Array[@json.Json] raise TelegramError
 pub async fn Bot::get_me(Self) -> User raise TelegramError
-pub async fn Bot::get_my_commands(Self, scope? : Json, language_code? : String) -> Array[BotCommand] raise TelegramError
-pub async fn Bot::get_my_description(Self, language_code? : String) -> Json raise TelegramError
-pub async fn Bot::get_my_name(Self, language_code? : String) -> Json raise TelegramError
-pub async fn Bot::get_my_short_description(Self, language_code? : String) -> Json raise TelegramError
+pub async fn Bot::get_my_commands(Self, scope? : @json.Json, language_code? : String) -> Array[BotCommand] raise TelegramError
+pub async fn Bot::get_my_description(Self, language_code? : String) -> @json.Json raise TelegramError
+pub async fn Bot::get_my_name(Self, language_code? : String) -> @json.Json raise TelegramError
+pub async fn Bot::get_my_short_description(Self, language_code? : String) -> @json.Json raise TelegramError
 pub async fn Bot::get_my_star_balance(Self) -> StarBalance raise TelegramError
 pub async fn Bot::get_sticker_set(Self, name~ : String) -> StickerSet raise TelegramError
 pub async fn Bot::get_updates(Self, offset? : Int, limit? : Int, timeout? : Int, allowed_updates? : Array[String]) -> Array[Update] raise TelegramError
 pub async fn Bot::get_user_gifts(Self, offset? : Int, limit? : Int) -> Gifts raise TelegramError
-pub async fn Bot::get_user_profile_photos(Self, user_id~ : Int64, offset? : Int, limit? : Int) -> Json raise TelegramError
+pub async fn Bot::get_user_profile_photos(Self, user_id~ : Int64, offset? : Int, limit? : Int) -> @json.Json raise TelegramError
 pub async fn Bot::get_webhook_info(Self) -> WebhookInfo raise TelegramError
 pub async fn Bot::hide_general_forum_topic(Self, chat_id~ : Int64) -> Bool raise TelegramError
 pub async fn Bot::leave_chat(Self, chat_id~ : Int64) -> Bool raise TelegramError
@@ -226,7 +227,7 @@ pub async fn Bot::reopen_forum_topic(Self, chat_id~ : Int64, message_thread_id~ 
 pub async fn Bot::reopen_general_forum_topic(Self, chat_id~ : Int64) -> Bool raise TelegramError
 pub async fn Bot::repost_story(Self, chat_id~ : ChatId, from_chat_id~ : ChatId, story_id~ : Int, message_thread_id? : Int, direct_messages_topic_id? : Int, business_connection_id? : String, text? : String, parse_mode? : String, entities? : Array[MessageEntity]) -> MessageId raise TelegramError
 pub async fn Bot::restrict_chat_member(Self, chat_id~ : Int64, user_id~ : Int64, permissions~ : ChatPermissions, use_independent_chat_permissions? : Bool, until_date? : Int) -> Bool raise TelegramError
-pub async fn Bot::revoke_chat_invite_link(Self, chat_id~ : Int64, invite_link~ : String) -> Json raise TelegramError
+pub async fn Bot::revoke_chat_invite_link(Self, chat_id~ : Int64, invite_link~ : String) -> @json.Json raise TelegramError
 pub async fn Bot::send_animation(Self, chat_id~ : Int64, animation~ : String, business_connection_id? : String, message_thread_id? : Int, duration? : Int, width? : Int, height? : Int, thumbnail? : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], show_caption_above_media? : Bool, has_spoiler? : Bool, disable_notification? : Bool, protect_content? : Bool, allow_paid_broadcast? : Bool, message_effect_id? : String, reply_parameters? : ReplyParameters, reply_markup? : InlineKeyboardMarkup) -> Message raise TelegramError
 pub async fn Bot::send_audio(Self, chat_id~ : Int64, audio~ : String, business_connection_id? : String, message_thread_id? : Int, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], duration? : Int, performer? : String, title? : String, thumbnail? : String, disable_notification? : Bool, protect_content? : Bool, allow_paid_broadcast? : Bool, message_effect_id? : String, reply_parameters? : ReplyParameters, reply_markup? : InlineKeyboardMarkup) -> Message raise TelegramError
 pub async fn Bot::send_chat_action(Self, chat_id~ : Int64, action~ : String, business_connection_id? : String, message_thread_id? : Int) -> Bool raise TelegramError
@@ -248,11 +249,11 @@ pub async fn Bot::send_video_note(Self, chat_id~ : Int64, video_note~ : String, 
 pub async fn Bot::send_voice(Self, chat_id~ : Int64, voice~ : String, business_connection_id? : String, message_thread_id? : Int, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], duration? : Int, disable_notification? : Bool, protect_content? : Bool, allow_paid_broadcast? : Bool, message_effect_id? : String, reply_parameters? : ReplyParameters, reply_markup? : InlineKeyboardMarkup) -> Message raise TelegramError
 pub async fn Bot::set_chat_administrator_custom_title(Self, chat_id~ : Int64, user_id~ : Int64, custom_title~ : String) -> Bool raise TelegramError
 pub async fn Bot::set_chat_description(Self, chat_id~ : Int64, description? : String) -> Bool raise TelegramError
-pub async fn Bot::set_chat_menu_button(Self, chat_id? : Int64, menu_button? : Json) -> Bool raise TelegramError
+pub async fn Bot::set_chat_menu_button(Self, chat_id? : Int64, menu_button? : @json.Json) -> Bool raise TelegramError
 pub async fn Bot::set_chat_permissions(Self, chat_id~ : Int64, permissions~ : ChatPermissions, use_independent_chat_permissions? : Bool) -> Bool raise TelegramError
 pub async fn Bot::set_chat_photo(Self, chat_id~ : Int64, photo~ : String) -> Bool raise TelegramError
 pub async fn Bot::set_chat_title(Self, chat_id~ : Int64, title~ : String) -> Bool raise TelegramError
-pub async fn Bot::set_game_score(Self, user_id~ : Int64, score~ : Int, force? : Bool, disable_edit_message? : Bool, chat_id? : Int64, message_id? : Int, inline_message_id? : String) -> Json raise TelegramError
+pub async fn Bot::set_game_score(Self, user_id~ : Int64, score~ : Int, force? : Bool, disable_edit_message? : Bool, chat_id? : Int64, message_id? : Int, inline_message_id? : String) -> @json.Json raise TelegramError
 pub async fn Bot::set_my_commands(Self, commands~ : Array[BotCommand]) -> Bool raise TelegramError
 pub async fn Bot::set_my_description(Self, description? : String, language_code? : String) -> Bool raise TelegramError
 pub async fn Bot::set_my_name(Self, name? : String, language_code? : String) -> Bool raise TelegramError
@@ -275,8 +276,8 @@ pub struct BotCommand {
 pub fn BotCommand::new(command~ : String, description~ : String) -> Self
 pub impl Eq for BotCommand
 pub impl Show for BotCommand
-pub impl @tonyfettes/json.FromJson for BotCommand
-pub impl @tonyfettes/json.ToJson for BotCommand
+pub impl @json.FromJson for BotCommand
+pub impl @json.ToJson for BotCommand
 
 pub(all) enum BotCommandScope {
   Default
@@ -289,8 +290,8 @@ pub(all) enum BotCommandScope {
 }
 pub impl Eq for BotCommandScope
 pub impl Show for BotCommandScope
-pub impl @tonyfettes/json.FromJson for BotCommandScope
-pub impl @tonyfettes/json.ToJson for BotCommandScope
+pub impl @json.FromJson for BotCommandScope
+pub impl @json.ToJson for BotCommandScope
 
 pub(all) struct BotCommandScopeChat {
   chat_id : Int64
@@ -325,8 +326,8 @@ pub struct BusinessConnection {
 pub fn BusinessConnection::new(id~ : String, user~ : User, user_chat_id~ : Int64, date~ : Int, can_reply~ : Bool, is_enabled~ : Bool) -> Self
 pub impl Eq for BusinessConnection
 pub impl Show for BusinessConnection
-pub impl @tonyfettes/json.FromJson for BusinessConnection
-pub impl @tonyfettes/json.ToJson for BusinessConnection
+pub impl @json.FromJson for BusinessConnection
+pub impl @json.ToJson for BusinessConnection
 
 pub struct BusinessIntro {
   title : String?
@@ -336,8 +337,8 @@ pub struct BusinessIntro {
 pub fn BusinessIntro::new(title? : String, message? : String, sticker? : Sticker) -> Self
 pub impl Eq for BusinessIntro
 pub impl Show for BusinessIntro
-pub impl @tonyfettes/json.FromJson for BusinessIntro
-pub impl @tonyfettes/json.ToJson for BusinessIntro
+pub impl @json.FromJson for BusinessIntro
+pub impl @json.ToJson for BusinessIntro
 
 pub struct BusinessLocation {
   address : String
@@ -346,8 +347,8 @@ pub struct BusinessLocation {
 pub fn BusinessLocation::new(address~ : String, location? : Location) -> Self
 pub impl Eq for BusinessLocation
 pub impl Show for BusinessLocation
-pub impl @tonyfettes/json.FromJson for BusinessLocation
-pub impl @tonyfettes/json.ToJson for BusinessLocation
+pub impl @json.FromJson for BusinessLocation
+pub impl @json.ToJson for BusinessLocation
 
 pub struct BusinessMessagesDeleted {
   business_connection_id : String
@@ -357,8 +358,8 @@ pub struct BusinessMessagesDeleted {
 pub fn BusinessMessagesDeleted::new(business_connection_id~ : String, chat~ : Chat, message_ids~ : Array[Int]) -> Self
 pub impl Eq for BusinessMessagesDeleted
 pub impl Show for BusinessMessagesDeleted
-pub impl @tonyfettes/json.FromJson for BusinessMessagesDeleted
-pub impl @tonyfettes/json.ToJson for BusinessMessagesDeleted
+pub impl @json.FromJson for BusinessMessagesDeleted
+pub impl @json.ToJson for BusinessMessagesDeleted
 
 pub struct BusinessOpeningHours {
   time_zone_name : String
@@ -367,8 +368,8 @@ pub struct BusinessOpeningHours {
 pub fn BusinessOpeningHours::new(time_zone_name~ : String, opening_hours~ : Array[BusinessOpeningHoursInterval]) -> Self
 pub impl Eq for BusinessOpeningHours
 pub impl Show for BusinessOpeningHours
-pub impl @tonyfettes/json.FromJson for BusinessOpeningHours
-pub impl @tonyfettes/json.ToJson for BusinessOpeningHours
+pub impl @json.FromJson for BusinessOpeningHours
+pub impl @json.ToJson for BusinessOpeningHours
 
 pub struct BusinessOpeningHoursInterval {
   opening_minute : Int
@@ -377,8 +378,8 @@ pub struct BusinessOpeningHoursInterval {
 pub fn BusinessOpeningHoursInterval::new(opening_minute~ : Int, closing_minute~ : Int) -> Self
 pub impl Eq for BusinessOpeningHoursInterval
 pub impl Show for BusinessOpeningHoursInterval
-pub impl @tonyfettes/json.FromJson for BusinessOpeningHoursInterval
-pub impl @tonyfettes/json.ToJson for BusinessOpeningHoursInterval
+pub impl @json.FromJson for BusinessOpeningHoursInterval
+pub impl @json.ToJson for BusinessOpeningHoursInterval
 
 pub struct CachedInputMessageContent {
   message_text : String
@@ -386,16 +387,16 @@ pub struct CachedInputMessageContent {
 pub fn CachedInputMessageContent::new(message_text~ : String) -> Self
 pub impl Eq for CachedInputMessageContent
 pub impl Show for CachedInputMessageContent
-pub impl @tonyfettes/json.FromJson for CachedInputMessageContent
-pub impl @tonyfettes/json.ToJson for CachedInputMessageContent
+pub impl @json.FromJson for CachedInputMessageContent
+pub impl @json.ToJson for CachedInputMessageContent
 
 pub struct CallbackGame {
 }
 pub fn CallbackGame::new() -> Self
 pub impl Eq for CallbackGame
 pub impl Show for CallbackGame
-pub impl @tonyfettes/json.FromJson for CallbackGame
-pub impl @tonyfettes/json.ToJson for CallbackGame
+pub impl @json.FromJson for CallbackGame
+pub impl @json.ToJson for CallbackGame
 
 pub struct CallbackQuery {
   id : String
@@ -408,8 +409,8 @@ pub struct CallbackQuery {
 pub fn CallbackQuery::new(id~ : String, from~ : User, message? : Message, inline_message_id? : String, chat_instance~ : String, data? : String) -> Self
 pub impl Eq for CallbackQuery
 pub impl Show for CallbackQuery
-pub impl @tonyfettes/json.FromJson for CallbackQuery
-pub impl @tonyfettes/json.ToJson for CallbackQuery
+pub impl @json.FromJson for CallbackQuery
+pub impl @json.ToJson for CallbackQuery
 
 pub(all) struct Chat {
   id : Int64
@@ -422,8 +423,8 @@ pub(all) struct Chat {
 pub fn Chat::new(id~ : Int64, type_~ : ChatType, title? : String, username? : String, first_name? : String, last_name? : String) -> Self
 pub impl Eq for Chat
 pub impl Show for Chat
-pub impl @tonyfettes/json.FromJson for Chat
-pub impl @tonyfettes/json.ToJson for Chat
+pub impl @json.FromJson for Chat
+pub impl @json.ToJson for Chat
 
 pub struct ChatAdministratorRights {
   is_anonymous : Bool
@@ -445,8 +446,8 @@ pub struct ChatAdministratorRights {
 pub fn ChatAdministratorRights::new(is_anonymous~ : Bool, can_manage_chat~ : Bool, can_delete_messages~ : Bool, can_manage_video_chats~ : Bool, can_restrict_members~ : Bool, can_promote_members~ : Bool, can_change_info~ : Bool, can_invite_users~ : Bool, can_post_stories~ : Bool, can_edit_stories~ : Bool, can_delete_stories~ : Bool, can_post_messages? : Bool, can_edit_messages? : Bool, can_pin_messages? : Bool, can_manage_topics? : Bool) -> Self
 pub impl Eq for ChatAdministratorRights
 pub impl Show for ChatAdministratorRights
-pub impl @tonyfettes/json.FromJson for ChatAdministratorRights
-pub impl @tonyfettes/json.ToJson for ChatAdministratorRights
+pub impl @json.FromJson for ChatAdministratorRights
+pub impl @json.ToJson for ChatAdministratorRights
 
 pub struct ChatBackground {
   type_ : BackgroundType
@@ -454,8 +455,8 @@ pub struct ChatBackground {
 pub fn ChatBackground::new(type_~ : BackgroundType) -> Self
 pub impl Eq for ChatBackground
 pub impl Show for ChatBackground
-pub impl @tonyfettes/json.FromJson for ChatBackground
-pub impl @tonyfettes/json.ToJson for ChatBackground
+pub impl @json.FromJson for ChatBackground
+pub impl @json.ToJson for ChatBackground
 
 pub struct ChatBoostAdded {
   boost_count : Int
@@ -463,8 +464,8 @@ pub struct ChatBoostAdded {
 pub fn ChatBoostAdded::new(boost_count~ : Int) -> Self
 pub impl Eq for ChatBoostAdded
 pub impl Show for ChatBoostAdded
-pub impl @tonyfettes/json.FromJson for ChatBoostAdded
-pub impl @tonyfettes/json.ToJson for ChatBoostAdded
+pub impl @json.FromJson for ChatBoostAdded
+pub impl @json.ToJson for ChatBoostAdded
 
 pub struct ChatFullInfo {
   id : Int64
@@ -515,8 +516,8 @@ pub struct ChatFullInfo {
 pub fn ChatFullInfo::new(id~ : Int64, type_~ : String, accent_color_id~ : Int, max_reaction_count~ : Int, title? : String, username? : String, first_name? : String, last_name? : String, is_forum? : Bool, photo? : ChatPhoto, active_usernames? : Array[String], birthdate? : Birthdate, business_intro? : BusinessIntro, business_location? : BusinessLocation, business_opening_hours? : BusinessOpeningHours, personal_chat? : Chat, available_reactions? : Array[ReactionType], background_custom_emoji_id? : String, profile_accent_color_id? : Int, profile_background_custom_emoji_id? : String, emoji_status_custom_emoji_id? : String, emoji_status_expiration_date? : Int, bio? : String, has_private_forwards? : Bool, has_restricted_voice_and_video_messages? : Bool, join_to_send_messages? : Bool, join_by_request? : Bool, description? : String, invite_link? : String, pinned_message? : Message, permissions? : ChatPermissions, can_send_paid_media? : Bool, slow_mode_delay? : Int, unrestrict_boost_count? : Int, message_auto_delete_time? : Int, has_aggressive_anti_spam_enabled? : Bool, has_hidden_members? : Bool, has_protected_content? : Bool, has_visible_history? : Bool, sticker_set_name? : String, can_set_sticker_set? : Bool, custom_emoji_sticker_set_name? : String, linked_chat_id? : Int64, location? : ChatLocation) -> Self
 pub impl Eq for ChatFullInfo
 pub impl Show for ChatFullInfo
-pub impl @tonyfettes/json.FromJson for ChatFullInfo
-pub impl @tonyfettes/json.ToJson for ChatFullInfo
+pub impl @json.FromJson for ChatFullInfo
+pub impl @json.ToJson for ChatFullInfo
 
 pub(all) enum ChatId {
   Id(Int64)
@@ -524,8 +525,8 @@ pub(all) enum ChatId {
 }
 pub impl Eq for ChatId
 pub impl Show for ChatId
-pub impl @tonyfettes/json.FromJson for ChatId
-pub impl @tonyfettes/json.ToJson for ChatId
+pub impl @json.FromJson for ChatId
+pub impl @json.ToJson for ChatId
 
 pub struct ChatLocation {
   location : Location
@@ -534,8 +535,8 @@ pub struct ChatLocation {
 pub fn ChatLocation::new(location~ : Location, address~ : String) -> Self
 pub impl Eq for ChatLocation
 pub impl Show for ChatLocation
-pub impl @tonyfettes/json.FromJson for ChatLocation
-pub impl @tonyfettes/json.ToJson for ChatLocation
+pub impl @json.FromJson for ChatLocation
+pub impl @json.ToJson for ChatLocation
 
 pub(all) enum ChatMember {
   Owner(ChatMemberOwner)
@@ -547,8 +548,8 @@ pub(all) enum ChatMember {
 }
 pub impl Eq for ChatMember
 pub impl Show for ChatMember
-pub impl @tonyfettes/json.FromJson for ChatMember
-pub impl @tonyfettes/json.ToJson for ChatMember
+pub impl @json.FromJson for ChatMember
+pub impl @json.ToJson for ChatMember
 
 pub struct ChatMemberAdministrator {
   user : User
@@ -648,8 +649,8 @@ pub struct ChatPermissions {
 pub fn ChatPermissions::new(can_send_messages? : Bool, can_send_audios? : Bool, can_send_documents? : Bool, can_send_photos? : Bool, can_send_videos? : Bool, can_send_video_notes? : Bool, can_send_voice_notes? : Bool, can_send_polls? : Bool, can_send_other_messages? : Bool, can_add_web_page_previews? : Bool, can_change_info? : Bool, can_invite_users? : Bool, can_pin_messages? : Bool, can_manage_topics? : Bool) -> Self
 pub impl Eq for ChatPermissions
 pub impl Show for ChatPermissions
-pub impl @tonyfettes/json.FromJson for ChatPermissions
-pub impl @tonyfettes/json.ToJson for ChatPermissions
+pub impl @json.FromJson for ChatPermissions
+pub impl @json.ToJson for ChatPermissions
 
 pub struct ChatPhoto {
   small_file_id : String
@@ -660,8 +661,8 @@ pub struct ChatPhoto {
 pub fn ChatPhoto::new(small_file_id~ : String, small_file_unique_id~ : String, big_file_id~ : String, big_file_unique_id~ : String) -> Self
 pub impl Eq for ChatPhoto
 pub impl Show for ChatPhoto
-pub impl @tonyfettes/json.FromJson for ChatPhoto
-pub impl @tonyfettes/json.ToJson for ChatPhoto
+pub impl @json.FromJson for ChatPhoto
+pub impl @json.ToJson for ChatPhoto
 
 pub struct ChatShared {
   request_id : Int
@@ -673,8 +674,8 @@ pub struct ChatShared {
 pub fn ChatShared::new(request_id~ : Int, chat_id~ : Int64, title? : String, username? : String, photo? : Array[PhotoSize]) -> Self
 pub impl Eq for ChatShared
 pub impl Show for ChatShared
-pub impl @tonyfettes/json.FromJson for ChatShared
-pub impl @tonyfettes/json.ToJson for ChatShared
+pub impl @json.FromJson for ChatShared
+pub impl @json.ToJson for ChatShared
 
 pub(all) enum ChatType {
   Private
@@ -684,8 +685,8 @@ pub(all) enum ChatType {
 }
 pub impl Eq for ChatType
 pub impl Show for ChatType
-pub impl @tonyfettes/json.FromJson for ChatType
-pub impl @tonyfettes/json.ToJson for ChatType
+pub impl @json.FromJson for ChatType
+pub impl @json.ToJson for ChatType
 
 pub struct Checklist {
   header : String
@@ -694,8 +695,8 @@ pub struct Checklist {
 pub fn Checklist::new(header~ : String, tasks~ : Array[ChecklistTask]) -> Self
 pub impl Eq for Checklist
 pub impl Show for Checklist
-pub impl @tonyfettes/json.FromJson for Checklist
-pub impl @tonyfettes/json.ToJson for Checklist
+pub impl @json.FromJson for Checklist
+pub impl @json.ToJson for Checklist
 
 pub struct ChecklistTask {
   id : Int
@@ -705,24 +706,24 @@ pub struct ChecklistTask {
 pub fn ChecklistTask::new(id~ : Int, text~ : String, is_done~ : Bool) -> Self
 pub impl Eq for ChecklistTask
 pub impl Show for ChecklistTask
-pub impl @tonyfettes/json.FromJson for ChecklistTask
-pub impl @tonyfettes/json.ToJson for ChecklistTask
+pub impl @json.FromJson for ChecklistTask
+pub impl @json.ToJson for ChecklistTask
 
 pub struct ChecklistTasksAdded {
 }
 pub fn ChecklistTasksAdded::new() -> Self
 pub impl Eq for ChecklistTasksAdded
 pub impl Show for ChecklistTasksAdded
-pub impl @tonyfettes/json.FromJson for ChecklistTasksAdded
-pub impl @tonyfettes/json.ToJson for ChecklistTasksAdded
+pub impl @json.FromJson for ChecklistTasksAdded
+pub impl @json.ToJson for ChecklistTasksAdded
 
 pub struct ChecklistTasksDone {
 }
 pub fn ChecklistTasksDone::new() -> Self
 pub impl Eq for ChecklistTasksDone
 pub impl Show for ChecklistTasksDone
-pub impl @tonyfettes/json.FromJson for ChecklistTasksDone
-pub impl @tonyfettes/json.ToJson for ChecklistTasksDone
+pub impl @json.FromJson for ChecklistTasksDone
+pub impl @json.ToJson for ChecklistTasksDone
 
 pub struct ChosenInlineResult {
   result_id : String
@@ -734,8 +735,8 @@ pub struct ChosenInlineResult {
 pub fn ChosenInlineResult::new(result_id~ : String, from~ : User, query~ : String, location? : Location, inline_message_id? : String) -> Self
 pub impl Eq for ChosenInlineResult
 pub impl Show for ChosenInlineResult
-pub impl @tonyfettes/json.FromJson for ChosenInlineResult
-pub impl @tonyfettes/json.ToJson for ChosenInlineResult
+pub impl @json.FromJson for ChosenInlineResult
+pub impl @json.ToJson for ChosenInlineResult
 
 pub struct Contact {
   phone_number : String
@@ -747,8 +748,8 @@ pub struct Contact {
 pub fn Contact::new(phone_number~ : String, first_name~ : String, last_name? : String, user_id? : Int64, vcard? : String) -> Self
 pub impl Eq for Contact
 pub impl Show for Contact
-pub impl @tonyfettes/json.FromJson for Contact
-pub impl @tonyfettes/json.ToJson for Contact
+pub impl @json.FromJson for Contact
+pub impl @json.ToJson for Contact
 
 pub struct Dice {
   emoji : String
@@ -757,8 +758,8 @@ pub struct Dice {
 pub fn Dice::new(emoji~ : String, value~ : Int) -> Self
 pub impl Eq for Dice
 pub impl Show for Dice
-pub impl @tonyfettes/json.FromJson for Dice
-pub impl @tonyfettes/json.ToJson for Dice
+pub impl @json.FromJson for Dice
+pub impl @json.ToJson for Dice
 
 pub struct DirectMessagesTopic {
   id : Int
@@ -768,8 +769,8 @@ pub struct DirectMessagesTopic {
 pub fn DirectMessagesTopic::new(id~ : Int, name~ : String, icon_color~ : Int) -> Self
 pub impl Eq for DirectMessagesTopic
 pub impl Show for DirectMessagesTopic
-pub impl @tonyfettes/json.FromJson for DirectMessagesTopic
-pub impl @tonyfettes/json.ToJson for DirectMessagesTopic
+pub impl @json.FromJson for DirectMessagesTopic
+pub impl @json.ToJson for DirectMessagesTopic
 
 pub struct Document {
   file_id : String
@@ -782,8 +783,8 @@ pub struct Document {
 pub fn Document::new(file_id~ : String, file_unique_id~ : String, thumbnail? : PhotoSize, file_name? : String, mime_type? : String, file_size? : Int64) -> Self
 pub impl Eq for Document
 pub impl Show for Document
-pub impl @tonyfettes/json.FromJson for Document
-pub impl @tonyfettes/json.ToJson for Document
+pub impl @json.FromJson for Document
+pub impl @json.ToJson for Document
 
 pub struct DocumentPlaceholder {
   file_id : String
@@ -792,8 +793,8 @@ pub struct DocumentPlaceholder {
 pub fn DocumentPlaceholder::new(file_id~ : String, file_unique_id~ : String) -> Self
 pub impl Eq for DocumentPlaceholder
 pub impl Show for DocumentPlaceholder
-pub impl @tonyfettes/json.FromJson for DocumentPlaceholder
-pub impl @tonyfettes/json.ToJson for DocumentPlaceholder
+pub impl @json.FromJson for DocumentPlaceholder
+pub impl @json.ToJson for DocumentPlaceholder
 
 pub struct EncryptedCredentials {
   data : String
@@ -803,8 +804,8 @@ pub struct EncryptedCredentials {
 pub fn EncryptedCredentials::new(data~ : String, hash~ : String, secret~ : String) -> Self
 pub impl Eq for EncryptedCredentials
 pub impl Show for EncryptedCredentials
-pub impl @tonyfettes/json.FromJson for EncryptedCredentials
-pub impl @tonyfettes/json.ToJson for EncryptedCredentials
+pub impl @json.FromJson for EncryptedCredentials
+pub impl @json.ToJson for EncryptedCredentials
 
 pub struct EncryptedPassportElement {
   type_ : String
@@ -821,8 +822,8 @@ pub struct EncryptedPassportElement {
 pub fn EncryptedPassportElement::new(type_~ : String, hash~ : String, data? : String, phone_number? : String, email? : String, files? : Array[PassportFile], front_side? : PassportFile, reverse_side? : PassportFile, selfie? : PassportFile, translation? : Array[PassportFile]) -> Self
 pub impl Eq for EncryptedPassportElement
 pub impl Show for EncryptedPassportElement
-pub impl @tonyfettes/json.FromJson for EncryptedPassportElement
-pub impl @tonyfettes/json.ToJson for EncryptedPassportElement
+pub impl @json.FromJson for EncryptedPassportElement
+pub impl @json.ToJson for EncryptedPassportElement
 
 pub struct ExternalReplyInfo {
   origin : MessageOriginPlaceholder
@@ -853,8 +854,8 @@ pub struct ExternalReplyInfo {
 pub fn ExternalReplyInfo::new(origin~ : MessageOriginPlaceholder, chat? : Chat, message_id? : Int, link_preview_options? : LinkPreviewPlaceholder, animation? : Animation, audio? : Audio, document? : Document, paid_media? : PaidMediaInfo, photo? : Array[PhotoSize], sticker? : Sticker, story? : Story, video? : Video, video_note? : VideoNote, voice? : Voice, has_media_spoiler? : Bool, contact? : Contact, dice? : Dice, game? : GamePlaceholder, giveaway? : Giveaway, giveaway_winners? : GiveawayWinners, invoice? : Invoice, location? : Location, poll? : Poll, venue? : Venue) -> Self
 pub impl Eq for ExternalReplyInfo
 pub impl Show for ExternalReplyInfo
-pub impl @tonyfettes/json.FromJson for ExternalReplyInfo
-pub impl @tonyfettes/json.ToJson for ExternalReplyInfo
+pub impl @json.FromJson for ExternalReplyInfo
+pub impl @json.ToJson for ExternalReplyInfo
 
 pub struct File {
   file_id : String
@@ -865,8 +866,8 @@ pub struct File {
 pub fn File::new(file_id~ : String, file_unique_id~ : String, file_size? : Int64, file_path? : String) -> Self
 pub impl Eq for File
 pub impl Show for File
-pub impl @tonyfettes/json.FromJson for File
-pub impl @tonyfettes/json.ToJson for File
+pub impl @json.FromJson for File
+pub impl @json.ToJson for File
 
 pub struct FilePlaceholder {
   file_id : String
@@ -875,8 +876,8 @@ pub struct FilePlaceholder {
 pub fn FilePlaceholder::new(file_id~ : String, file_unique_id~ : String) -> Self
 pub impl Eq for FilePlaceholder
 pub impl Show for FilePlaceholder
-pub impl @tonyfettes/json.FromJson for FilePlaceholder
-pub impl @tonyfettes/json.ToJson for FilePlaceholder
+pub impl @json.FromJson for FilePlaceholder
+pub impl @json.ToJson for FilePlaceholder
 
 pub struct ForceReply {
   force_reply : Bool
@@ -886,8 +887,8 @@ pub struct ForceReply {
 pub fn ForceReply::new(force_reply~ : Bool, input_field_placeholder? : String, selective? : Bool) -> Self
 pub impl Eq for ForceReply
 pub impl Show for ForceReply
-pub impl @tonyfettes/json.FromJson for ForceReply
-pub impl @tonyfettes/json.ToJson for ForceReply
+pub impl @json.FromJson for ForceReply
+pub impl @json.ToJson for ForceReply
 
 pub struct ForumTopic {
   message_thread_id : Int
@@ -898,16 +899,16 @@ pub struct ForumTopic {
 pub fn ForumTopic::new(message_thread_id~ : Int, name~ : String, icon_color~ : Int, icon_custom_emoji_id? : String) -> Self
 pub impl Eq for ForumTopic
 pub impl Show for ForumTopic
-pub impl @tonyfettes/json.FromJson for ForumTopic
-pub impl @tonyfettes/json.ToJson for ForumTopic
+pub impl @json.FromJson for ForumTopic
+pub impl @json.ToJson for ForumTopic
 
 pub struct ForumTopicClosed {
 }
 pub fn ForumTopicClosed::new() -> Self
 pub impl Eq for ForumTopicClosed
 pub impl Show for ForumTopicClosed
-pub impl @tonyfettes/json.FromJson for ForumTopicClosed
-pub impl @tonyfettes/json.ToJson for ForumTopicClosed
+pub impl @json.FromJson for ForumTopicClosed
+pub impl @json.ToJson for ForumTopicClosed
 
 pub struct ForumTopicCreated {
   name : String
@@ -917,8 +918,8 @@ pub struct ForumTopicCreated {
 pub fn ForumTopicCreated::new(name~ : String, icon_color~ : Int, icon_custom_emoji_id? : String) -> Self
 pub impl Eq for ForumTopicCreated
 pub impl Show for ForumTopicCreated
-pub impl @tonyfettes/json.FromJson for ForumTopicCreated
-pub impl @tonyfettes/json.ToJson for ForumTopicCreated
+pub impl @json.FromJson for ForumTopicCreated
+pub impl @json.ToJson for ForumTopicCreated
 
 pub struct ForumTopicEdited {
   name : String?
@@ -927,16 +928,16 @@ pub struct ForumTopicEdited {
 pub fn ForumTopicEdited::new(name? : String, icon_custom_emoji_id? : String) -> Self
 pub impl Eq for ForumTopicEdited
 pub impl Show for ForumTopicEdited
-pub impl @tonyfettes/json.FromJson for ForumTopicEdited
-pub impl @tonyfettes/json.ToJson for ForumTopicEdited
+pub impl @json.FromJson for ForumTopicEdited
+pub impl @json.ToJson for ForumTopicEdited
 
 pub struct ForumTopicReopened {
 }
 pub fn ForumTopicReopened::new() -> Self
 pub impl Eq for ForumTopicReopened
 pub impl Show for ForumTopicReopened
-pub impl @tonyfettes/json.FromJson for ForumTopicReopened
-pub impl @tonyfettes/json.ToJson for ForumTopicReopened
+pub impl @json.FromJson for ForumTopicReopened
+pub impl @json.ToJson for ForumTopicReopened
 
 pub struct GamePlaceholder {
   title : String
@@ -945,24 +946,24 @@ pub struct GamePlaceholder {
 pub fn GamePlaceholder::new(title~ : String, description~ : String) -> Self
 pub impl Eq for GamePlaceholder
 pub impl Show for GamePlaceholder
-pub impl @tonyfettes/json.FromJson for GamePlaceholder
-pub impl @tonyfettes/json.ToJson for GamePlaceholder
+pub impl @json.FromJson for GamePlaceholder
+pub impl @json.ToJson for GamePlaceholder
 
 pub struct GeneralForumTopicHidden {
 }
 pub fn GeneralForumTopicHidden::new() -> Self
 pub impl Eq for GeneralForumTopicHidden
 pub impl Show for GeneralForumTopicHidden
-pub impl @tonyfettes/json.FromJson for GeneralForumTopicHidden
-pub impl @tonyfettes/json.ToJson for GeneralForumTopicHidden
+pub impl @json.FromJson for GeneralForumTopicHidden
+pub impl @json.ToJson for GeneralForumTopicHidden
 
 pub struct GeneralForumTopicUnhidden {
 }
 pub fn GeneralForumTopicUnhidden::new() -> Self
 pub impl Eq for GeneralForumTopicUnhidden
 pub impl Show for GeneralForumTopicUnhidden
-pub impl @tonyfettes/json.FromJson for GeneralForumTopicUnhidden
-pub impl @tonyfettes/json.ToJson for GeneralForumTopicUnhidden
+pub impl @json.FromJson for GeneralForumTopicUnhidden
+pub impl @json.ToJson for GeneralForumTopicUnhidden
 
 pub struct Gift {
   id : String
@@ -982,8 +983,8 @@ pub struct Gift {
 pub fn Gift::new(id~ : String, sticker~ : StickerPlaceholder, star_count~ : Int, total_count? : Int, remaining_count? : Int, publisher_chat? : Chat, colors? : UniqueGiftColors, background? : GiftBackground, unique_gift_variant_count? : Int, unique_gift_number? : Int, gifts_from_channels? : Bool, is_premium? : Bool, has_colors? : Bool) -> Self
 pub impl Eq for Gift
 pub impl Show for Gift
-pub impl @tonyfettes/json.FromJson for Gift
-pub impl @tonyfettes/json.ToJson for Gift
+pub impl @json.FromJson for Gift
+pub impl @json.ToJson for Gift
 
 pub struct GiftBackground {
   type_ : String
@@ -994,8 +995,8 @@ pub struct GiftBackground {
 pub fn GiftBackground::new(type_~ : String, fill_color? : Int, gradient_top_color? : Int, gradient_bottom_color? : Int) -> Self
 pub impl Eq for GiftBackground
 pub impl Show for GiftBackground
-pub impl @tonyfettes/json.FromJson for GiftBackground
-pub impl @tonyfettes/json.ToJson for GiftBackground
+pub impl @json.FromJson for GiftBackground
+pub impl @json.ToJson for GiftBackground
 
 pub struct GiftInfo {
   gift : Gift
@@ -1004,8 +1005,8 @@ pub struct GiftInfo {
 pub fn GiftInfo::new(gift~ : Gift, from? : User) -> Self
 pub impl Eq for GiftInfo
 pub impl Show for GiftInfo
-pub impl @tonyfettes/json.FromJson for GiftInfo
-pub impl @tonyfettes/json.ToJson for GiftInfo
+pub impl @json.FromJson for GiftInfo
+pub impl @json.ToJson for GiftInfo
 
 pub struct Gifts {
   gifts : Array[Gift]
@@ -1013,8 +1014,8 @@ pub struct Gifts {
 pub fn Gifts::new(gifts~ : Array[Gift]) -> Self
 pub impl Eq for Gifts
 pub impl Show for Gifts
-pub impl @tonyfettes/json.FromJson for Gifts
-pub impl @tonyfettes/json.ToJson for Gifts
+pub impl @json.FromJson for Gifts
+pub impl @json.ToJson for Gifts
 
 pub struct Giveaway {
   chats : Array[Chat]
@@ -1030,8 +1031,8 @@ pub struct Giveaway {
 pub fn Giveaway::new(chats~ : Array[Chat], winners_selection_date~ : Int, winner_count~ : Int, only_new_members? : Bool, has_public_winners? : Bool, prize_description? : String, country_codes? : Array[String], prize_star_count? : Int, premium_subscription_month_count? : Int) -> Self
 pub impl Eq for Giveaway
 pub impl Show for Giveaway
-pub impl @tonyfettes/json.FromJson for Giveaway
-pub impl @tonyfettes/json.ToJson for Giveaway
+pub impl @json.FromJson for Giveaway
+pub impl @json.ToJson for Giveaway
 
 pub struct GiveawayCompleted {
   winner_count : Int
@@ -1042,8 +1043,8 @@ pub struct GiveawayCompleted {
 pub fn GiveawayCompleted::new(winner_count~ : Int, unclaimed_prize_count? : Int, giveaway_message? : Message, is_star_giveaway? : Bool) -> Self
 pub impl Eq for GiveawayCompleted
 pub impl Show for GiveawayCompleted
-pub impl @tonyfettes/json.FromJson for GiveawayCompleted
-pub impl @tonyfettes/json.ToJson for GiveawayCompleted
+pub impl @json.FromJson for GiveawayCompleted
+pub impl @json.ToJson for GiveawayCompleted
 
 pub struct GiveawayCreated {
   prize_star_count : Int?
@@ -1051,8 +1052,8 @@ pub struct GiveawayCreated {
 pub fn GiveawayCreated::new(prize_star_count? : Int) -> Self
 pub impl Eq for GiveawayCreated
 pub impl Show for GiveawayCreated
-pub impl @tonyfettes/json.FromJson for GiveawayCreated
-pub impl @tonyfettes/json.ToJson for GiveawayCreated
+pub impl @json.FromJson for GiveawayCreated
+pub impl @json.ToJson for GiveawayCreated
 
 pub struct GiveawayWinners {
   chat : Chat
@@ -1071,8 +1072,8 @@ pub struct GiveawayWinners {
 pub fn GiveawayWinners::new(chat~ : Chat, giveaway_message_id~ : Int, winners_selection_date~ : Int, winner_count~ : Int, winners~ : Array[User], additional_chat_count? : Int, prize_star_count? : Int, premium_subscription_month_count? : Int, unclaimed_prize_count? : Int, only_new_members? : Bool, was_refunded? : Bool, prize_description? : String) -> Self
 pub impl Eq for GiveawayWinners
 pub impl Show for GiveawayWinners
-pub impl @tonyfettes/json.FromJson for GiveawayWinners
-pub impl @tonyfettes/json.ToJson for GiveawayWinners
+pub impl @json.FromJson for GiveawayWinners
+pub impl @json.ToJson for GiveawayWinners
 
 pub struct InlineKeyboardButton {
   text : String
@@ -1082,8 +1083,8 @@ pub struct InlineKeyboardButton {
 pub fn InlineKeyboardButton::new(text~ : String, url? : String, callback_data? : String) -> Self
 pub impl Eq for InlineKeyboardButton
 pub impl Show for InlineKeyboardButton
-pub impl @tonyfettes/json.FromJson for InlineKeyboardButton
-pub impl @tonyfettes/json.ToJson for InlineKeyboardButton
+pub impl @json.FromJson for InlineKeyboardButton
+pub impl @json.ToJson for InlineKeyboardButton
 
 pub struct InlineKeyboardMarkup {
   inline_keyboard : Array[Array[InlineKeyboardButton]]
@@ -1091,8 +1092,8 @@ pub struct InlineKeyboardMarkup {
 pub fn InlineKeyboardMarkup::new(inline_keyboard~ : Array[Array[InlineKeyboardButton]]) -> Self
 pub impl Eq for InlineKeyboardMarkup
 pub impl Show for InlineKeyboardMarkup
-pub impl @tonyfettes/json.FromJson for InlineKeyboardMarkup
-pub impl @tonyfettes/json.ToJson for InlineKeyboardMarkup
+pub impl @json.FromJson for InlineKeyboardMarkup
+pub impl @json.ToJson for InlineKeyboardMarkup
 
 pub struct InlineQuery {
   id : String
@@ -1105,8 +1106,8 @@ pub struct InlineQuery {
 pub fn InlineQuery::new(id~ : String, from~ : User, query~ : String, offset~ : String, chat_type? : String, location? : Location) -> Self
 pub impl Eq for InlineQuery
 pub impl Show for InlineQuery
-pub impl @tonyfettes/json.FromJson for InlineQuery
-pub impl @tonyfettes/json.ToJson for InlineQuery
+pub impl @json.FromJson for InlineQuery
+pub impl @json.ToJson for InlineQuery
 
 pub struct InlineQueryResultArticle {
   type_ : String
@@ -1124,8 +1125,8 @@ pub struct InlineQueryResultArticle {
 pub fn InlineQueryResultArticle::new(id~ : String, title~ : String, input_message_content~ : InputTextMessageContent, type_? : String, reply_markup? : InlineKeyboardMarkup, url? : String, hide_url? : Bool, description? : String, thumbnail_url? : String, thumbnail_width? : Int, thumbnail_height? : Int) -> Self
 pub impl Eq for InlineQueryResultArticle
 pub impl Show for InlineQueryResultArticle
-pub impl @tonyfettes/json.FromJson for InlineQueryResultArticle
-pub impl @tonyfettes/json.ToJson for InlineQueryResultArticle
+pub impl @json.FromJson for InlineQueryResultArticle
+pub impl @json.ToJson for InlineQueryResultArticle
 
 pub struct InlineQueryResultAudio {
   type_ : String
@@ -1143,8 +1144,8 @@ pub struct InlineQueryResultAudio {
 pub fn InlineQueryResultAudio::new(id~ : String, audio_url~ : String, title~ : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], performer? : String, audio_duration? : Int, reply_markup? : InlineKeyboardMarkup, input_message_content? : InputMessageContentPlaceholder) -> Self
 pub impl Eq for InlineQueryResultAudio
 pub impl Show for InlineQueryResultAudio
-pub impl @tonyfettes/json.FromJson for InlineQueryResultAudio
-pub impl @tonyfettes/json.ToJson for InlineQueryResultAudio
+pub impl @json.FromJson for InlineQueryResultAudio
+pub impl @json.ToJson for InlineQueryResultAudio
 
 pub struct InlineQueryResultCachedAudio {
   type_ : String
@@ -1159,8 +1160,8 @@ pub struct InlineQueryResultCachedAudio {
 pub fn InlineQueryResultCachedAudio::new(id~ : String, audio_file_id~ : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], reply_markup? : InlineKeyboardMarkup, input_message_content? : CachedInputMessageContent) -> Self
 pub impl Eq for InlineQueryResultCachedAudio
 pub impl Show for InlineQueryResultCachedAudio
-pub impl @tonyfettes/json.FromJson for InlineQueryResultCachedAudio
-pub impl @tonyfettes/json.ToJson for InlineQueryResultCachedAudio
+pub impl @json.FromJson for InlineQueryResultCachedAudio
+pub impl @json.ToJson for InlineQueryResultCachedAudio
 
 pub struct InlineQueryResultCachedDocument {
   type_ : String
@@ -1177,8 +1178,8 @@ pub struct InlineQueryResultCachedDocument {
 pub fn InlineQueryResultCachedDocument::new(id~ : String, title~ : String, document_file_id~ : String, description? : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], reply_markup? : InlineKeyboardMarkup, input_message_content? : CachedInputMessageContent) -> Self
 pub impl Eq for InlineQueryResultCachedDocument
 pub impl Show for InlineQueryResultCachedDocument
-pub impl @tonyfettes/json.FromJson for InlineQueryResultCachedDocument
-pub impl @tonyfettes/json.ToJson for InlineQueryResultCachedDocument
+pub impl @json.FromJson for InlineQueryResultCachedDocument
+pub impl @json.ToJson for InlineQueryResultCachedDocument
 
 pub struct InlineQueryResultCachedGif {
   type_ : String
@@ -1195,8 +1196,8 @@ pub struct InlineQueryResultCachedGif {
 pub fn InlineQueryResultCachedGif::new(id~ : String, gif_file_id~ : String, title? : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], show_caption_above_media? : Bool, reply_markup? : InlineKeyboardMarkup, input_message_content? : CachedInputMessageContent) -> Self
 pub impl Eq for InlineQueryResultCachedGif
 pub impl Show for InlineQueryResultCachedGif
-pub impl @tonyfettes/json.FromJson for InlineQueryResultCachedGif
-pub impl @tonyfettes/json.ToJson for InlineQueryResultCachedGif
+pub impl @json.FromJson for InlineQueryResultCachedGif
+pub impl @json.ToJson for InlineQueryResultCachedGif
 
 pub struct InlineQueryResultCachedMpeg4Gif {
   type_ : String
@@ -1213,8 +1214,8 @@ pub struct InlineQueryResultCachedMpeg4Gif {
 pub fn InlineQueryResultCachedMpeg4Gif::new(id~ : String, mpeg4_file_id~ : String, title? : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], show_caption_above_media? : Bool, reply_markup? : InlineKeyboardMarkup, input_message_content? : CachedInputMessageContent) -> Self
 pub impl Eq for InlineQueryResultCachedMpeg4Gif
 pub impl Show for InlineQueryResultCachedMpeg4Gif
-pub impl @tonyfettes/json.FromJson for InlineQueryResultCachedMpeg4Gif
-pub impl @tonyfettes/json.ToJson for InlineQueryResultCachedMpeg4Gif
+pub impl @json.FromJson for InlineQueryResultCachedMpeg4Gif
+pub impl @json.ToJson for InlineQueryResultCachedMpeg4Gif
 
 pub struct InlineQueryResultCachedPhoto {
   type_ : String
@@ -1232,8 +1233,8 @@ pub struct InlineQueryResultCachedPhoto {
 pub fn InlineQueryResultCachedPhoto::new(id~ : String, photo_file_id~ : String, title? : String, description? : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], show_caption_above_media? : Bool, reply_markup? : InlineKeyboardMarkup, input_message_content? : CachedInputMessageContent) -> Self
 pub impl Eq for InlineQueryResultCachedPhoto
 pub impl Show for InlineQueryResultCachedPhoto
-pub impl @tonyfettes/json.FromJson for InlineQueryResultCachedPhoto
-pub impl @tonyfettes/json.ToJson for InlineQueryResultCachedPhoto
+pub impl @json.FromJson for InlineQueryResultCachedPhoto
+pub impl @json.ToJson for InlineQueryResultCachedPhoto
 
 pub struct InlineQueryResultCachedSticker {
   type_ : String
@@ -1245,8 +1246,8 @@ pub struct InlineQueryResultCachedSticker {
 pub fn InlineQueryResultCachedSticker::new(id~ : String, sticker_file_id~ : String, reply_markup? : InlineKeyboardMarkup, input_message_content? : CachedInputMessageContent) -> Self
 pub impl Eq for InlineQueryResultCachedSticker
 pub impl Show for InlineQueryResultCachedSticker
-pub impl @tonyfettes/json.FromJson for InlineQueryResultCachedSticker
-pub impl @tonyfettes/json.ToJson for InlineQueryResultCachedSticker
+pub impl @json.FromJson for InlineQueryResultCachedSticker
+pub impl @json.ToJson for InlineQueryResultCachedSticker
 
 pub struct InlineQueryResultCachedVideo {
   type_ : String
@@ -1264,8 +1265,8 @@ pub struct InlineQueryResultCachedVideo {
 pub fn InlineQueryResultCachedVideo::new(id~ : String, video_file_id~ : String, title~ : String, description? : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], show_caption_above_media? : Bool, reply_markup? : InlineKeyboardMarkup, input_message_content? : CachedInputMessageContent) -> Self
 pub impl Eq for InlineQueryResultCachedVideo
 pub impl Show for InlineQueryResultCachedVideo
-pub impl @tonyfettes/json.FromJson for InlineQueryResultCachedVideo
-pub impl @tonyfettes/json.ToJson for InlineQueryResultCachedVideo
+pub impl @json.FromJson for InlineQueryResultCachedVideo
+pub impl @json.ToJson for InlineQueryResultCachedVideo
 
 pub struct InlineQueryResultCachedVoice {
   type_ : String
@@ -1281,8 +1282,8 @@ pub struct InlineQueryResultCachedVoice {
 pub fn InlineQueryResultCachedVoice::new(id~ : String, voice_file_id~ : String, title~ : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], reply_markup? : InlineKeyboardMarkup, input_message_content? : CachedInputMessageContent) -> Self
 pub impl Eq for InlineQueryResultCachedVoice
 pub impl Show for InlineQueryResultCachedVoice
-pub impl @tonyfettes/json.FromJson for InlineQueryResultCachedVoice
-pub impl @tonyfettes/json.ToJson for InlineQueryResultCachedVoice
+pub impl @json.FromJson for InlineQueryResultCachedVoice
+pub impl @json.ToJson for InlineQueryResultCachedVoice
 
 pub struct InlineQueryResultContact {
   type_ : String
@@ -1300,8 +1301,8 @@ pub struct InlineQueryResultContact {
 pub fn InlineQueryResultContact::new(id~ : String, phone_number~ : String, first_name~ : String, type_? : String, last_name? : String, vcard? : String, reply_markup? : InlineKeyboardMarkup, input_message_content? : InputTextMessageContent, thumbnail_url? : String, thumbnail_width? : Int, thumbnail_height? : Int) -> Self
 pub impl Eq for InlineQueryResultContact
 pub impl Show for InlineQueryResultContact
-pub impl @tonyfettes/json.FromJson for InlineQueryResultContact
-pub impl @tonyfettes/json.ToJson for InlineQueryResultContact
+pub impl @json.FromJson for InlineQueryResultContact
+pub impl @json.ToJson for InlineQueryResultContact
 
 pub struct InlineQueryResultDocument {
   type_ : String
@@ -1322,8 +1323,8 @@ pub struct InlineQueryResultDocument {
 pub fn InlineQueryResultDocument::new(id~ : String, title~ : String, document_url~ : String, mime_type~ : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], description? : String, reply_markup? : InlineKeyboardMarkup, input_message_content? : InputMessageContentPlaceholder, thumbnail_url? : String, thumbnail_width? : Int, thumbnail_height? : Int) -> Self
 pub impl Eq for InlineQueryResultDocument
 pub impl Show for InlineQueryResultDocument
-pub impl @tonyfettes/json.FromJson for InlineQueryResultDocument
-pub impl @tonyfettes/json.ToJson for InlineQueryResultDocument
+pub impl @json.FromJson for InlineQueryResultDocument
+pub impl @json.ToJson for InlineQueryResultDocument
 
 pub struct InlineQueryResultGif {
   type_ : String
@@ -1345,8 +1346,8 @@ pub struct InlineQueryResultGif {
 pub fn InlineQueryResultGif::new(id~ : String, gif_url~ : String, thumbnail_url~ : String, gif_width? : Int, gif_height? : Int, gif_duration? : Int, thumbnail_mime_type? : String, title? : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], show_caption_above_media? : Bool, reply_markup? : InlineKeyboardMarkup, input_message_content? : InputTextMessageContent) -> Self
 pub impl Eq for InlineQueryResultGif
 pub impl Show for InlineQueryResultGif
-pub impl @tonyfettes/json.FromJson for InlineQueryResultGif
-pub impl @tonyfettes/json.ToJson for InlineQueryResultGif
+pub impl @json.FromJson for InlineQueryResultGif
+pub impl @json.ToJson for InlineQueryResultGif
 
 pub struct InlineQueryResultLocation {
   type_ : String
@@ -1367,8 +1368,8 @@ pub struct InlineQueryResultLocation {
 pub fn InlineQueryResultLocation::new(id~ : String, latitude~ : Double, longitude~ : Double, title~ : String, type_? : String, horizontal_accuracy? : Double, live_period? : Int, heading? : Int, proximity_alert_radius? : Int, reply_markup? : InlineKeyboardMarkup, input_message_content? : InputTextMessageContent, thumbnail_url? : String, thumbnail_width? : Int, thumbnail_height? : Int) -> Self
 pub impl Eq for InlineQueryResultLocation
 pub impl Show for InlineQueryResultLocation
-pub impl @tonyfettes/json.FromJson for InlineQueryResultLocation
-pub impl @tonyfettes/json.ToJson for InlineQueryResultLocation
+pub impl @json.FromJson for InlineQueryResultLocation
+pub impl @json.ToJson for InlineQueryResultLocation
 
 pub struct InlineQueryResultMpeg4Gif {
   type_ : String
@@ -1390,8 +1391,8 @@ pub struct InlineQueryResultMpeg4Gif {
 pub fn InlineQueryResultMpeg4Gif::new(id~ : String, mpeg4_url~ : String, thumbnail_url~ : String, mpeg4_width? : Int, mpeg4_height? : Int, mpeg4_duration? : Int, thumbnail_mime_type? : String, title? : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], show_caption_above_media? : Bool, reply_markup? : InlineKeyboardMarkup, input_message_content? : InputTextMessageContent) -> Self
 pub impl Eq for InlineQueryResultMpeg4Gif
 pub impl Show for InlineQueryResultMpeg4Gif
-pub impl @tonyfettes/json.FromJson for InlineQueryResultMpeg4Gif
-pub impl @tonyfettes/json.ToJson for InlineQueryResultMpeg4Gif
+pub impl @json.FromJson for InlineQueryResultMpeg4Gif
+pub impl @json.ToJson for InlineQueryResultMpeg4Gif
 
 pub struct InlineQueryResultPhoto {
   type_ : String
@@ -1412,8 +1413,8 @@ pub struct InlineQueryResultPhoto {
 pub fn InlineQueryResultPhoto::new(id~ : String, photo_url~ : String, thumbnail_url~ : String, photo_width? : Int, photo_height? : Int, title? : String, description? : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], show_caption_above_media? : Bool, reply_markup? : InlineKeyboardMarkup, input_message_content? : InputTextMessageContent) -> Self
 pub impl Eq for InlineQueryResultPhoto
 pub impl Show for InlineQueryResultPhoto
-pub impl @tonyfettes/json.FromJson for InlineQueryResultPhoto
-pub impl @tonyfettes/json.ToJson for InlineQueryResultPhoto
+pub impl @json.FromJson for InlineQueryResultPhoto
+pub impl @json.ToJson for InlineQueryResultPhoto
 
 pub struct InlineQueryResultVenue {
   type_ : String
@@ -1435,8 +1436,8 @@ pub struct InlineQueryResultVenue {
 pub fn InlineQueryResultVenue::new(id~ : String, latitude~ : Double, longitude~ : Double, title~ : String, address~ : String, type_? : String, foursquare_id? : String, foursquare_type? : String, google_place_id? : String, google_place_type? : String, reply_markup? : InlineKeyboardMarkup, input_message_content? : InputTextMessageContent, thumbnail_url? : String, thumbnail_width? : Int, thumbnail_height? : Int) -> Self
 pub impl Eq for InlineQueryResultVenue
 pub impl Show for InlineQueryResultVenue
-pub impl @tonyfettes/json.FromJson for InlineQueryResultVenue
-pub impl @tonyfettes/json.ToJson for InlineQueryResultVenue
+pub impl @json.FromJson for InlineQueryResultVenue
+pub impl @json.ToJson for InlineQueryResultVenue
 
 pub struct InlineQueryResultVideo {
   type_ : String
@@ -1459,8 +1460,8 @@ pub struct InlineQueryResultVideo {
 pub fn InlineQueryResultVideo::new(id~ : String, video_url~ : String, mime_type~ : String, thumbnail_url~ : String, title~ : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], show_caption_above_media? : Bool, video_width? : Int, video_height? : Int, video_duration? : Int, description? : String, reply_markup? : InlineKeyboardMarkup, input_message_content? : InputTextMessageContent) -> Self
 pub impl Eq for InlineQueryResultVideo
 pub impl Show for InlineQueryResultVideo
-pub impl @tonyfettes/json.FromJson for InlineQueryResultVideo
-pub impl @tonyfettes/json.ToJson for InlineQueryResultVideo
+pub impl @json.FromJson for InlineQueryResultVideo
+pub impl @json.ToJson for InlineQueryResultVideo
 
 pub struct InlineQueryResultVoice {
   type_ : String
@@ -1477,8 +1478,8 @@ pub struct InlineQueryResultVoice {
 pub fn InlineQueryResultVoice::new(id~ : String, voice_url~ : String, title~ : String, caption? : String, parse_mode? : String, caption_entities? : Array[MessageEntity], voice_duration? : Int, reply_markup? : InlineKeyboardMarkup, input_message_content? : InputMessageContentPlaceholder) -> Self
 pub impl Eq for InlineQueryResultVoice
 pub impl Show for InlineQueryResultVoice
-pub impl @tonyfettes/json.FromJson for InlineQueryResultVoice
-pub impl @tonyfettes/json.ToJson for InlineQueryResultVoice
+pub impl @json.FromJson for InlineQueryResultVoice
+pub impl @json.ToJson for InlineQueryResultVoice
 
 pub struct InlineQueryResultsButton {
   text : String
@@ -1488,8 +1489,8 @@ pub struct InlineQueryResultsButton {
 pub fn InlineQueryResultsButton::new(text~ : String, web_app? : WebAppInfo, start_parameter? : String) -> Self
 pub impl Eq for InlineQueryResultsButton
 pub impl Show for InlineQueryResultsButton
-pub impl @tonyfettes/json.FromJson for InlineQueryResultsButton
-pub impl @tonyfettes/json.ToJson for InlineQueryResultsButton
+pub impl @json.FromJson for InlineQueryResultsButton
+pub impl @json.ToJson for InlineQueryResultsButton
 
 pub struct InputChecklist {
   header : String
@@ -1498,8 +1499,8 @@ pub struct InputChecklist {
 pub fn InputChecklist::new(header~ : String, tasks~ : Array[InputChecklistTask]) -> Self
 pub impl Eq for InputChecklist
 pub impl Show for InputChecklist
-pub impl @tonyfettes/json.FromJson for InputChecklist
-pub impl @tonyfettes/json.ToJson for InputChecklist
+pub impl @json.FromJson for InputChecklist
+pub impl @json.ToJson for InputChecklist
 
 pub struct InputChecklistTask {
   text : String
@@ -1507,8 +1508,8 @@ pub struct InputChecklistTask {
 pub fn InputChecklistTask::new(text~ : String) -> Self
 pub impl Eq for InputChecklistTask
 pub impl Show for InputChecklistTask
-pub impl @tonyfettes/json.FromJson for InputChecklistTask
-pub impl @tonyfettes/json.ToJson for InputChecklistTask
+pub impl @json.FromJson for InputChecklistTask
+pub impl @json.ToJson for InputChecklistTask
 
 pub struct InputContactMessageContent {
   phone_number : String
@@ -1519,8 +1520,8 @@ pub struct InputContactMessageContent {
 pub fn InputContactMessageContent::new(phone_number~ : String, first_name~ : String, last_name? : String, vcard? : String) -> Self
 pub impl Eq for InputContactMessageContent
 pub impl Show for InputContactMessageContent
-pub impl @tonyfettes/json.FromJson for InputContactMessageContent
-pub impl @tonyfettes/json.ToJson for InputContactMessageContent
+pub impl @json.FromJson for InputContactMessageContent
+pub impl @json.ToJson for InputContactMessageContent
 
 pub struct InputInvoiceMessageContent {
   title : String
@@ -1547,8 +1548,8 @@ pub struct InputInvoiceMessageContent {
 pub fn InputInvoiceMessageContent::new(title~ : String, description~ : String, payload~ : String, provider_token? : String, currency~ : String, prices~ : Array[LabeledPrice], max_tip_amount? : Int, suggested_tip_amounts? : Array[Int], provider_data? : String, photo_url? : String, photo_size? : Int, photo_width? : Int, photo_height? : Int, need_name? : Bool, need_phone_number? : Bool, need_email? : Bool, need_shipping_address? : Bool, send_phone_number_to_provider? : Bool, send_email_to_provider? : Bool, is_flexible? : Bool) -> Self
 pub impl Eq for InputInvoiceMessageContent
 pub impl Show for InputInvoiceMessageContent
-pub impl @tonyfettes/json.FromJson for InputInvoiceMessageContent
-pub impl @tonyfettes/json.ToJson for InputInvoiceMessageContent
+pub impl @json.FromJson for InputInvoiceMessageContent
+pub impl @json.ToJson for InputInvoiceMessageContent
 
 pub struct InputLocationMessageContent {
   latitude : Double
@@ -1561,8 +1562,8 @@ pub struct InputLocationMessageContent {
 pub fn InputLocationMessageContent::new(latitude~ : Double, longitude~ : Double, horizontal_accuracy? : Double, live_period? : Int, heading? : Int, proximity_alert_radius? : Int) -> Self
 pub impl Eq for InputLocationMessageContent
 pub impl Show for InputLocationMessageContent
-pub impl @tonyfettes/json.FromJson for InputLocationMessageContent
-pub impl @tonyfettes/json.ToJson for InputLocationMessageContent
+pub impl @json.FromJson for InputLocationMessageContent
+pub impl @json.ToJson for InputLocationMessageContent
 
 pub(all) enum InputMessageContent {
   Text(InputTextMessageContent)
@@ -1573,8 +1574,8 @@ pub(all) enum InputMessageContent {
 }
 pub impl Eq for InputMessageContent
 pub impl Show for InputMessageContent
-pub impl @tonyfettes/json.FromJson for InputMessageContent
-pub impl @tonyfettes/json.ToJson for InputMessageContent
+pub impl @json.FromJson for InputMessageContent
+pub impl @json.ToJson for InputMessageContent
 
 pub struct InputMessageContentPlaceholder {
   message_text : String
@@ -1582,8 +1583,8 @@ pub struct InputMessageContentPlaceholder {
 pub fn InputMessageContentPlaceholder::new(message_text~ : String) -> Self
 pub impl Eq for InputMessageContentPlaceholder
 pub impl Show for InputMessageContentPlaceholder
-pub impl @tonyfettes/json.FromJson for InputMessageContentPlaceholder
-pub impl @tonyfettes/json.ToJson for InputMessageContentPlaceholder
+pub impl @json.FromJson for InputMessageContentPlaceholder
+pub impl @json.ToJson for InputMessageContentPlaceholder
 
 pub struct InputPollOption {
   text : String
@@ -1593,8 +1594,8 @@ pub struct InputPollOption {
 pub fn InputPollOption::new(text~ : String, text_parse_mode? : String, text_entities? : Array[MessageEntity]) -> Self
 pub impl Eq for InputPollOption
 pub impl Show for InputPollOption
-pub impl @tonyfettes/json.FromJson for InputPollOption
-pub impl @tonyfettes/json.ToJson for InputPollOption
+pub impl @json.FromJson for InputPollOption
+pub impl @json.ToJson for InputPollOption
 
 pub struct InputSticker {
   sticker : String
@@ -1606,8 +1607,8 @@ pub struct InputSticker {
 pub fn InputSticker::new(sticker~ : String, format~ : String, emoji_list~ : Array[String], mask_position? : MaskPosition, keywords? : Array[String]) -> Self
 pub impl Eq for InputSticker
 pub impl Show for InputSticker
-pub impl @tonyfettes/json.FromJson for InputSticker
-pub impl @tonyfettes/json.ToJson for InputSticker
+pub impl @json.FromJson for InputSticker
+pub impl @json.ToJson for InputSticker
 
 pub struct InputTextMessageContent {
   message_text : String
@@ -1618,8 +1619,8 @@ pub struct InputTextMessageContent {
 pub fn InputTextMessageContent::new(message_text~ : String, parse_mode? : String, entities? : Array[MessageEntity], link_preview_options? : LinkPreviewOptions) -> Self
 pub impl Eq for InputTextMessageContent
 pub impl Show for InputTextMessageContent
-pub impl @tonyfettes/json.FromJson for InputTextMessageContent
-pub impl @tonyfettes/json.ToJson for InputTextMessageContent
+pub impl @json.FromJson for InputTextMessageContent
+pub impl @json.ToJson for InputTextMessageContent
 
 pub struct InputVenueMessageContent {
   latitude : Double
@@ -1634,8 +1635,8 @@ pub struct InputVenueMessageContent {
 pub fn InputVenueMessageContent::new(latitude~ : Double, longitude~ : Double, title~ : String, address~ : String, foursquare_id? : String, foursquare_type? : String, google_place_id? : String, google_place_type? : String) -> Self
 pub impl Eq for InputVenueMessageContent
 pub impl Show for InputVenueMessageContent
-pub impl @tonyfettes/json.FromJson for InputVenueMessageContent
-pub impl @tonyfettes/json.ToJson for InputVenueMessageContent
+pub impl @json.FromJson for InputVenueMessageContent
+pub impl @json.ToJson for InputVenueMessageContent
 
 pub struct Invoice {
   title : String
@@ -1647,8 +1648,8 @@ pub struct Invoice {
 pub fn Invoice::new(title~ : String, description~ : String, start_parameter~ : String, currency~ : String, total_amount~ : Int) -> Self
 pub impl Eq for Invoice
 pub impl Show for Invoice
-pub impl @tonyfettes/json.FromJson for Invoice
-pub impl @tonyfettes/json.ToJson for Invoice
+pub impl @json.FromJson for Invoice
+pub impl @json.ToJson for Invoice
 
 pub struct KeyboardButton {
   text : String
@@ -1662,8 +1663,8 @@ pub struct KeyboardButton {
 pub fn KeyboardButton::new(text~ : String, request_users? : KeyboardButtonRequestUsers, request_chat? : KeyboardButtonRequestChat, request_contact? : Bool, request_location? : Bool, request_poll? : KeyboardButtonPollType, web_app? : WebAppInfo) -> Self
 pub impl Eq for KeyboardButton
 pub impl Show for KeyboardButton
-pub impl @tonyfettes/json.FromJson for KeyboardButton
-pub impl @tonyfettes/json.ToJson for KeyboardButton
+pub impl @json.FromJson for KeyboardButton
+pub impl @json.ToJson for KeyboardButton
 
 pub struct KeyboardButtonPollType {
   type_ : String?
@@ -1671,8 +1672,8 @@ pub struct KeyboardButtonPollType {
 pub fn KeyboardButtonPollType::new(type_? : String) -> Self
 pub impl Eq for KeyboardButtonPollType
 pub impl Show for KeyboardButtonPollType
-pub impl @tonyfettes/json.FromJson for KeyboardButtonPollType
-pub impl @tonyfettes/json.ToJson for KeyboardButtonPollType
+pub impl @json.FromJson for KeyboardButtonPollType
+pub impl @json.ToJson for KeyboardButtonPollType
 
 pub struct KeyboardButtonRequestChat {
   request_id : Int
@@ -1688,8 +1689,8 @@ pub struct KeyboardButtonRequestChat {
 pub fn KeyboardButtonRequestChat::new(request_id~ : Int, chat_is_channel~ : Bool, chat_is_forum? : Bool, chat_has_username? : Bool, chat_is_created? : Bool, bot_is_member? : Bool, request_title? : Bool, request_username? : Bool, request_photo? : Bool) -> Self
 pub impl Eq for KeyboardButtonRequestChat
 pub impl Show for KeyboardButtonRequestChat
-pub impl @tonyfettes/json.FromJson for KeyboardButtonRequestChat
-pub impl @tonyfettes/json.ToJson for KeyboardButtonRequestChat
+pub impl @json.FromJson for KeyboardButtonRequestChat
+pub impl @json.ToJson for KeyboardButtonRequestChat
 
 pub struct KeyboardButtonRequestUsers {
   request_id : Int
@@ -1703,8 +1704,8 @@ pub struct KeyboardButtonRequestUsers {
 pub fn KeyboardButtonRequestUsers::new(request_id~ : Int, user_is_bot? : Bool, user_is_premium? : Bool, max_quantity? : Int, request_name? : Bool, request_username? : Bool, request_photo? : Bool) -> Self
 pub impl Eq for KeyboardButtonRequestUsers
 pub impl Show for KeyboardButtonRequestUsers
-pub impl @tonyfettes/json.FromJson for KeyboardButtonRequestUsers
-pub impl @tonyfettes/json.ToJson for KeyboardButtonRequestUsers
+pub impl @json.FromJson for KeyboardButtonRequestUsers
+pub impl @json.ToJson for KeyboardButtonRequestUsers
 
 pub struct LabeledPrice {
   label : String
@@ -1713,8 +1714,8 @@ pub struct LabeledPrice {
 pub fn LabeledPrice::new(label~ : String, amount~ : Int) -> Self
 pub impl Eq for LabeledPrice
 pub impl Show for LabeledPrice
-pub impl @tonyfettes/json.FromJson for LabeledPrice
-pub impl @tonyfettes/json.ToJson for LabeledPrice
+pub impl @json.FromJson for LabeledPrice
+pub impl @json.ToJson for LabeledPrice
 
 pub struct LinkPreviewOptions {
   is_disabled : Bool?
@@ -1726,8 +1727,8 @@ pub struct LinkPreviewOptions {
 pub fn LinkPreviewOptions::new(is_disabled? : Bool, url? : String, prefer_small_media? : Bool, prefer_large_media? : Bool, show_above_text? : Bool) -> Self
 pub impl Eq for LinkPreviewOptions
 pub impl Show for LinkPreviewOptions
-pub impl @tonyfettes/json.FromJson for LinkPreviewOptions
-pub impl @tonyfettes/json.ToJson for LinkPreviewOptions
+pub impl @json.FromJson for LinkPreviewOptions
+pub impl @json.ToJson for LinkPreviewOptions
 
 pub struct LinkPreviewPlaceholder {
   is_disabled : Bool?
@@ -1735,8 +1736,8 @@ pub struct LinkPreviewPlaceholder {
 pub fn LinkPreviewPlaceholder::new(is_disabled? : Bool) -> Self
 pub impl Eq for LinkPreviewPlaceholder
 pub impl Show for LinkPreviewPlaceholder
-pub impl @tonyfettes/json.FromJson for LinkPreviewPlaceholder
-pub impl @tonyfettes/json.ToJson for LinkPreviewPlaceholder
+pub impl @json.FromJson for LinkPreviewPlaceholder
+pub impl @json.ToJson for LinkPreviewPlaceholder
 
 pub struct Location {
   latitude : Double
@@ -1749,8 +1750,8 @@ pub struct Location {
 pub fn Location::new(latitude~ : Double, longitude~ : Double, horizontal_accuracy? : Double, live_period? : Int, heading? : Int, proximity_alert_radius? : Int) -> Self
 pub impl Eq for Location
 pub impl Show for Location
-pub impl @tonyfettes/json.FromJson for Location
-pub impl @tonyfettes/json.ToJson for Location
+pub impl @json.FromJson for Location
+pub impl @json.ToJson for Location
 
 pub struct LoginUrl {
   url : String
@@ -1761,8 +1762,8 @@ pub struct LoginUrl {
 pub fn LoginUrl::new(url~ : String, forward_text? : String, bot_username? : String, request_write_access? : Bool) -> Self
 pub impl Eq for LoginUrl
 pub impl Show for LoginUrl
-pub impl @tonyfettes/json.FromJson for LoginUrl
-pub impl @tonyfettes/json.ToJson for LoginUrl
+pub impl @json.FromJson for LoginUrl
+pub impl @json.ToJson for LoginUrl
 
 pub struct MaskPosition {
   point : String
@@ -1773,8 +1774,8 @@ pub struct MaskPosition {
 pub fn MaskPosition::new(point~ : String, x_shift~ : Double, y_shift~ : Double, scale~ : Double) -> Self
 pub impl Eq for MaskPosition
 pub impl Show for MaskPosition
-pub impl @tonyfettes/json.FromJson for MaskPosition
-pub impl @tonyfettes/json.ToJson for MaskPosition
+pub impl @json.FromJson for MaskPosition
+pub impl @json.ToJson for MaskPosition
 
 pub struct Message {
   message_id : Int
@@ -1794,8 +1795,8 @@ pub struct Message {
 pub fn Message::new(message_id~ : Int, from? : User, date~ : Int, chat~ : Chat, text? : String, entities? : Array[MessageEntity], reply_to_message? : Self, message_thread_id? : Int, is_topic_message? : Bool, direct_messages_topic? : DirectMessagesTopic, gift_upgrade_sent? : GiftInfo, gift_id? : String, is_from_blockchain? : Bool) -> Self
 pub impl Eq for Message
 pub impl Show for Message
-pub impl @tonyfettes/json.FromJson for Message
-pub impl @tonyfettes/json.ToJson for Message
+pub impl @json.FromJson for Message
+pub impl @json.ToJson for Message
 
 pub struct MessageAutoDeleteTimerChanged {
   message_auto_delete_time : Int
@@ -1803,8 +1804,8 @@ pub struct MessageAutoDeleteTimerChanged {
 pub fn MessageAutoDeleteTimerChanged::new(message_auto_delete_time~ : Int) -> Self
 pub impl Eq for MessageAutoDeleteTimerChanged
 pub impl Show for MessageAutoDeleteTimerChanged
-pub impl @tonyfettes/json.FromJson for MessageAutoDeleteTimerChanged
-pub impl @tonyfettes/json.ToJson for MessageAutoDeleteTimerChanged
+pub impl @json.FromJson for MessageAutoDeleteTimerChanged
+pub impl @json.ToJson for MessageAutoDeleteTimerChanged
 
 pub struct MessageEntity {
   type_ : String
@@ -1817,8 +1818,8 @@ pub struct MessageEntity {
 pub fn MessageEntity::new(type_~ : String, offset~ : Int, length~ : Int, url? : String, user? : User, language? : String) -> Self
 pub impl Eq for MessageEntity
 pub impl Show for MessageEntity
-pub impl @tonyfettes/json.FromJson for MessageEntity
-pub impl @tonyfettes/json.ToJson for MessageEntity
+pub impl @json.FromJson for MessageEntity
+pub impl @json.ToJson for MessageEntity
 
 pub struct MessageId {
   message_id : Int
@@ -1826,8 +1827,8 @@ pub struct MessageId {
 pub fn MessageId::new(message_id~ : Int) -> Self
 pub impl Eq for MessageId
 pub impl Show for MessageId
-pub impl @tonyfettes/json.FromJson for MessageId
-pub impl @tonyfettes/json.ToJson for MessageId
+pub impl @json.FromJson for MessageId
+pub impl @json.ToJson for MessageId
 
 pub(all) enum MessageOrigin {
   User(MessageOriginUser)
@@ -1837,8 +1838,8 @@ pub(all) enum MessageOrigin {
 }
 pub impl Eq for MessageOrigin
 pub impl Show for MessageOrigin
-pub impl @tonyfettes/json.FromJson for MessageOrigin
-pub impl @tonyfettes/json.ToJson for MessageOrigin
+pub impl @json.FromJson for MessageOrigin
+pub impl @json.ToJson for MessageOrigin
 
 pub struct MessageOriginChannel {
   date : Int
@@ -1874,8 +1875,8 @@ pub struct MessageOriginPlaceholder {
 pub fn MessageOriginPlaceholder::new(type_~ : String, date~ : Int) -> Self
 pub impl Eq for MessageOriginPlaceholder
 pub impl Show for MessageOriginPlaceholder
-pub impl @tonyfettes/json.FromJson for MessageOriginPlaceholder
-pub impl @tonyfettes/json.ToJson for MessageOriginPlaceholder
+pub impl @json.FromJson for MessageOriginPlaceholder
+pub impl @json.ToJson for MessageOriginPlaceholder
 
 pub struct MessageOriginUser {
   date : Int
@@ -1894,8 +1895,8 @@ pub struct OrderInfo {
 pub fn OrderInfo::new(name? : String, phone_number? : String, email? : String, shipping_address? : ShippingAddress) -> Self
 pub impl Eq for OrderInfo
 pub impl Show for OrderInfo
-pub impl @tonyfettes/json.FromJson for OrderInfo
-pub impl @tonyfettes/json.ToJson for OrderInfo
+pub impl @json.FromJson for OrderInfo
+pub impl @json.ToJson for OrderInfo
 
 pub(all) enum PaidMedia {
   Preview(PaidMediaPreview)
@@ -1904,8 +1905,8 @@ pub(all) enum PaidMedia {
 }
 pub impl Eq for PaidMedia
 pub impl Show for PaidMedia
-pub impl @tonyfettes/json.FromJson for PaidMedia
-pub impl @tonyfettes/json.ToJson for PaidMedia
+pub impl @json.FromJson for PaidMedia
+pub impl @json.ToJson for PaidMedia
 
 pub struct PaidMediaInfo {
   star_count : Int
@@ -1914,8 +1915,8 @@ pub struct PaidMediaInfo {
 pub fn PaidMediaInfo::new(star_count~ : Int, paid_media~ : Array[PaidMedia]) -> Self
 pub impl Eq for PaidMediaInfo
 pub impl Show for PaidMediaInfo
-pub impl @tonyfettes/json.FromJson for PaidMediaInfo
-pub impl @tonyfettes/json.ToJson for PaidMediaInfo
+pub impl @json.FromJson for PaidMediaInfo
+pub impl @json.ToJson for PaidMediaInfo
 
 pub struct PaidMediaPhoto {
   photo : Array[PhotoSize]
@@ -1947,8 +1948,8 @@ pub struct PassportData {
 pub fn PassportData::new(data~ : Array[EncryptedPassportElement], credentials~ : EncryptedCredentials) -> Self
 pub impl Eq for PassportData
 pub impl Show for PassportData
-pub impl @tonyfettes/json.FromJson for PassportData
-pub impl @tonyfettes/json.ToJson for PassportData
+pub impl @json.FromJson for PassportData
+pub impl @json.ToJson for PassportData
 
 pub(all) enum PassportElementError {
   DataField(PassportElementErrorDataField)
@@ -1963,8 +1964,8 @@ pub(all) enum PassportElementError {
 }
 pub impl Eq for PassportElementError
 pub impl Show for PassportElementError
-pub impl @tonyfettes/json.FromJson for PassportElementError
-pub impl @tonyfettes/json.ToJson for PassportElementError
+pub impl @json.FromJson for PassportElementError
+pub impl @json.ToJson for PassportElementError
 
 pub struct PassportElementErrorDataField {
   type_ : String
@@ -2057,8 +2058,8 @@ pub struct PassportFile {
 pub fn PassportFile::new(file_id~ : String, file_unique_id~ : String, file_size~ : Int, file_date~ : Int) -> Self
 pub impl Eq for PassportFile
 pub impl Show for PassportFile
-pub impl @tonyfettes/json.FromJson for PassportFile
-pub impl @tonyfettes/json.ToJson for PassportFile
+pub impl @json.FromJson for PassportFile
+pub impl @json.ToJson for PassportFile
 
 pub struct PhotoSize {
   file_id : String
@@ -2070,8 +2071,8 @@ pub struct PhotoSize {
 pub fn PhotoSize::new(file_id~ : String, file_unique_id~ : String, width~ : Int, height~ : Int, file_size? : Int64) -> Self
 pub impl Eq for PhotoSize
 pub impl Show for PhotoSize
-pub impl @tonyfettes/json.FromJson for PhotoSize
-pub impl @tonyfettes/json.ToJson for PhotoSize
+pub impl @json.FromJson for PhotoSize
+pub impl @json.ToJson for PhotoSize
 
 pub struct Poll {
   id : String
@@ -2092,8 +2093,8 @@ pub struct Poll {
 pub fn Poll::new(id~ : String, question~ : String, question_entities? : Array[MessageEntity], options~ : Array[PollOption], total_voter_count~ : Int, is_closed~ : Bool, is_anonymous~ : Bool, type_~ : String, allows_multiple_answers~ : Bool, correct_option_id? : Int, explanation? : String, explanation_entities? : Array[MessageEntity], open_period? : Int, close_date? : Int) -> Self
 pub impl Eq for Poll
 pub impl Show for Poll
-pub impl @tonyfettes/json.FromJson for Poll
-pub impl @tonyfettes/json.ToJson for Poll
+pub impl @json.FromJson for Poll
+pub impl @json.ToJson for Poll
 
 pub struct PollAnswer {
   poll_id : String
@@ -2104,8 +2105,8 @@ pub struct PollAnswer {
 pub fn PollAnswer::new(poll_id~ : String, voter_chat? : Chat, user? : User, option_ids~ : Array[Int]) -> Self
 pub impl Eq for PollAnswer
 pub impl Show for PollAnswer
-pub impl @tonyfettes/json.FromJson for PollAnswer
-pub impl @tonyfettes/json.ToJson for PollAnswer
+pub impl @json.FromJson for PollAnswer
+pub impl @json.ToJson for PollAnswer
 
 pub struct PollOption {
   text : String
@@ -2115,8 +2116,8 @@ pub struct PollOption {
 pub fn PollOption::new(text~ : String, text_entities? : Array[MessageEntity], voter_count~ : Int) -> Self
 pub impl Eq for PollOption
 pub impl Show for PollOption
-pub impl @tonyfettes/json.FromJson for PollOption
-pub impl @tonyfettes/json.ToJson for PollOption
+pub impl @json.FromJson for PollOption
+pub impl @json.ToJson for PollOption
 
 pub struct ProximityAlertTriggered {
   traveler : User
@@ -2126,8 +2127,8 @@ pub struct ProximityAlertTriggered {
 pub fn ProximityAlertTriggered::new(traveler~ : User, watcher~ : User, distance~ : Int) -> Self
 pub impl Eq for ProximityAlertTriggered
 pub impl Show for ProximityAlertTriggered
-pub impl @tonyfettes/json.FromJson for ProximityAlertTriggered
-pub impl @tonyfettes/json.ToJson for ProximityAlertTriggered
+pub impl @json.FromJson for ProximityAlertTriggered
+pub impl @json.ToJson for ProximityAlertTriggered
 
 pub(all) enum ReactionType {
   Emoji(ReactionTypeEmoji)
@@ -2135,8 +2136,8 @@ pub(all) enum ReactionType {
 }
 pub impl Eq for ReactionType
 pub impl Show for ReactionType
-pub impl @tonyfettes/json.FromJson for ReactionType
-pub impl @tonyfettes/json.ToJson for ReactionType
+pub impl @json.FromJson for ReactionType
+pub impl @json.ToJson for ReactionType
 
 pub struct ReactionTypeCustomEmoji {
   custom_emoji_id : String
@@ -2144,8 +2145,8 @@ pub struct ReactionTypeCustomEmoji {
 pub fn ReactionTypeCustomEmoji::new(custom_emoji_id~ : String) -> Self
 pub impl Eq for ReactionTypeCustomEmoji
 pub impl Show for ReactionTypeCustomEmoji
-pub impl @tonyfettes/json.FromJson for ReactionTypeCustomEmoji
-pub impl @tonyfettes/json.ToJson for ReactionTypeCustomEmoji
+pub impl @json.FromJson for ReactionTypeCustomEmoji
+pub impl @json.ToJson for ReactionTypeCustomEmoji
 
 pub struct ReactionTypeEmoji {
   emoji : String
@@ -2153,8 +2154,8 @@ pub struct ReactionTypeEmoji {
 pub fn ReactionTypeEmoji::new(emoji~ : String) -> Self
 pub impl Eq for ReactionTypeEmoji
 pub impl Show for ReactionTypeEmoji
-pub impl @tonyfettes/json.FromJson for ReactionTypeEmoji
-pub impl @tonyfettes/json.ToJson for ReactionTypeEmoji
+pub impl @json.FromJson for ReactionTypeEmoji
+pub impl @json.ToJson for ReactionTypeEmoji
 
 pub struct RefundedPayment {
   currency : String
@@ -2166,8 +2167,8 @@ pub struct RefundedPayment {
 pub fn RefundedPayment::new(currency~ : String, total_amount~ : Int, invoice_payload~ : String, telegram_payment_charge_id~ : String, provider_payment_charge_id? : String) -> Self
 pub impl Eq for RefundedPayment
 pub impl Show for RefundedPayment
-pub impl @tonyfettes/json.FromJson for RefundedPayment
-pub impl @tonyfettes/json.ToJson for RefundedPayment
+pub impl @json.FromJson for RefundedPayment
+pub impl @json.ToJson for RefundedPayment
 
 pub struct ReplyKeyboardMarkup {
   keyboard : Array[Array[KeyboardButton]]
@@ -2180,8 +2181,8 @@ pub struct ReplyKeyboardMarkup {
 pub fn ReplyKeyboardMarkup::new(keyboard~ : Array[Array[KeyboardButton]], is_persistent? : Bool, resize_keyboard? : Bool, one_time_keyboard? : Bool, input_field_placeholder? : String, selective? : Bool) -> Self
 pub impl Eq for ReplyKeyboardMarkup
 pub impl Show for ReplyKeyboardMarkup
-pub impl @tonyfettes/json.FromJson for ReplyKeyboardMarkup
-pub impl @tonyfettes/json.ToJson for ReplyKeyboardMarkup
+pub impl @json.FromJson for ReplyKeyboardMarkup
+pub impl @json.ToJson for ReplyKeyboardMarkup
 
 pub struct ReplyKeyboardRemove {
   remove_keyboard : Bool
@@ -2190,8 +2191,8 @@ pub struct ReplyKeyboardRemove {
 pub fn ReplyKeyboardRemove::new(remove_keyboard~ : Bool, selective? : Bool) -> Self
 pub impl Eq for ReplyKeyboardRemove
 pub impl Show for ReplyKeyboardRemove
-pub impl @tonyfettes/json.FromJson for ReplyKeyboardRemove
-pub impl @tonyfettes/json.ToJson for ReplyKeyboardRemove
+pub impl @json.FromJson for ReplyKeyboardRemove
+pub impl @json.ToJson for ReplyKeyboardRemove
 
 pub struct ReplyParameters {
   message_id : Int
@@ -2205,8 +2206,8 @@ pub struct ReplyParameters {
 pub fn ReplyParameters::new(message_id~ : Int, chat_id? : ChatId, allow_sending_without_reply? : Bool, quote? : String, quote_parse_mode? : String, quote_entities? : Array[MessageEntity], quote_position? : Int) -> Self
 pub impl Eq for ReplyParameters
 pub impl Show for ReplyParameters
-pub impl @tonyfettes/json.FromJson for ReplyParameters
-pub impl @tonyfettes/json.ToJson for ReplyParameters
+pub impl @json.FromJson for ReplyParameters
+pub impl @json.ToJson for ReplyParameters
 
 pub struct SentWebAppMessage {
   inline_message_id : String?
@@ -2214,8 +2215,8 @@ pub struct SentWebAppMessage {
 pub fn SentWebAppMessage::new(inline_message_id? : String) -> Self
 pub impl Eq for SentWebAppMessage
 pub impl Show for SentWebAppMessage
-pub impl @tonyfettes/json.FromJson for SentWebAppMessage
-pub impl @tonyfettes/json.ToJson for SentWebAppMessage
+pub impl @json.FromJson for SentWebAppMessage
+pub impl @json.ToJson for SentWebAppMessage
 
 pub struct SharedUser {
   user_id : Int64
@@ -2227,8 +2228,8 @@ pub struct SharedUser {
 pub fn SharedUser::new(user_id~ : Int64, first_name? : String, last_name? : String, username? : String, photo? : Array[PhotoSize]) -> Self
 pub impl Eq for SharedUser
 pub impl Show for SharedUser
-pub impl @tonyfettes/json.FromJson for SharedUser
-pub impl @tonyfettes/json.ToJson for SharedUser
+pub impl @json.FromJson for SharedUser
+pub impl @json.ToJson for SharedUser
 
 pub struct ShippingAddress {
   country_code : String
@@ -2241,8 +2242,8 @@ pub struct ShippingAddress {
 pub fn ShippingAddress::new(country_code~ : String, state~ : String, city~ : String, street_line1~ : String, street_line2~ : String, post_code~ : String) -> Self
 pub impl Eq for ShippingAddress
 pub impl Show for ShippingAddress
-pub impl @tonyfettes/json.FromJson for ShippingAddress
-pub impl @tonyfettes/json.ToJson for ShippingAddress
+pub impl @json.FromJson for ShippingAddress
+pub impl @json.ToJson for ShippingAddress
 
 pub struct ShippingOption {
   id : String
@@ -2252,8 +2253,8 @@ pub struct ShippingOption {
 pub fn ShippingOption::new(id~ : String, title~ : String, prices~ : Array[LabeledPrice]) -> Self
 pub impl Eq for ShippingOption
 pub impl Show for ShippingOption
-pub impl @tonyfettes/json.FromJson for ShippingOption
-pub impl @tonyfettes/json.ToJson for ShippingOption
+pub impl @json.FromJson for ShippingOption
+pub impl @json.ToJson for ShippingOption
 
 pub struct StarBalance {
   balance : Int
@@ -2261,8 +2262,8 @@ pub struct StarBalance {
 pub fn StarBalance::new(balance~ : Int) -> Self
 pub impl Eq for StarBalance
 pub impl Show for StarBalance
-pub impl @tonyfettes/json.FromJson for StarBalance
-pub impl @tonyfettes/json.ToJson for StarBalance
+pub impl @json.FromJson for StarBalance
+pub impl @json.ToJson for StarBalance
 
 pub struct Sticker {
   file_id : String
@@ -2284,8 +2285,8 @@ pub struct Sticker {
 pub fn Sticker::new(file_id~ : String, file_unique_id~ : String, type_~ : String, width~ : Int, height~ : Int, is_animated~ : Bool, is_video~ : Bool, thumbnail? : PhotoSize, emoji? : String, set_name? : String, premium_animation? : FilePlaceholder, mask_position? : MaskPosition, custom_emoji_id? : String, needs_repainting? : Bool, file_size? : Int64) -> Self
 pub impl Eq for Sticker
 pub impl Show for Sticker
-pub impl @tonyfettes/json.FromJson for Sticker
-pub impl @tonyfettes/json.ToJson for Sticker
+pub impl @json.FromJson for Sticker
+pub impl @json.ToJson for Sticker
 
 pub struct StickerPlaceholder {
   file_id : String
@@ -2296,8 +2297,8 @@ pub struct StickerPlaceholder {
 pub fn StickerPlaceholder::new(file_id~ : String, file_unique_id~ : String, width~ : Int, height~ : Int) -> Self
 pub impl Eq for StickerPlaceholder
 pub impl Show for StickerPlaceholder
-pub impl @tonyfettes/json.FromJson for StickerPlaceholder
-pub impl @tonyfettes/json.ToJson for StickerPlaceholder
+pub impl @json.FromJson for StickerPlaceholder
+pub impl @json.ToJson for StickerPlaceholder
 
 pub struct StickerSet {
   name : String
@@ -2309,8 +2310,8 @@ pub struct StickerSet {
 pub fn StickerSet::new(name~ : String, title~ : String, sticker_type~ : String, stickers~ : Array[Sticker], thumbnail? : PhotoSize) -> Self
 pub impl Eq for StickerSet
 pub impl Show for StickerSet
-pub impl @tonyfettes/json.FromJson for StickerSet
-pub impl @tonyfettes/json.ToJson for StickerSet
+pub impl @json.FromJson for StickerSet
+pub impl @json.ToJson for StickerSet
 
 pub struct Story {
   chat : Chat
@@ -2319,8 +2320,8 @@ pub struct Story {
 pub fn Story::new(chat~ : Chat, id~ : Int) -> Self
 pub impl Eq for Story
 pub impl Show for Story
-pub impl @tonyfettes/json.FromJson for Story
-pub impl @tonyfettes/json.ToJson for Story
+pub impl @json.FromJson for Story
+pub impl @json.ToJson for Story
 
 pub struct SuccessfulPayment {
   currency : String
@@ -2334,8 +2335,8 @@ pub struct SuccessfulPayment {
 pub fn SuccessfulPayment::new(currency~ : String, total_amount~ : Int, invoice_payload~ : String, shipping_option_id? : String, order_info? : OrderInfo, telegram_payment_charge_id~ : String, provider_payment_charge_id~ : String) -> Self
 pub impl Eq for SuccessfulPayment
 pub impl Show for SuccessfulPayment
-pub impl @tonyfettes/json.FromJson for SuccessfulPayment
-pub impl @tonyfettes/json.ToJson for SuccessfulPayment
+pub impl @json.FromJson for SuccessfulPayment
+pub impl @json.ToJson for SuccessfulPayment
 
 pub struct SuggestedPostApprovalFailed {
   user : User
@@ -2344,8 +2345,8 @@ pub struct SuggestedPostApprovalFailed {
 pub fn SuggestedPostApprovalFailed::new(user~ : User, suggested_post_info~ : SuggestedPostInfo) -> Self
 pub impl Eq for SuggestedPostApprovalFailed
 pub impl Show for SuggestedPostApprovalFailed
-pub impl @tonyfettes/json.FromJson for SuggestedPostApprovalFailed
-pub impl @tonyfettes/json.ToJson for SuggestedPostApprovalFailed
+pub impl @json.FromJson for SuggestedPostApprovalFailed
+pub impl @json.ToJson for SuggestedPostApprovalFailed
 
 pub struct SuggestedPostApproved {
   user : User
@@ -2354,8 +2355,8 @@ pub struct SuggestedPostApproved {
 pub fn SuggestedPostApproved::new(user~ : User, suggested_post_info~ : SuggestedPostInfo) -> Self
 pub impl Eq for SuggestedPostApproved
 pub impl Show for SuggestedPostApproved
-pub impl @tonyfettes/json.FromJson for SuggestedPostApproved
-pub impl @tonyfettes/json.ToJson for SuggestedPostApproved
+pub impl @json.FromJson for SuggestedPostApproved
+pub impl @json.ToJson for SuggestedPostApproved
 
 pub struct SuggestedPostDeclined {
   user : User
@@ -2364,8 +2365,8 @@ pub struct SuggestedPostDeclined {
 pub fn SuggestedPostDeclined::new(user~ : User, suggested_post_info~ : SuggestedPostInfo) -> Self
 pub impl Eq for SuggestedPostDeclined
 pub impl Show for SuggestedPostDeclined
-pub impl @tonyfettes/json.FromJson for SuggestedPostDeclined
-pub impl @tonyfettes/json.ToJson for SuggestedPostDeclined
+pub impl @json.FromJson for SuggestedPostDeclined
+pub impl @json.ToJson for SuggestedPostDeclined
 
 pub struct SuggestedPostInfo {
   suggested_post_parameters : SuggestedPostParameters?
@@ -2376,8 +2377,8 @@ pub struct SuggestedPostInfo {
 pub fn SuggestedPostInfo::new(suggested_post_parameters? : SuggestedPostParameters, is_approved~ : Bool, is_declined~ : Bool, is_paid~ : Bool) -> Self
 pub impl Eq for SuggestedPostInfo
 pub impl Show for SuggestedPostInfo
-pub impl @tonyfettes/json.FromJson for SuggestedPostInfo
-pub impl @tonyfettes/json.ToJson for SuggestedPostInfo
+pub impl @json.FromJson for SuggestedPostInfo
+pub impl @json.ToJson for SuggestedPostInfo
 
 pub struct SuggestedPostPaid {
   user : User
@@ -2386,8 +2387,8 @@ pub struct SuggestedPostPaid {
 pub fn SuggestedPostPaid::new(user~ : User, suggested_post_info~ : SuggestedPostInfo) -> Self
 pub impl Eq for SuggestedPostPaid
 pub impl Show for SuggestedPostPaid
-pub impl @tonyfettes/json.FromJson for SuggestedPostPaid
-pub impl @tonyfettes/json.ToJson for SuggestedPostPaid
+pub impl @json.FromJson for SuggestedPostPaid
+pub impl @json.ToJson for SuggestedPostPaid
 
 pub struct SuggestedPostParameters {
   text : String?
@@ -2397,8 +2398,8 @@ pub struct SuggestedPostParameters {
 pub fn SuggestedPostParameters::new(text? : String, link_preview_options? : LinkPreviewOptions, is_disabled? : Bool) -> Self
 pub impl Eq for SuggestedPostParameters
 pub impl Show for SuggestedPostParameters
-pub impl @tonyfettes/json.FromJson for SuggestedPostParameters
-pub impl @tonyfettes/json.ToJson for SuggestedPostParameters
+pub impl @json.FromJson for SuggestedPostParameters
+pub impl @json.ToJson for SuggestedPostParameters
 
 pub struct SuggestedPostPrice {
   star_count : Int
@@ -2406,8 +2407,8 @@ pub struct SuggestedPostPrice {
 pub fn SuggestedPostPrice::new(star_count~ : Int) -> Self
 pub impl Eq for SuggestedPostPrice
 pub impl Show for SuggestedPostPrice
-pub impl @tonyfettes/json.FromJson for SuggestedPostPrice
-pub impl @tonyfettes/json.ToJson for SuggestedPostPrice
+pub impl @json.FromJson for SuggestedPostPrice
+pub impl @json.ToJson for SuggestedPostPrice
 
 pub struct SwitchInlineQueryChosenChat {
   query : String?
@@ -2419,8 +2420,8 @@ pub struct SwitchInlineQueryChosenChat {
 pub fn SwitchInlineQueryChosenChat::new(query? : String, allow_user_chats? : Bool, allow_bot_chats? : Bool, allow_group_chats? : Bool, allow_channel_chats? : Bool) -> Self
 pub impl Eq for SwitchInlineQueryChosenChat
 pub impl Show for SwitchInlineQueryChosenChat
-pub impl @tonyfettes/json.FromJson for SwitchInlineQueryChosenChat
-pub impl @tonyfettes/json.ToJson for SwitchInlineQueryChosenChat
+pub impl @json.FromJson for SwitchInlineQueryChosenChat
+pub impl @json.ToJson for SwitchInlineQueryChosenChat
 
 pub struct TextQuote {
   text : String
@@ -2431,8 +2432,8 @@ pub struct TextQuote {
 pub fn TextQuote::new(text~ : String, entities? : Array[MessageEntity], position~ : Int, is_manual? : Bool) -> Self
 pub impl Eq for TextQuote
 pub impl Show for TextQuote
-pub impl @tonyfettes/json.FromJson for TextQuote
-pub impl @tonyfettes/json.ToJson for TextQuote
+pub impl @json.FromJson for TextQuote
+pub impl @json.ToJson for TextQuote
 
 pub struct UniqueGiftColors {
   background_icon_color : Int
@@ -2445,8 +2446,8 @@ pub struct UniqueGiftColors {
 pub fn UniqueGiftColors::new(background_icon_color~ : Int, text_color~ : Int, hint_color~ : Int, link_color~ : Int, button_color~ : Int, button_text_color~ : Int) -> Self
 pub impl Eq for UniqueGiftColors
 pub impl Show for UniqueGiftColors
-pub impl @tonyfettes/json.FromJson for UniqueGiftColors
-pub impl @tonyfettes/json.ToJson for UniqueGiftColors
+pub impl @json.FromJson for UniqueGiftColors
+pub impl @json.ToJson for UniqueGiftColors
 
 pub struct UniqueGiftInfo {
   next_transfer_date : Int?
@@ -2458,8 +2459,8 @@ pub struct UniqueGiftInfo {
 pub fn UniqueGiftInfo::new(gift_id~ : String, next_transfer_date? : Int, last_resale_amount? : Int, origin? : String, is_from_blockchain? : Bool) -> Self
 pub impl Eq for UniqueGiftInfo
 pub impl Show for UniqueGiftInfo
-pub impl @tonyfettes/json.FromJson for UniqueGiftInfo
-pub impl @tonyfettes/json.ToJson for UniqueGiftInfo
+pub impl @json.FromJson for UniqueGiftInfo
+pub impl @json.ToJson for UniqueGiftInfo
 
 pub struct Update {
   update_id : Int
@@ -2470,8 +2471,8 @@ pub struct Update {
 pub fn Update::new(update_id~ : Int, message? : Message, edited_message? : Message, callback_query? : CallbackQuery) -> Self
 pub impl Eq for Update
 pub impl Show for Update
-pub impl @tonyfettes/json.FromJson for Update
-pub impl @tonyfettes/json.ToJson for Update
+pub impl @json.FromJson for Update
+pub impl @json.ToJson for Update
 
 pub struct User {
   id : Int64
@@ -2484,8 +2485,8 @@ pub struct User {
 pub fn User::new(id~ : Int64, is_bot~ : Bool, first_name~ : String, last_name? : String, username? : String, language_code? : String) -> Self
 pub impl Eq for User
 pub impl Show for User
-pub impl @tonyfettes/json.FromJson for User
-pub impl @tonyfettes/json.ToJson for User
+pub impl @json.FromJson for User
+pub impl @json.ToJson for User
 
 pub struct UsersShared {
   request_id : Int
@@ -2494,8 +2495,8 @@ pub struct UsersShared {
 pub fn UsersShared::new(request_id~ : Int, users~ : Array[SharedUser]) -> Self
 pub impl Eq for UsersShared
 pub impl Show for UsersShared
-pub impl @tonyfettes/json.FromJson for UsersShared
-pub impl @tonyfettes/json.ToJson for UsersShared
+pub impl @json.FromJson for UsersShared
+pub impl @json.ToJson for UsersShared
 
 pub struct Venue {
   location : Location
@@ -2509,8 +2510,8 @@ pub struct Venue {
 pub fn Venue::new(location~ : Location, title~ : String, address~ : String, foursquare_id? : String, foursquare_type? : String, google_place_id? : String, google_place_type? : String) -> Self
 pub impl Eq for Venue
 pub impl Show for Venue
-pub impl @tonyfettes/json.FromJson for Venue
-pub impl @tonyfettes/json.ToJson for Venue
+pub impl @json.FromJson for Venue
+pub impl @json.ToJson for Venue
 
 pub struct Video {
   file_id : String
@@ -2528,8 +2529,8 @@ pub struct Video {
 pub fn Video::new(file_id~ : String, file_unique_id~ : String, width~ : Int, height~ : Int, duration~ : Int, thumbnail? : PhotoSize, cover? : Array[PhotoSize], start_timestamp? : Int, file_name? : String, mime_type? : String, file_size? : Int64) -> Self
 pub impl Eq for Video
 pub impl Show for Video
-pub impl @tonyfettes/json.FromJson for Video
-pub impl @tonyfettes/json.ToJson for Video
+pub impl @json.FromJson for Video
+pub impl @json.ToJson for Video
 
 pub struct VideoChatEnded {
   duration : Int
@@ -2537,8 +2538,8 @@ pub struct VideoChatEnded {
 pub fn VideoChatEnded::new(duration~ : Int) -> Self
 pub impl Eq for VideoChatEnded
 pub impl Show for VideoChatEnded
-pub impl @tonyfettes/json.FromJson for VideoChatEnded
-pub impl @tonyfettes/json.ToJson for VideoChatEnded
+pub impl @json.FromJson for VideoChatEnded
+pub impl @json.ToJson for VideoChatEnded
 
 pub struct VideoChatParticipantsInvited {
   users : Array[User]
@@ -2546,8 +2547,8 @@ pub struct VideoChatParticipantsInvited {
 pub fn VideoChatParticipantsInvited::new(users~ : Array[User]) -> Self
 pub impl Eq for VideoChatParticipantsInvited
 pub impl Show for VideoChatParticipantsInvited
-pub impl @tonyfettes/json.FromJson for VideoChatParticipantsInvited
-pub impl @tonyfettes/json.ToJson for VideoChatParticipantsInvited
+pub impl @json.FromJson for VideoChatParticipantsInvited
+pub impl @json.ToJson for VideoChatParticipantsInvited
 
 pub struct VideoChatScheduled {
   start_date : Int
@@ -2555,16 +2556,16 @@ pub struct VideoChatScheduled {
 pub fn VideoChatScheduled::new(start_date~ : Int) -> Self
 pub impl Eq for VideoChatScheduled
 pub impl Show for VideoChatScheduled
-pub impl @tonyfettes/json.FromJson for VideoChatScheduled
-pub impl @tonyfettes/json.ToJson for VideoChatScheduled
+pub impl @json.FromJson for VideoChatScheduled
+pub impl @json.ToJson for VideoChatScheduled
 
 pub struct VideoChatStarted {
 }
 pub fn VideoChatStarted::new() -> Self
 pub impl Eq for VideoChatStarted
 pub impl Show for VideoChatStarted
-pub impl @tonyfettes/json.FromJson for VideoChatStarted
-pub impl @tonyfettes/json.ToJson for VideoChatStarted
+pub impl @json.FromJson for VideoChatStarted
+pub impl @json.ToJson for VideoChatStarted
 
 pub struct VideoNote {
   file_id : String
@@ -2577,8 +2578,8 @@ pub struct VideoNote {
 pub fn VideoNote::new(file_id~ : String, file_unique_id~ : String, length~ : Int, duration~ : Int, thumbnail? : PhotoSize, file_size? : Int64) -> Self
 pub impl Eq for VideoNote
 pub impl Show for VideoNote
-pub impl @tonyfettes/json.FromJson for VideoNote
-pub impl @tonyfettes/json.ToJson for VideoNote
+pub impl @json.FromJson for VideoNote
+pub impl @json.ToJson for VideoNote
 
 pub struct Voice {
   file_id : String
@@ -2590,8 +2591,8 @@ pub struct Voice {
 pub fn Voice::new(file_id~ : String, file_unique_id~ : String, duration~ : Int, mime_type? : String, file_size? : Int64) -> Self
 pub impl Eq for Voice
 pub impl Show for Voice
-pub impl @tonyfettes/json.FromJson for Voice
-pub impl @tonyfettes/json.ToJson for Voice
+pub impl @json.FromJson for Voice
+pub impl @json.ToJson for Voice
 
 pub struct WebAppData {
   data : String
@@ -2600,8 +2601,8 @@ pub struct WebAppData {
 pub fn WebAppData::new(data~ : String, button_text~ : String) -> Self
 pub impl Eq for WebAppData
 pub impl Show for WebAppData
-pub impl @tonyfettes/json.FromJson for WebAppData
-pub impl @tonyfettes/json.ToJson for WebAppData
+pub impl @json.FromJson for WebAppData
+pub impl @json.ToJson for WebAppData
 
 pub struct WebAppInfo {
   url : String
@@ -2609,8 +2610,8 @@ pub struct WebAppInfo {
 pub fn WebAppInfo::new(url~ : String) -> Self
 pub impl Eq for WebAppInfo
 pub impl Show for WebAppInfo
-pub impl @tonyfettes/json.FromJson for WebAppInfo
-pub impl @tonyfettes/json.ToJson for WebAppInfo
+pub impl @json.FromJson for WebAppInfo
+pub impl @json.ToJson for WebAppInfo
 
 pub struct WebhookInfo {
   url : String
@@ -2626,8 +2627,8 @@ pub struct WebhookInfo {
 pub fn WebhookInfo::new(url~ : String, has_custom_certificate~ : Bool, pending_update_count~ : Int, ip_address? : String, last_error_date? : Int, last_error_message? : String, last_synchronization_error_date? : Int, max_connections? : Int, allowed_updates? : Array[String]) -> Self
 pub impl Eq for WebhookInfo
 pub impl Show for WebhookInfo
-pub impl @tonyfettes/json.FromJson for WebhookInfo
-pub impl @tonyfettes/json.ToJson for WebhookInfo
+pub impl @json.FromJson for WebhookInfo
+pub impl @json.ToJson for WebhookInfo
 
 pub struct WriteAccessAllowed {
   from_request : Bool?
@@ -2637,8 +2638,8 @@ pub struct WriteAccessAllowed {
 pub fn WriteAccessAllowed::new(from_request? : Bool, web_app_name? : String, from_attachment_menu? : Bool) -> Self
 pub impl Eq for WriteAccessAllowed
 pub impl Show for WriteAccessAllowed
-pub impl @tonyfettes/json.FromJson for WriteAccessAllowed
-pub impl @tonyfettes/json.ToJson for WriteAccessAllowed
+pub impl @json.FromJson for WriteAccessAllowed
+pub impl @json.ToJson for WriteAccessAllowed
 
 // Type aliases
 

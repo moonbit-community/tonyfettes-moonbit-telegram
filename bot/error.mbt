@@ -21,11 +21,13 @@ impl Show for TelegramError with output(self : TelegramError, logger : &Logger) 
         "InvalidUtf8(error=@encoding/utf8.Malformed(\{error}))",
       )
     TelegramError::InvalidJson(error) =>
-      logger.write_string("InvalidJson(error=\{error})")
+      logger.write_string("InvalidJson(error=\{@debug.to_string(error)})")
     TelegramError::InvalidResponse(json) =>
-      logger.write_string("InvalidResponse(json=\{json})")
+      logger.write_string("InvalidResponse(json=\{@json.stringify(json)})")
     TelegramError::InvalidResult(json, error) =>
-      logger.write_string("InvalidResult(json=\{json}, error=\{error})")
+      logger.write_string(
+        "InvalidResult(json=\{@json.stringify(json)}, error=\{error})",
+      )
     TelegramError::ParseError(message~) =>
       logger.write_string("ParseError(message=\{message})")
   }

@@ -151,7 +151,7 @@ test "Poll type field serializes as 'type'" {
   }
   inspect(type_val, content="quiz")
   // Ensure type_ is not serialized
-  inspect(object.get("type_"), content="None")
+  inspect(object.get("type_") is None, content="true")
 }
 
 ///|

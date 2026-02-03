@@ -1,3 +1,5 @@
+using @json {type Json}
+
 ///|
 /// Build Telegram API success response JSON
 fn[T : @json.ToJson] telegram_success(result : T) -> String {

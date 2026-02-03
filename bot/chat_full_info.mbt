@@ -86,7 +86,7 @@ pub fn ReactionTypeEmoji::new(emoji~ : String) -> ReactionTypeEmoji {
 ///|
 pub impl @json.ToJson for ReactionTypeEmoji with to_json(self) {
   let object : Map[String, Json] = {
-    "type": "emoji",
+    "type": @json.to_json("emoji"),
     "emoji": @json.to_json(self.emoji),
   }
   @json.to_json(object)
@@ -117,7 +117,7 @@ pub fn ReactionTypeCustomEmoji::new(
 ///|
 pub impl @json.ToJson for ReactionTypeCustomEmoji with to_json(self) {
   let object : Map[String, Json] = {
-    "type": "custom_emoji",
+    "type": @json.to_json("custom_emoji"),
     "custom_emoji_id": @json.to_json(self.custom_emoji_id),
   }
   @json.to_json(object)

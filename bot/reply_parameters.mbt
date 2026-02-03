@@ -16,7 +16,7 @@ pub impl @json.ToJson for ChatId with to_json(self) {
 ///|
 pub impl @json.FromJson for ChatId with from_json(json, path) {
   match json {
-    Number(n, ..) => Id(n.to_int64())
+    Number(n) => Id(n.to_int64())
     String(s) => Username(s)
     _ =>
       raise @json.JsonDecodeError(path~, "Expected number or string for ChatId")

@@ -45,7 +45,7 @@ pub fn PaidMediaVideo::new(video~ : Video) -> PaidMediaVideo {
 pub impl @json.ToJson for PaidMedia with to_json(self) {
   match self {
     Preview(v) => {
-      let object : Map[String, Json] = { "type": "preview" }
+      let object : Map[String, Json] = { "type": @json.to_json("preview") }
       if v.width is Some(w) {
         object["width"] = @json.to_json(w)
       }
@@ -59,14 +59,14 @@ pub impl @json.ToJson for PaidMedia with to_json(self) {
     }
     Photo(v) => {
       let object : Map[String, Json] = {
-        "type": "photo",
+        "type": @json.to_json("photo"),
         "photo": @json.to_json(v.photo),
       }
       @json.to_json(object)
     }
     Video(v) => {
       let object : Map[String, Json] = {
-        "type": "video",
+        "type": @json.to_json("video"),
         "video": @json.to_json(v.video),
       }
       @json.to_json(object)

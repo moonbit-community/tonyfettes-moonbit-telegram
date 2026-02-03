@@ -85,14 +85,14 @@ pub impl @json.ToJson for BackgroundFill with to_json(self) {
   match self {
     Solid(v) => {
       let object : Map[String, Json] = {
-        "type": "solid",
+        "type": @json.to_json("solid"),
         "color": @json.to_json(v.color),
       }
       @json.to_json(object)
     }
     Gradient(v) => {
       let object : Map[String, Json] = {
-        "type": "gradient",
+        "type": @json.to_json("gradient"),
         "top_color": @json.to_json(v.top_color),
         "bottom_color": @json.to_json(v.bottom_color),
         "rotation_angle": @json.to_json(v.rotation_angle),
@@ -101,7 +101,7 @@ pub impl @json.ToJson for BackgroundFill with to_json(self) {
     }
     FreeformGradient(v) => {
       let object : Map[String, Json] = {
-        "type": "freeform_gradient",
+        "type": @json.to_json("freeform_gradient"),
         "colors": @json.to_json(v.colors),
       }
       @json.to_json(object)
@@ -220,7 +220,7 @@ pub impl @json.ToJson for BackgroundType with to_json(self) {
   match self {
     Fill(v) => {
       let object : Map[String, Json] = {
-        "type": "fill",
+        "type": @json.to_json("fill"),
         "fill": @json.to_json(v.fill),
         "dark_theme_dimming": @json.to_json(v.dark_theme_dimming),
       }
@@ -228,7 +228,7 @@ pub impl @json.ToJson for BackgroundType with to_json(self) {
     }
     Wallpaper(v) => {
       let object : Map[String, Json] = {
-        "type": "wallpaper",
+        "type": @json.to_json("wallpaper"),
         "document": @json.to_json(v.document),
         "dark_theme_dimming": @json.to_json(v.dark_theme_dimming),
       }
@@ -242,7 +242,7 @@ pub impl @json.ToJson for BackgroundType with to_json(self) {
     }
     Pattern(v) => {
       let object : Map[String, Json] = {
-        "type": "pattern",
+        "type": @json.to_json("pattern"),
         "document": @json.to_json(v.document),
         "fill": @json.to_json(v.fill),
         "intensity": @json.to_json(v.intensity),
@@ -257,7 +257,7 @@ pub impl @json.ToJson for BackgroundType with to_json(self) {
     }
     ChatTheme(v) => {
       let object : Map[String, Json] = {
-        "type": "chat_theme",
+        "type": @json.to_json("chat_theme"),
         "theme_name": @json.to_json(v.theme_name),
       }
       @json.to_json(object)

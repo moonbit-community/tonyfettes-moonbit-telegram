@@ -194,7 +194,7 @@ pub impl @json.ToJson for ChatMember with to_json(self) {
   match self {
     Owner(v) => {
       let object : Map[String, Json] = {
-        "status": "creator",
+        "status": @json.to_json("creator"),
         "user": @json.to_json(v.user),
         "is_anonymous": @json.to_json(v.is_anonymous),
       }
@@ -205,7 +205,7 @@ pub impl @json.ToJson for ChatMember with to_json(self) {
     }
     Administrator(v) => {
       let object : Map[String, Json] = {
-        "status": "administrator",
+        "status": @json.to_json("administrator"),
         "user": @json.to_json(v.user),
         "can_be_edited": @json.to_json(v.can_be_edited),
         "is_anonymous": @json.to_json(v.is_anonymous),
@@ -239,7 +239,7 @@ pub impl @json.ToJson for ChatMember with to_json(self) {
     }
     Member(v) => {
       let object : Map[String, Json] = {
-        "status": "member",
+        "status": @json.to_json("member"),
         "user": @json.to_json(v.user),
       }
       if v.until_date is Some(d) {
@@ -249,7 +249,7 @@ pub impl @json.ToJson for ChatMember with to_json(self) {
     }
     Restricted(v) => {
       let object : Map[String, Json] = {
-        "status": "restricted",
+        "status": @json.to_json("restricted"),
         "user": @json.to_json(v.user),
         "is_member": @json.to_json(v.is_member),
         "can_send_messages": @json.to_json(v.can_send_messages),
@@ -272,14 +272,14 @@ pub impl @json.ToJson for ChatMember with to_json(self) {
     }
     Left(v) => {
       let object : Map[String, Json] = {
-        "status": "left",
+        "status": @json.to_json("left"),
         "user": @json.to_json(v.user),
       }
       @json.to_json(object)
     }
     Banned(v) => {
       let object : Map[String, Json] = {
-        "status": "kicked",
+        "status": @json.to_json("kicked"),
         "user": @json.to_json(v.user),
         "until_date": @json.to_json(v.until_date),
       }

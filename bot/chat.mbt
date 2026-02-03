@@ -9,10 +9,10 @@ pub(all) enum ChatType {
 ///|
 pub impl @json.ToJson for ChatType with to_json(self) {
   match self {
-    Private => "private".to_json()
-    Group => "group".to_json()
-    Supergroup => "supergroup".to_json()
-    Channel => "channel".to_json()
+    Private => @json.to_json("private")
+    Group => @json.to_json("group")
+    Supergroup => @json.to_json("supergroup")
+    Channel => @json.to_json("channel")
   }
 }
 

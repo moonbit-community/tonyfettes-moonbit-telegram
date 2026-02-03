@@ -49,38 +49,38 @@ pub(all) enum BotCommandScope {
 pub impl @json.ToJson for BotCommandScope with to_json(self) {
   match self {
     Default => {
-      let object : Map[String, Json] = { "type": "default" }
+      let object : Map[String, Json] = { "type": @json.to_json("default") }
       @json.to_json(object)
     }
     AllPrivateChats => {
-      let object : Map[String, Json] = { "type": "all_private_chats" }
+      let object : Map[String, Json] = { "type": @json.to_json("all_private_chats") }
       @json.to_json(object)
     }
     AllGroupChats => {
-      let object : Map[String, Json] = { "type": "all_group_chats" }
+      let object : Map[String, Json] = { "type": @json.to_json("all_group_chats") }
       @json.to_json(object)
     }
     AllChatAdministrators => {
-      let object : Map[String, Json] = { "type": "all_chat_administrators" }
+      let object : Map[String, Json] = { "type": @json.to_json("all_chat_administrators") }
       @json.to_json(object)
     }
     Chat(v) => {
       let object : Map[String, Json] = {
-        "type": "chat",
+        "type": @json.to_json("chat"),
         "chat_id": @json.to_json(v.chat_id),
       }
       @json.to_json(object)
     }
     ChatAdministrators(v) => {
       let object : Map[String, Json] = {
-        "type": "chat_administrators",
+        "type": @json.to_json("chat_administrators"),
         "chat_id": @json.to_json(v.chat_id),
       }
       @json.to_json(object)
     }
     ChatMember(v) => {
       let object : Map[String, Json] = {
-        "type": "chat_member",
+        "type": @json.to_json("chat_member"),
         "chat_id": @json.to_json(v.chat_id),
         "user_id": @json.to_json(v.user_id),
       }
