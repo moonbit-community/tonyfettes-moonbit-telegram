@@ -31,7 +31,7 @@ pub impl @json.FromJson for ChatType with from_json(json, path) {
 }
 
 ///|
-pub(all) struct Chat {
+pub struct Chat {
   id : Int64
   type_ : ChatType
   title : String?

@@ -6,6 +6,6 @@ import {
 import {
   "tonyfettes/telegram/tl/ast",
   "tonyfettes/telegram/tl",
-  "moonbitlang/quickcheck" as @qc,
-  "moonbitlang/core/quickcheck" as @quickcheck,
+  "moonbitlang/quickcheck" @qc,
+  "moonbitlang/core/quickcheck" @quickcheck,
 } for "test"

@@ -31,7 +31,7 @@ fn load_library(paths : Array[String]) -> @dl.DynamicLibrary? {
       Some(dl) => return Some(dl)
       None => ()
     }
-  } else {
+  } nobreak {
     None
   }
 }

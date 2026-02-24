@@ -1,6 +1,6 @@
 import {
   "tonyfettes/telegram/tl/ast",
-  "moonbitlang/core/error" as @_,
+  "moonbitlang/core/error" @_,
   "tonyfettes/telegram/tl/lexer",
   "tonyfettes/telegram/tl/parser",
   "tonyfettes/telegram/tl/typer",

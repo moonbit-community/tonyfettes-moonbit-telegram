@@ -10,14 +10,13 @@ test "ChatType JSON round-trip" {
 
 ///|
 test "Chat JSON round-trip" {
-  let chat : Chat = {
-    id: 456L,
-    type_: Private,
-    title: None,
-    username: Some("testuser"),
-    first_name: Some("Test"),
-    last_name: Some("User"),
-  }
+  let chat : Chat = Chat::new(
+    id=456L,
+    type_=Private,
+    username=("testuser"),
+    first_name=("Test"),
+    last_name=("User"),
+  )
   let json = @json.to_json(chat)
   let parsed : Chat = @json.from_json(json)
   inspect(parsed.id, content="456")

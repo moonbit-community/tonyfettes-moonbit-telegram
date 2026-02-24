@@ -2,8 +2,8 @@ import {
   "moonbitlang/async/http",
   "moonbitlang/async/io",
   "tonyfettes/json",
-  "moonbitlang/core/debug" as @debug,
-  "moonbitlang/core/encoding/utf8" as @encoding/utf8,
+  "moonbitlang/core/debug" @debug,
+  "moonbitlang/core/encoding/utf8" @encoding/utf8,
 }
 
 import {
