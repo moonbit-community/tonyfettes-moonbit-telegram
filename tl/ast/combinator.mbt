@@ -3,7 +3,7 @@
 pub(all) struct Conditional {
   var_name : LowerIdent // "flags", "flags2"
   bit_index : Int? // None for flags?, Some(N) for flags.N?
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for Conditional with equal(self, other) {
@@ -17,7 +17,7 @@ pub(all) struct NamedArg {
   conditional : Conditional?
   bang : Bool // ! prefix
   type_ : Term
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for NamedArg with equal(self, other) {
@@ -33,7 +33,7 @@ pub(all) struct OptionalArg {
   names : Array[LowerIdent] // Can have multiple: {x y : Type}
   bang : Bool
   type_ : Expr
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for OptionalArg with equal(self, other) {
@@ -48,7 +48,7 @@ pub(all) struct MultiplicityArg {
   name : LowerIdent? // Optional name before :
   count : Term // nat-term
   args : Array[Arg] // Nested args in [ ]
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for MultiplicityArg with equal(self, other) {
@@ -63,7 +63,7 @@ pub(all) struct GroupedArg {
   names : Array[LowerIdent]
   bang : Bool
   type_ : Term
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for GroupedArg with equal(self, other) {
@@ -77,7 +77,7 @@ pub impl Eq for GroupedArg with equal(self, other) {
 pub(all) struct AnonymousArg {
   bang : Bool
   type_ : Term
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for AnonymousArg with equal(self, other) {
@@ -95,7 +95,7 @@ pub(all) enum Arg {
   Grouped(GroupedArg)
   // Anonymous type: !Type or Type
   Anonymous(AnonymousArg)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for Arg with equal(self, other) {
@@ -113,7 +113,7 @@ pub impl Eq for Arg with equal(self, other) {
 pub(all) struct ResultType {
   type_ident : TypeIdent
   params : Array[Subexpr] // Subexpressions
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for ResultType with equal(self, other) {
@@ -130,7 +130,7 @@ pub(all) struct Combinator {
   args : Array[Arg]
   result : ResultType
   span : Span
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Custom equality that ignores span field for property-based testing.
@@ -149,7 +149,7 @@ pub impl Eq for Combinator with equal(self, other) {
 pub(all) struct FinalDeclData {
   type_ident : TypeIdent
   span : Span
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Custom equality that ignores span field for property-based testing.
@@ -164,7 +164,7 @@ pub(all) enum FinalDecl {
   New(FinalDeclData)
   Final(FinalDeclData)
   Empty(FinalDeclData)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for FinalDecl with equal(self, other) {
@@ -181,7 +181,7 @@ pub impl Eq for FinalDecl with equal(self, other) {
 pub(all) enum Declaration {
   Combinator(Combinator)
   Final(FinalDecl)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for Declaration with equal(self, other) {

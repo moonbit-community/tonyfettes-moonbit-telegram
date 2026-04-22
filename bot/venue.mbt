@@ -7,7 +7,7 @@ pub struct Venue {
   foursquare_type : String?
   google_place_id : String?
   google_place_type : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn Venue::new(

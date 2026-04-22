@@ -1,7 +1,7 @@
 ///|
 pub struct GiveawayCreated {
   prize_star_count : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn GiveawayCreated::new(prize_star_count? : Int) -> GiveawayCreated {
@@ -41,7 +41,7 @@ pub struct Giveaway {
   country_codes : Array[String]?
   prize_star_count : Int?
   premium_subscription_month_count : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn Giveaway::new(
@@ -169,7 +169,7 @@ pub struct GiveawayWinners {
   only_new_members : Bool?
   was_refunded : Bool?
   prize_description : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn GiveawayWinners::new(
@@ -314,7 +314,7 @@ pub struct GiveawayCompleted {
   unclaimed_prize_count : Int?
   giveaway_message : Message?
   is_star_giveaway : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn GiveawayCompleted::new(

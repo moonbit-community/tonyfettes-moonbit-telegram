@@ -43,14 +43,14 @@ pub(all) enum TokenKind {
   LineComment(String) // // comment
   BlockComment(String) // /* comment */
   Eof
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 /// A token with its kind and source span.
 pub(all) struct Token {
   kind : TokenKind
   span : @ast.Span
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 /// Converts a TokenKind to a string for error messages.

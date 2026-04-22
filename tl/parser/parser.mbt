@@ -3,7 +3,7 @@
 pub(all) suberror ParseError {
   UnexpectedToken(pos~ : @ast.Position, expected~ : String, found~ : String)
   UnexpectedEof(pos~ : @ast.Position)
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 /// The parser state for parsing TL token streams.

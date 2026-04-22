@@ -4,7 +4,7 @@ pub(all) struct Position {
   line : Int
   column : Int
   offset : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 /// Creates a new Position with labeled arguments.
@@ -17,7 +17,7 @@ pub fn Position::new(line~ : Int, column~ : Int, offset~ : Int) -> Position {
 pub(all) struct Span {
   start : Position
   end : Position
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 /// Creates a new Span with labeled arguments.

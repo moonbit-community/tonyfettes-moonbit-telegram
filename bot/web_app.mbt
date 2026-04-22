@@ -1,7 +1,7 @@
 ///|
 pub struct WebAppInfo {
   url : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn WebAppInfo::new(url~ : String) -> WebAppInfo {
@@ -26,7 +26,7 @@ pub impl @json.FromJson for WebAppInfo with from_json(json, path) {
 ///|
 pub struct SentWebAppMessage {
   inline_message_id : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn SentWebAppMessage::new(inline_message_id? : String) -> SentWebAppMessage {

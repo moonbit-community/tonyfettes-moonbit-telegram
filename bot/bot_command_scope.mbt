@@ -1,7 +1,7 @@
 ///|
 pub(all) struct BotCommandScopeChat {
   chat_id : Int64
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn BotCommandScopeChat::new(chat_id~ : Int64) -> BotCommandScopeChat {
@@ -11,7 +11,7 @@ pub fn BotCommandScopeChat::new(chat_id~ : Int64) -> BotCommandScopeChat {
 ///|
 pub(all) struct BotCommandScopeChatAdministrators {
   chat_id : Int64
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn BotCommandScopeChatAdministrators::new(
@@ -24,7 +24,7 @@ pub fn BotCommandScopeChatAdministrators::new(
 pub(all) struct BotCommandScopeChatMember {
   chat_id : Int64
   user_id : Int64
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn BotCommandScopeChatMember::new(
@@ -43,7 +43,7 @@ pub(all) enum BotCommandScope {
   Chat(BotCommandScopeChat)
   ChatAdministrators(BotCommandScopeChatAdministrators)
   ChatMember(BotCommandScopeChatMember)
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub impl @json.ToJson for BotCommandScope with to_json(self) {

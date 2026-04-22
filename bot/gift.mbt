@@ -4,7 +4,7 @@ pub struct StickerPlaceholder {
   file_unique_id : String
   width : Int
   height : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn StickerPlaceholder::new(
@@ -47,7 +47,7 @@ pub struct UniqueGiftColors {
   link_color : Int
   button_color : Int
   button_text_color : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn UniqueGiftColors::new(
@@ -114,7 +114,7 @@ pub struct GiftBackground {
   fill_color : Int?
   gradient_top_color : Int?
   gradient_bottom_color : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn GiftBackground::new(
@@ -181,7 +181,7 @@ pub struct Gift {
   gifts_from_channels : Bool?
   is_premium : Bool?
   has_colors : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn Gift::new(
@@ -338,7 +338,7 @@ pub impl @json.FromJson for Gift with from_json(json, path) {
 ///|
 pub struct Gifts {
   gifts : Array[Gift]
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn Gifts::new(gifts~ : Array[Gift]) -> Gifts {
@@ -368,7 +368,7 @@ pub struct AcceptedGiftTypes {
   limited_gifts : Bool
   unique_gifts : Bool
   premium_subscription : Bool
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn AcceptedGiftTypes::new(
@@ -413,7 +413,7 @@ pub struct UniqueGiftInfo {
   origin : String?
   gift_id : String
   is_from_blockchain : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn UniqueGiftInfo::new(
@@ -489,7 +489,7 @@ pub impl @json.FromJson for UniqueGiftInfo with from_json(json, path) {
 ///|
 pub struct StarBalance {
   balance : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn StarBalance::new(balance~ : Int) -> StarBalance {

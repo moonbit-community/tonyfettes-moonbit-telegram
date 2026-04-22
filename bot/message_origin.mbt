@@ -2,7 +2,7 @@
 pub struct MessageOriginUser {
   date : Int
   sender_user : User
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn MessageOriginUser::new(
@@ -16,7 +16,7 @@ pub fn MessageOriginUser::new(
 pub struct MessageOriginHiddenUser {
   date : Int
   sender_user_name : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn MessageOriginHiddenUser::new(
@@ -31,7 +31,7 @@ pub struct MessageOriginChat {
   date : Int
   sender_chat : Chat
   author_signature : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn MessageOriginChat::new(
@@ -48,7 +48,7 @@ pub struct MessageOriginChannel {
   chat : Chat
   message_id : Int
   author_signature : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn MessageOriginChannel::new(
@@ -66,7 +66,7 @@ pub(all) enum MessageOrigin {
   HiddenUser(MessageOriginHiddenUser)
   Chat(MessageOriginChat)
   Channel(MessageOriginChannel)
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub impl @json.ToJson for MessageOrigin with to_json(self) {

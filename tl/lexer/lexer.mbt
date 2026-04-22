@@ -5,7 +5,7 @@ pub(all) suberror LexError {
   UnexpectedEof(pos~ : @ast.Position)
   InvalidHexId(pos~ : @ast.Position, value~ : String)
   InvalidNumber(pos~ : @ast.Position, value~ : String)
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 /// The lexer state for tokenizing TL source code.

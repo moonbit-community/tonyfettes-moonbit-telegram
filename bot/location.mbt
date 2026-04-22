@@ -6,7 +6,7 @@ pub struct Location {
   live_period : Int?
   heading : Int?
   proximity_alert_radius : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn Location::new(

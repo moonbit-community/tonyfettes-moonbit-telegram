@@ -9,7 +9,7 @@ pub struct Audio {
   mime_type : String?
   file_size : Int64?
   thumbnail : PhotoSize?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn Audio::new(

@@ -1,7 +1,7 @@
 ///|
 pub struct KeyboardButtonPollType {
   type_ : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn KeyboardButtonPollType::new(type_? : String) -> KeyboardButtonPollType {
@@ -42,7 +42,7 @@ pub struct KeyboardButtonRequestUsers {
   request_name : Bool?
   request_username : Bool?
   request_photo : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn KeyboardButtonRequestUsers::new(
@@ -155,7 +155,7 @@ pub struct KeyboardButtonRequestChat {
   request_title : Bool?
   request_username : Bool?
   request_photo : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn KeyboardButtonRequestChat::new(
@@ -279,7 +279,7 @@ pub struct KeyboardButton {
   request_location : Bool?
   request_poll : KeyboardButtonPollType?
   web_app : WebAppInfo?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn KeyboardButton::new(

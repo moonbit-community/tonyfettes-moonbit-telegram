@@ -11,7 +11,7 @@ pub struct InlineQueryResultArticle {
   thumbnail_url : String?
   thumbnail_width : Int?
   thumbnail_height : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultArticle::new(
@@ -153,7 +153,7 @@ pub struct InlineQueryResultContact {
   thumbnail_url : String?
   thumbnail_width : Int?
   thumbnail_height : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultContact::new(
@@ -298,7 +298,7 @@ pub struct InlineQueryResultLocation {
   thumbnail_url : String?
   thumbnail_width : Int?
   thumbnail_height : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultLocation::new(
@@ -473,7 +473,7 @@ pub struct InlineQueryResultVenue {
   thumbnail_url : String?
   thumbnail_width : Int?
   thumbnail_height : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultVenue::new(

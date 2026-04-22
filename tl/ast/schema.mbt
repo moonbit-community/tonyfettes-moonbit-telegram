@@ -3,7 +3,7 @@ pub(all) struct Schema {
   types : Array[Declaration]
   functions : Array[Combinator]
   comments : Array[(Span, String)] // Preserved comments
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Custom equality that ignores comments field for property-based testing.

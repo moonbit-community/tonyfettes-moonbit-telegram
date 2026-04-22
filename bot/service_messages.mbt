@@ -1,5 +1,5 @@
 ///|
-pub struct ForumTopicClosed {} derive(Show, Eq)
+pub struct ForumTopicClosed {} derive(Debug, Eq)
 
 ///|
 pub fn ForumTopicClosed::new() -> ForumTopicClosed {
@@ -21,7 +21,7 @@ pub impl @json.FromJson for ForumTopicClosed with from_json(json, path) {
 }
 
 ///|
-pub struct ForumTopicReopened {} derive(Show, Eq)
+pub struct ForumTopicReopened {} derive(Debug, Eq)
 
 ///|
 pub fn ForumTopicReopened::new() -> ForumTopicReopened {
@@ -43,7 +43,7 @@ pub impl @json.FromJson for ForumTopicReopened with from_json(json, path) {
 }
 
 ///|
-pub struct GeneralForumTopicHidden {} derive(Show, Eq)
+pub struct GeneralForumTopicHidden {} derive(Debug, Eq)
 
 ///|
 pub fn GeneralForumTopicHidden::new() -> GeneralForumTopicHidden {
@@ -68,7 +68,7 @@ pub impl @json.FromJson for GeneralForumTopicHidden with from_json(json, path) {
 }
 
 ///|
-pub struct GeneralForumTopicUnhidden {} derive(Show, Eq)
+pub struct GeneralForumTopicUnhidden {} derive(Debug, Eq)
 
 ///|
 pub fn GeneralForumTopicUnhidden::new() -> GeneralForumTopicUnhidden {
@@ -93,7 +93,7 @@ pub impl @json.FromJson for GeneralForumTopicUnhidden with from_json(json, path)
 }
 
 ///|
-pub struct VideoChatStarted {} derive(Show, Eq)
+pub struct VideoChatStarted {} derive(Debug, Eq)
 
 ///|
 pub fn VideoChatStarted::new() -> VideoChatStarted {
@@ -117,7 +117,7 @@ pub impl @json.FromJson for VideoChatStarted with from_json(json, path) {
 ///|
 pub struct VideoChatEnded {
   duration : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn VideoChatEnded::new(duration~ : Int) -> VideoChatEnded {
@@ -142,7 +142,7 @@ pub impl @json.FromJson for VideoChatEnded with from_json(json, path) {
 ///|
 pub struct VideoChatScheduled {
   start_date : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn VideoChatScheduled::new(start_date~ : Int) -> VideoChatScheduled {
@@ -169,7 +169,7 @@ pub impl @json.FromJson for VideoChatScheduled with from_json(json, path) {
 ///|
 pub struct VideoChatParticipantsInvited {
   users : Array[User]
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn VideoChatParticipantsInvited::new(
@@ -202,7 +202,7 @@ pub impl @json.FromJson for VideoChatParticipantsInvited with from_json(
 ///|
 pub struct MessageAutoDeleteTimerChanged {
   message_auto_delete_time : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn MessageAutoDeleteTimerChanged::new(
@@ -240,7 +240,7 @@ pub impl @json.FromJson for MessageAutoDeleteTimerChanged with from_json(
 ///|
 pub struct ChatBoostAdded {
   boost_count : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChatBoostAdded::new(boost_count~ : Int) -> ChatBoostAdded {
@@ -269,7 +269,7 @@ pub struct ProximityAlertTriggered {
   traveler : User
   watcher : User
   distance : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ProximityAlertTriggered::new(
@@ -309,7 +309,7 @@ pub struct WriteAccessAllowed {
   from_request : Bool?
   web_app_name : String?
   from_attachment_menu : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn WriteAccessAllowed::new(
@@ -363,7 +363,7 @@ pub impl @json.FromJson for WriteAccessAllowed with from_json(json, path) {
 pub struct WebAppData {
   data : String
   button_text : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn WebAppData::new(data~ : String, button_text~ : String) -> WebAppData {

@@ -5,7 +5,19 @@
 suberror TdjsonError {
   LoadFailed(String)
   SymbolMissing(@dl.DynamicLibraryError)
-} derive(Show)
+}
+
+///|
+pub impl Show for TdjsonError with output(self, logger) {
+  match self {
+    LoadFailed(message) => logger.write_string("LoadFailed(\{message})")
+    SymbolMissing(error) => {
+      logger.write_string("SymbolMissing(")
+      Show::output(error, logger)
+      logger.write_string(")")
+    }
+  }
+}
 
 ///|
 priv struct Tdjson {

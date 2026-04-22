@@ -4,7 +4,7 @@ pub(all) enum ChatType {
   Group
   Supergroup
   Channel
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub impl @json.ToJson for ChatType with to_json(self) {
@@ -38,7 +38,7 @@ pub struct Chat {
   username : String?
   first_name : String?
   last_name : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn Chat::new(

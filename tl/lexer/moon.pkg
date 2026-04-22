@@ -1,5 +1,6 @@
 import {
   "tonyfettes/telegram/tl/ast",
+  "moonbitlang/core/debug" @debug,
   "moonbitlang/core/strconv",
 }
 

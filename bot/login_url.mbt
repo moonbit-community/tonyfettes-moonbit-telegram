@@ -4,7 +4,7 @@ pub struct LoginUrl {
   forward_text : String?
   bot_username : String?
   request_write_access : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn LoginUrl::new(
@@ -63,7 +63,7 @@ pub struct SwitchInlineQueryChosenChat {
   allow_bot_chats : Bool?
   allow_group_chats : Bool?
   allow_channel_chats : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn SwitchInlineQueryChosenChat::new(
@@ -150,7 +150,7 @@ pub impl @json.FromJson for SwitchInlineQueryChosenChat with from_json(
 }
 
 ///|
-pub struct CallbackGame {} derive(Show, Eq)
+pub struct CallbackGame {} derive(Debug, Eq)
 
 ///|
 pub fn CallbackGame::new() -> CallbackGame {
