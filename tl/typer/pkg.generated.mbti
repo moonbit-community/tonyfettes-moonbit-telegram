@@ -2,6 +2,7 @@
 package "tonyfettes/telegram/tl/typer"
 
 import {
+  "moonbitlang/core/debug",
   "tonyfettes/telegram/tl/ast",
 }
 
@@ -28,8 +29,7 @@ pub(all) suberror TLTypeError {
   FinalTypeViolation(pos~ : @ast.Span, type_name~ : String)
   NewTypeViolation(pos~ : @ast.Span, type_name~ : String)
   EmptyTypeViolation(pos~ : @ast.Span, type_name~ : String)
-}
-pub impl Eq for TLTypeError
+} derive(Eq, @debug.Debug)
 pub impl Show for TLTypeError
 
 // Types and methods
@@ -38,9 +38,8 @@ pub(all) struct ResolvedType {
   constructors : Array[@ast.Combinator]
   is_final : Bool
   is_empty : Bool
-}
+} derive(Eq, @debug.Debug)
 pub fn ResolvedType::new(name~ : @ast.TypeIdent, constructors? : Array[@ast.Combinator], is_final? : Bool, is_empty? : Bool) -> Self
-pub impl Eq for ResolvedType
 pub impl Show for ResolvedType
 
 pub(all) struct SymbolTable {
@@ -49,9 +48,8 @@ pub(all) struct SymbolTable {
   constructors : Map[String, @ast.Combinator]
   functions : Map[String, @ast.Combinator]
   builtins : Map[String, Unit]
-}
+} derive(Eq, @debug.Debug)
 pub fn SymbolTable::new() -> Self
-pub impl Eq for SymbolTable
 pub impl Show for SymbolTable
 
 // Type aliases
