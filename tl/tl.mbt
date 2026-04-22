@@ -93,7 +93,7 @@ pub fn schema_to_string(schema : @ast.Schema) -> String {
   }
 
   // Print functions section if any
-  if not(schema.functions.is_empty()) {
+  if !schema.functions.is_empty() {
     sb.write_string("---functions---\n")
     for f in schema.functions {
       sb.write_string(combinator_to_string(f))
