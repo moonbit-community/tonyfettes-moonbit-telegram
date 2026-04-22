@@ -80,9 +80,11 @@ fn build_paths() -> Array[String] raise {
 
 ///|
 fn init {
-  @os.atexit(() => match tdjson {
-    Ok(tdjson) => ignore(try? tdjson.dl.close())
-    _ => ()
+  @os.atexit(() => {
+    match tdjson {
+      Ok(tdjson) => ignore(try? tdjson.dl.close())
+      _ => ()
+    }
   })
 }
 

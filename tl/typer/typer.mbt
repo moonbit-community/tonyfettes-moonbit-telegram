@@ -609,11 +609,9 @@ fn validate_result_type_name(
   type_vars : Map[String, Unit],
 ) -> Unit raise TLTypeError {
   let name = type_ident_full_name(result.type_ident)
-  if !(
-      table.builtins.contains(name) ||
-      table.types.contains(name) ||
-      type_vars.contains(name),
-    ) {
+  if !(table.builtins.contains(name) ||
+    table.types.contains(name) ||
+    type_vars.contains(name)) {
     raise UndefinedType(pos=span, name~)
   }
 }

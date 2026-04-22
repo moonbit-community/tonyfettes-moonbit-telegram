@@ -53,15 +53,21 @@ pub impl @json.ToJson for BotCommandScope with to_json(self) {
       @json.to_json(object)
     }
     AllPrivateChats => {
-      let object : Map[String, Json] = { "type": @json.to_json("all_private_chats") }
+      let object : Map[String, Json] = {
+        "type": @json.to_json("all_private_chats"),
+      }
       @json.to_json(object)
     }
     AllGroupChats => {
-      let object : Map[String, Json] = { "type": @json.to_json("all_group_chats") }
+      let object : Map[String, Json] = {
+        "type": @json.to_json("all_group_chats"),
+      }
       @json.to_json(object)
     }
     AllChatAdministrators => {
-      let object : Map[String, Json] = { "type": @json.to_json("all_chat_administrators") }
+      let object : Map[String, Json] = {
+        "type": @json.to_json("all_chat_administrators"),
+      }
       @json.to_json(object)
     }
     Chat(v) => {

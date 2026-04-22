@@ -13,9 +13,9 @@ test "Chat JSON round-trip" {
   let chat : Chat = Chat::new(
     id=456L,
     type_=Private,
-    username=("testuser"),
-    first_name=("Test"),
-    last_name=("User"),
+    username="testuser",
+    first_name="Test",
+    last_name="User",
   )
   let json = @json.to_json(chat)
   let parsed : Chat = @json.from_json(json)
