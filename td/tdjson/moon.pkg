@@ -6,3 +6,5 @@ import {
   "tonyfettes/os",
   "moonbitlang/x/path",
 }
+
+supported_targets = "native"

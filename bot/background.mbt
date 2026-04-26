@@ -3,7 +3,7 @@
 pub struct DocumentPlaceholder {
   file_id : String
   file_unique_id : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn DocumentPlaceholder::new(
@@ -38,7 +38,7 @@ pub impl @json.FromJson for DocumentPlaceholder with from_json(json, path) {
 ///|
 pub struct BackgroundFillSolid {
   color : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn BackgroundFillSolid::new(color~ : Int) -> BackgroundFillSolid {
@@ -50,7 +50,7 @@ pub struct BackgroundFillGradient {
   top_color : Int
   bottom_color : Int
   rotation_angle : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn BackgroundFillGradient::new(
@@ -64,7 +64,7 @@ pub fn BackgroundFillGradient::new(
 ///|
 pub struct BackgroundFillFreeformGradient {
   colors : Array[Int]
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn BackgroundFillFreeformGradient::new(
@@ -78,7 +78,7 @@ pub(all) enum BackgroundFill {
   Solid(BackgroundFillSolid)
   Gradient(BackgroundFillGradient)
   FreeformGradient(BackgroundFillFreeformGradient)
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub impl @json.ToJson for BackgroundFill with to_json(self) {
@@ -147,7 +147,7 @@ pub impl @json.FromJson for BackgroundFill with from_json(json, path) {
 pub struct BackgroundTypeFill {
   fill : BackgroundFill
   dark_theme_dimming : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn BackgroundTypeFill::new(
@@ -163,7 +163,7 @@ pub struct BackgroundTypeWallpaper {
   dark_theme_dimming : Int
   is_blurred : Bool?
   is_moving : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn BackgroundTypeWallpaper::new(
@@ -182,7 +182,7 @@ pub struct BackgroundTypePattern {
   intensity : Int
   is_inverted : Bool?
   is_moving : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn BackgroundTypePattern::new(
@@ -198,7 +198,7 @@ pub fn BackgroundTypePattern::new(
 ///|
 pub struct BackgroundTypeChatTheme {
   theme_name : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn BackgroundTypeChatTheme::new(
@@ -213,7 +213,7 @@ pub(all) enum BackgroundType {
   Wallpaper(BackgroundTypeWallpaper)
   Pattern(BackgroundTypePattern)
   ChatTheme(BackgroundTypeChatTheme)
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub impl @json.ToJson for BackgroundType with to_json(self) {
@@ -337,7 +337,7 @@ pub impl @json.FromJson for BackgroundType with from_json(json, path) {
 ///|
 pub struct ChatBackground {
   type_ : BackgroundType
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChatBackground::new(type_~ : BackgroundType) -> ChatBackground {

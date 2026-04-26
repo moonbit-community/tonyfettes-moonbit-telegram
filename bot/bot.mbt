@@ -52,10 +52,7 @@ fn[T : @json.FromJson] parse_api_response(
       Some(value) => value
       None => raise TelegramError::InvalidResponse(json)
     }
-    let code : Int = @json.from_json(
-      code_json,
-      path=root.add_key("error_code"),
-    ) catch {
+    let code : Int = @json.from_json(code_json, path=root.add_key("error_code")) catch {
       _ => raise TelegramError::InvalidResponse(json)
     }
     let desc : String = @json.from_json(
@@ -64,7 +61,7 @@ fn[T : @json.FromJson] parse_api_response(
     ) catch {
       _ => raise TelegramError::InvalidResponse(json)
     }
-    raise TelegramError::ApiError(code=code, description=desc)
+    raise TelegramError::ApiError(code~, description=desc)
   }
 }
 
@@ -3049,9 +3046,11 @@ pub async fn Bot::set_webhook(
   if secret_token is Some(v) {
     body["secret_token"] = @json.to_json(v)
   }
-  let (response, data) = @http.post(api_url, @json.stringify(@json.to_json(body)), headers={
-    "Content-Type": "application/json",
-  }) catch {
+  let (response, data) = @http.post(
+    api_url,
+    @json.stringify(@json.to_json(body)),
+    headers={ "Content-Type": "application/json" },
+  ) catch {
     err => raise TelegramError::HttpError(code=0, body="Request failed: \{err}")
   }
   guard response.code is (200..=299) else {

@@ -4,7 +4,7 @@ pub struct Update {
   message : Message?
   edited_message : Message?
   callback_query : CallbackQuery?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn Update::new(

@@ -240,12 +240,12 @@ fn resolve_combinator(
 
   // Check that all optional parameters are used
   for entry in type_var_used {
-    if not(entry.1) {
+    if !entry.1 {
       raise UnusedOptionalParameter(pos=c.span, variable=entry.0)
     }
   }
   for entry in nat_var_used {
-    if not(entry.1) {
+    if !entry.1 {
       raise UnusedOptionalParameter(pos=c.span, variable=entry.0)
     }
   }
@@ -267,7 +267,7 @@ fn resolve_arg(
     @ast.Arg::Named(named) => {
       // Check conditional field reference
       if named.conditional is Some(cond) {
-        if not(flags_fields.contains(cond.var_name.value)) {
+        if !flags_fields.contains(cond.var_name.value) {
           raise UndefinedFlagsField(
             pos=span,
             conditional=cond.var_name.value,
@@ -521,7 +521,7 @@ fn resolve_term_type(
       )
     @ast.Term::Apply(ident, params) => {
       let name = type_ident_full_name(ident)
-      if not(table.builtins.contains(name) || table.types.contains(name)) {
+      if !(table.builtins.contains(name) || table.types.contains(name)) {
         raise UndefinedType(pos=span, name~)
       }
       for param in params {
@@ -536,7 +536,7 @@ fn resolve_term_type(
         type_var_used[name] = true
       } else if ident.ns is None && nat_vars.contains(name) {
         nat_var_used[name] = true
-      } else if not(table.builtins.contains(name) || table.types.contains(name)) {
+      } else if !(table.builtins.contains(name) || table.types.contains(name)) {
         raise UndefinedType(pos=span, name~)
       }
     }
@@ -609,11 +609,9 @@ fn validate_result_type_name(
   type_vars : Map[String, Unit],
 ) -> Unit raise TLTypeError {
   let name = type_ident_full_name(result.type_ident)
-  if not(
-      table.builtins.contains(name) ||
-      table.types.contains(name) ||
-      type_vars.contains(name),
-    ) {
+  if !(table.builtins.contains(name) ||
+    table.types.contains(name) ||
+    type_vars.contains(name)) {
     raise UndefinedType(pos=span, name~)
   }
 }

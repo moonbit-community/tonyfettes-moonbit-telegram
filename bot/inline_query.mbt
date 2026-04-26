@@ -6,7 +6,7 @@ pub struct InlineQuery {
   offset : String
   chat_type : String?
   location : Location?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQuery::new(
@@ -66,7 +66,7 @@ pub struct ChosenInlineResult {
   location : Location?
   inline_message_id : String?
   query : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChosenInlineResult::new(
@@ -122,7 +122,7 @@ pub struct InlineQueryResultsButton {
   text : String
   web_app : WebAppInfo?
   start_parameter : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultsButton::new(

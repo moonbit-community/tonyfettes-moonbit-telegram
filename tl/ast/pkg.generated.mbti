@@ -2,6 +2,7 @@
 package "tonyfettes/telegram/tl/ast"
 
 import {
+  "moonbitlang/core/debug",
   "moonbitlang/core/quickcheck/splitmix",
 }
 
@@ -13,7 +14,7 @@ import {
 pub(all) struct AnonymousArg {
   bang : Bool
   type_ : Term
-}
+} derive(@debug.Debug)
 pub impl Eq for AnonymousArg
 pub impl Show for AnonymousArg
 pub impl @moonbitlang/core/quickcheck.Arbitrary for AnonymousArg
@@ -24,7 +25,7 @@ pub(all) enum Arg {
   Multiplicity(MultiplicityArg)
   Grouped(GroupedArg)
   Anonymous(AnonymousArg)
-}
+} derive(@debug.Debug)
 pub impl Eq for Arg
 pub impl Show for Arg
 pub impl @moonbitlang/core/quickcheck.Arbitrary for Arg
@@ -38,7 +39,7 @@ pub(all) struct Combinator {
   args : Array[Arg]
   result : ResultType
   span : Span
-}
+} derive(@debug.Debug)
 pub impl Eq for Combinator
 pub impl Show for Combinator
 pub impl @moonbitlang/core/quickcheck.Arbitrary for Combinator
@@ -47,7 +48,7 @@ pub impl @moonbitlang/quickcheck.Shrink for Combinator
 pub(all) struct Conditional {
   var_name : LowerIdent
   bit_index : Int?
-}
+} derive(@debug.Debug)
 pub impl Eq for Conditional
 pub impl Show for Conditional
 pub impl @moonbitlang/core/quickcheck.Arbitrary for Conditional
@@ -55,9 +56,8 @@ pub impl @moonbitlang/quickcheck.Shrink for Conditional
 
 pub(all) struct ConstructorId {
   value : UInt
-}
+} derive(Eq, @debug.Debug)
 pub fn ConstructorId::new(value~ : UInt) -> Self
-pub impl Eq for ConstructorId
 pub impl Show for ConstructorId
 pub impl @moonbitlang/core/quickcheck.Arbitrary for ConstructorId
 pub impl @moonbitlang/quickcheck.Shrink for ConstructorId
@@ -65,7 +65,7 @@ pub impl @moonbitlang/quickcheck.Shrink for ConstructorId
 pub(all) enum Declaration {
   Combinator(Combinator)
   Final(FinalDecl)
-}
+} derive(@debug.Debug)
 pub impl Eq for Declaration
 pub impl Show for Declaration
 pub impl @moonbitlang/core/quickcheck.Arbitrary for Declaration
@@ -73,7 +73,7 @@ pub impl @moonbitlang/quickcheck.Shrink for Declaration
 
 pub(all) struct Expr {
   items : Array[Subexpr]
-}
+} derive(@debug.Debug)
 pub fn Expr::new(items~ : Array[Subexpr]) -> Self
 pub impl Eq for Expr
 pub impl Show for Expr
@@ -84,7 +84,7 @@ pub(all) enum FinalDecl {
   New(FinalDeclData)
   Final(FinalDeclData)
   Empty(FinalDeclData)
-}
+} derive(@debug.Debug)
 pub impl Eq for FinalDecl
 pub impl Show for FinalDecl
 pub impl @moonbitlang/core/quickcheck.Arbitrary for FinalDecl
@@ -93,7 +93,7 @@ pub impl @moonbitlang/quickcheck.Shrink for FinalDecl
 pub(all) struct FinalDeclData {
   type_ident : TypeIdent
   span : Span
-}
+} derive(@debug.Debug)
 pub impl Eq for FinalDeclData
 pub impl Show for FinalDeclData
 pub impl @moonbitlang/core/quickcheck.Arbitrary for FinalDeclData
@@ -103,7 +103,7 @@ pub(all) struct GroupedArg {
   names : Array[LowerIdent]
   bang : Bool
   type_ : Term
-}
+} derive(@debug.Debug)
 pub impl Eq for GroupedArg
 pub impl Show for GroupedArg
 pub impl @moonbitlang/core/quickcheck.Arbitrary for GroupedArg
@@ -111,9 +111,8 @@ pub impl @moonbitlang/quickcheck.Shrink for GroupedArg
 
 pub(all) struct LowerIdent {
   value : String
-}
+} derive(Eq, @debug.Debug)
 pub fn LowerIdent::new(value~ : String) -> Self
-pub impl Eq for LowerIdent
 pub impl Show for LowerIdent
 pub impl @moonbitlang/core/quickcheck.Arbitrary for LowerIdent
 pub impl @moonbitlang/quickcheck.Shrink for LowerIdent
@@ -122,7 +121,7 @@ pub(all) struct MultiplicityArg {
   name : LowerIdent?
   count : Term
   args : Array[Arg]
-}
+} derive(@debug.Debug)
 pub impl Eq for MultiplicityArg
 pub impl Show for MultiplicityArg
 pub impl @moonbitlang/core/quickcheck.Arbitrary for MultiplicityArg
@@ -133,7 +132,7 @@ pub(all) struct NamedArg {
   conditional : Conditional?
   bang : Bool
   type_ : Term
-}
+} derive(@debug.Debug)
 pub impl Eq for NamedArg
 pub impl Show for NamedArg
 pub impl @moonbitlang/core/quickcheck.Arbitrary for NamedArg
@@ -143,7 +142,7 @@ pub(all) struct OptionalArg {
   names : Array[LowerIdent]
   bang : Bool
   type_ : Expr
-}
+} derive(@debug.Debug)
 pub impl Eq for OptionalArg
 pub impl Show for OptionalArg
 pub impl @moonbitlang/core/quickcheck.Arbitrary for OptionalArg
@@ -153,16 +152,15 @@ pub(all) struct Position {
   line : Int
   column : Int
   offset : Int
-}
+} derive(Eq, @debug.Debug)
 pub fn Position::new(line~ : Int, column~ : Int, offset~ : Int) -> Self
-pub impl Eq for Position
 pub impl Show for Position
 pub impl @moonbitlang/quickcheck.Shrink for Position
 
 pub(all) struct ResultType {
   type_ident : TypeIdent
   params : Array[Subexpr]
-}
+} derive(@debug.Debug)
 pub impl Eq for ResultType
 pub impl Show for ResultType
 pub impl @moonbitlang/core/quickcheck.Arbitrary for ResultType
@@ -172,7 +170,7 @@ pub(all) struct Schema {
   types : Array[Declaration]
   functions : Array[Combinator]
   comments : Array[(Span, String)]
-}
+} derive(@debug.Debug)
 pub fn Schema::new() -> Self
 pub impl Eq for Schema
 pub impl Show for Schema
@@ -182,9 +180,8 @@ pub impl @moonbitlang/quickcheck.Shrink for Schema
 pub(all) struct Span {
   start : Position
   end : Position
-}
+} derive(Eq, @debug.Debug)
 pub fn Span::new(start~ : Position, end~ : Position) -> Self
-pub impl Eq for Span
 pub impl Show for Span
 pub impl @moonbitlang/quickcheck.Shrink for Span
 
@@ -192,7 +189,7 @@ pub(all) enum Subexpr {
   Term(Term)
   AddLeft(Int, Subexpr)
   AddRight(Subexpr, Int)
-}
+} derive(@debug.Debug)
 pub impl Eq for Subexpr
 pub impl Show for Subexpr
 pub impl @moonbitlang/core/quickcheck.Arbitrary for Subexpr
@@ -205,7 +202,7 @@ pub(all) enum Term {
   NatConst(Int)
   Percent(Term)
   Apply(TypeIdent, Array[Expr])
-}
+} derive(@debug.Debug)
 pub impl Eq for Term
 pub impl Show for Term
 pub impl @moonbitlang/core/quickcheck.Arbitrary for Term
@@ -214,7 +211,7 @@ pub impl @moonbitlang/quickcheck.Shrink for Term
 pub(all) struct TypeIdent {
   ns : LowerIdent?
   name : UpperIdent
-}
+} derive(@debug.Debug)
 pub fn TypeIdent::namespaced(LowerIdent, UpperIdent) -> Self
 pub fn TypeIdent::new(name~ : UpperIdent, ns? : LowerIdent) -> Self
 pub fn TypeIdent::simple(UpperIdent) -> Self
@@ -225,9 +222,8 @@ pub impl @moonbitlang/quickcheck.Shrink for TypeIdent
 
 pub(all) struct UpperIdent {
   value : String
-}
+} derive(Eq, @debug.Debug)
 pub fn UpperIdent::new(value~ : String) -> Self
-pub impl Eq for UpperIdent
 pub impl Show for UpperIdent
 pub impl @moonbitlang/core/quickcheck.Arbitrary for UpperIdent
 pub impl @moonbitlang/quickcheck.Shrink for UpperIdent

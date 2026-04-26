@@ -3,7 +3,7 @@
 pub(all) enum ChatId {
   Id(Int64)
   Username(String)
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub impl @json.ToJson for ChatId with to_json(self) {
@@ -32,7 +32,7 @@ pub struct ReplyParameters {
   quote_parse_mode : String?
   quote_entities : Array[MessageEntity]?
   quote_position : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ReplyParameters::new(
@@ -137,7 +137,7 @@ pub impl @json.FromJson for ReplyParameters with from_json(json, path) {
 pub struct MessageOriginPlaceholder {
   type_ : String
   date : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn MessageOriginPlaceholder::new(
@@ -173,7 +173,7 @@ pub impl @json.FromJson for MessageOriginPlaceholder with from_json(json, path) 
 /// Placeholder for LinkPreviewOptions
 pub struct LinkPreviewPlaceholder {
   is_disabled : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn LinkPreviewPlaceholder::new(
@@ -212,7 +212,7 @@ pub impl @json.FromJson for LinkPreviewPlaceholder with from_json(json, path) {
 pub struct GamePlaceholder {
   title : String
   description : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn GamePlaceholder::new(
@@ -267,7 +267,7 @@ pub struct ExternalReplyInfo {
   location : Location?
   poll : Poll?
   venue : Venue?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ExternalReplyInfo::new(

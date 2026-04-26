@@ -1,7 +1,7 @@
 ///|
 pub struct InputMessageContentPlaceholder {
   message_text : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InputMessageContentPlaceholder::new(
@@ -46,7 +46,7 @@ pub struct InlineQueryResultAudio {
   audio_duration : Int?
   reply_markup : InlineKeyboardMarkup?
   input_message_content : InputMessageContentPlaceholder?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultAudio::new(
@@ -189,7 +189,7 @@ pub struct InlineQueryResultVoice {
   voice_duration : Int?
   reply_markup : InlineKeyboardMarkup?
   input_message_content : InputMessageContentPlaceholder?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultVoice::new(
@@ -325,7 +325,7 @@ pub struct InlineQueryResultDocument {
   thumbnail_url : String?
   thumbnail_width : Int?
   thumbnail_height : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultDocument::new(

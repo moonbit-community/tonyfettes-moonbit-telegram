@@ -4,7 +4,7 @@ pub struct ChatPhoto {
   small_file_unique_id : String
   big_file_id : String
   big_file_unique_id : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChatPhoto::new(

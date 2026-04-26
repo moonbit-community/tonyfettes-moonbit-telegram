@@ -2,7 +2,7 @@
 pub struct GiftInfo {
   gift : Gift
   from : User?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn GiftInfo::new(gift~ : Gift, from? : User) -> GiftInfo {

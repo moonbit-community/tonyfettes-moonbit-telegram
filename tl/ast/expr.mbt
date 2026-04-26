@@ -3,7 +3,7 @@
 pub(all) struct TypeIdent {
   ns : LowerIdent? // e.g., "auth" in auth.SentCode
   name : UpperIdent // e.g., "SentCode" or "User"
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for TypeIdent with equal(self, other) {
@@ -37,7 +37,7 @@ pub(all) enum Term {
   NatConst(Int) // nat-const
   Percent(Term) // % term
   Apply(TypeIdent, Array[Expr]) // type-ident<expr, ...>
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for Term with equal(self, other) {
@@ -61,7 +61,7 @@ pub(all) enum Subexpr {
   Term(Term)
   AddLeft(Int, Subexpr) // nat-const + subexpr
   AddRight(Subexpr, Int) // subexpr + nat-const
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for Subexpr with equal(self, other) {
@@ -77,7 +77,7 @@ pub impl Eq for Subexpr with equal(self, other) {
 /// Expression: sequence of subexpressions (application by juxtaposition).
 pub(all) struct Expr {
   items : Array[Subexpr]
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub impl Eq for Expr with equal(self, other) {

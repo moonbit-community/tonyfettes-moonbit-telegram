@@ -1,3 +1,4 @@
+///|
 using @json {type Json}
 
 ///|
@@ -43,21 +44,19 @@ async test "integration: get_me success" {
   @async.with_task_group(group => {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      request,
-      _body,
-      conn,
-    ) => {
-      guard request.path.contains("getMe") else {
-        conn.send_response(404, "Not Found")
-        return
-      }
-      conn.send_response(200, "OK", extra_headers={
-        "Content-Type": "application/json",
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (request, _body, conn) => {
+        guard request.path.contains("getMe") else {
+          conn.send_response(404, "Not Found")
+          return
+        }
+        conn.send_response(200, "OK", extra_headers={
+          "Content-Type": "application/json",
+        })
+        let user = User::new(id=123L, is_bot=true, first_name="TestBot")
+        conn.write(telegram_success(user))
       })
-      let user = User::new(id=123L, is_bot=true, first_name="TestBot")
-      conn.write(telegram_success(user))
-    }))
+    })
     let bot = Bot::new(token="test_token", base_url="http://127.0.0.1:\{port}")
     let user = bot.get_me()
     inspect(user.id, content="123")
@@ -73,26 +72,24 @@ async test "integration: send_message success" {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
     let received_body = StringBuilder::new()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      request,
-      body,
-      conn,
-    ) => {
-      guard request.path.contains("sendMessage") else {
-        conn.send_response(404, "Not Found")
-        return
-      }
-      // Capture request body
-      while body.read_some() is Some(data) {
-        received_body.write_string(@encoding/utf8.decode(data))
-      }
-      conn.send_response(200, "OK", extra_headers={
-        "Content-Type": "application/json",
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (request, body, conn) => {
+        guard request.path.contains("sendMessage") else {
+          conn.send_response(404, "Not Found")
+          return
+        }
+        // Capture request body
+        while body.read_some() is Some(data) {
+          received_body.write_string(@encoding/utf8.decode(data))
+        }
+        conn.send_response(200, "OK", extra_headers={
+          "Content-Type": "application/json",
+        })
+        let chat = Chat::new(id=456L, type_=Private)
+        let message = Message::new(message_id=1, date=1234567890, chat~)
+        conn.write(telegram_success(message))
       })
-      let chat = Chat::new(id=456L, type_=Private)
-      let message = Message::new(message_id=1, date=1234567890, chat~)
-      conn.write(telegram_success(message))
-    }))
+    })
     let bot = Bot::new(token="test_token", base_url="http://127.0.0.1:\{port}")
     let message = bot.send_message(chat_id=456L, text="Hello, World!")
     inspect(message.message_id, content="1")
@@ -112,31 +109,29 @@ async test "integration: get_updates success" {
   @async.with_task_group(group => {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      request,
-      _body,
-      conn,
-    ) => {
-      guard request.path.contains("getUpdates") else {
-        conn.send_response(404, "Not Found")
-        return
-      }
-      conn.send_response(200, "OK", extra_headers={
-        "Content-Type": "application/json",
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (request, _body, conn) => {
+        guard request.path.contains("getUpdates") else {
+          conn.send_response(404, "Not Found")
+          return
+        }
+        conn.send_response(200, "OK", extra_headers={
+          "Content-Type": "application/json",
+        })
+        let chat = Chat::new(id=789L, type_=Private)
+        let message = Message::new(
+          message_id=1,
+          date=1234567890,
+          chat~,
+          text="Test message",
+        )
+        let updates : Array[Update] = [
+          Update::new(update_id=100, message~),
+          Update::new(update_id=101),
+        ]
+        conn.write(telegram_success(updates))
       })
-      let chat = Chat::new(id=789L, type_=Private)
-      let message = Message::new(
-        message_id=1,
-        date=1234567890,
-        chat~,
-        text="Test message",
-      )
-      let updates : Array[Update] = [
-        Update::new(update_id=100, message~),
-        Update::new(update_id=101),
-      ]
-      conn.write(telegram_success(updates))
-    }))
+    })
     let bot = Bot::new(token="test_token", base_url="http://127.0.0.1:\{port}")
     let updates = bot.get_updates()
     inspect(updates.length(), content="2")
@@ -156,16 +151,14 @@ async test "integration: 401 Unauthorized" {
   @async.with_task_group(group => {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      _request,
-      _body,
-      conn,
-    ) => {
-      conn.send_response(200, "OK", extra_headers={
-        "Content-Type": "application/json",
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (_request, _body, conn) => {
+        conn.send_response(200, "OK", extra_headers={
+          "Content-Type": "application/json",
+        })
+        conn.write(telegram_error(401, "Unauthorized"))
       })
-      conn.write(telegram_error(401, "Unauthorized"))
-    }))
+    })
     let bot = Bot::new(
       token="invalid_token",
       base_url="http://127.0.0.1:\{port}",
@@ -184,16 +177,14 @@ async test "integration: 400 Bad Request" {
   @async.with_task_group(group => {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      _request,
-      _body,
-      conn,
-    ) => {
-      conn.send_response(200, "OK", extra_headers={
-        "Content-Type": "application/json",
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (_request, _body, conn) => {
+        conn.send_response(200, "OK", extra_headers={
+          "Content-Type": "application/json",
+        })
+        conn.write(telegram_error(400, "Bad Request: chat not found"))
       })
-      conn.write(telegram_error(400, "Bad Request: chat not found"))
-    }))
+    })
     let bot = Bot::new(token="test_token", base_url="http://127.0.0.1:\{port}")
     let result : Result[Message, Error] = Ok(
       bot.send_message(chat_id=999L, text="Hello"),
@@ -213,16 +204,14 @@ async test "integration: 429 Too Many Requests" {
   @async.with_task_group(group => {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      _request,
-      _body,
-      conn,
-    ) => {
-      conn.send_response(200, "OK", extra_headers={
-        "Content-Type": "application/json",
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (_request, _body, conn) => {
+        conn.send_response(200, "OK", extra_headers={
+          "Content-Type": "application/json",
+        })
+        conn.write(telegram_error(429, "Too Many Requests: retry after 30"))
       })
-      conn.write(telegram_error(429, "Too Many Requests: retry after 30"))
-    }))
+    })
     let bot = Bot::new(token="test_token", base_url="http://127.0.0.1:\{port}")
     let result : Result[User, Error] = Ok(bot.get_me()) catch { e => Err(e) }
     guard result is Err(e) else { fail("Expected error") }
@@ -242,14 +231,12 @@ async test "integration: 500 Internal Server Error" {
   @async.with_task_group(group => {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      _request,
-      _body,
-      conn,
-    ) => {
-      conn.send_response(500, "Internal Server Error")
-      conn.write("Server crashed")
-    }))
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (_request, _body, conn) => {
+        conn.send_response(500, "Internal Server Error")
+        conn.write("Server crashed")
+      })
+    })
     let bot = Bot::new(token="test_token", base_url="http://127.0.0.1:\{port}")
     let result : Result[User, Error] = Ok(bot.get_me()) catch { e => Err(e) }
     guard result is Err(e) else { fail("Expected error") }
@@ -264,14 +251,12 @@ async test "integration: 502 Bad Gateway" {
   @async.with_task_group(group => {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      _request,
-      _body,
-      conn,
-    ) => {
-      conn.send_response(502, "Bad Gateway")
-      conn.write("Upstream error")
-    }))
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (_request, _body, conn) => {
+        conn.send_response(502, "Bad Gateway")
+        conn.write("Upstream error")
+      })
+    })
     let bot = Bot::new(token="test_token", base_url="http://127.0.0.1:\{port}")
     let result : Result[User, Error] = Ok(bot.get_me()) catch { e => Err(e) }
     guard result is Err(e) else { fail("Expected error") }
@@ -290,16 +275,14 @@ async test "integration: InvalidJson - malformed JSON" {
   @async.with_task_group(group => {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      _request,
-      _body,
-      conn,
-    ) => {
-      conn.send_response(200, "OK", extra_headers={
-        "Content-Type": "application/json",
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (_request, _body, conn) => {
+        conn.send_response(200, "OK", extra_headers={
+          "Content-Type": "application/json",
+        })
+        conn.write("{invalid json}")
       })
-      conn.write("{invalid json}")
-    }))
+    })
     let bot = Bot::new(token="test_token", base_url="http://127.0.0.1:\{port}")
     let result : Result[User, Error] = Ok(bot.get_me()) catch { e => Err(e) }
     guard result is Err(e) else { fail("Expected error") }
@@ -313,17 +296,15 @@ async test "integration: InvalidResponse - missing ok field" {
   @async.with_task_group(group => {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      _request,
-      _body,
-      conn,
-    ) => {
-      conn.send_response(200, "OK", extra_headers={
-        "Content-Type": "application/json",
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (_request, _body, conn) => {
+        conn.send_response(200, "OK", extra_headers={
+          "Content-Type": "application/json",
+        })
+        // Missing "ok" field
+        conn.write("{\"result\": {}}")
       })
-      // Missing "ok" field
-      conn.write("{\"result\": {}}")
-    }))
+    })
     let bot = Bot::new(token="test_token", base_url="http://127.0.0.1:\{port}")
     let result : Result[User, Error] = Ok(bot.get_me()) catch { e => Err(e) }
     guard result is Err(e) else { fail("Expected error") }
@@ -337,17 +318,15 @@ async test "integration: InvalidResult - wrong result type" {
   @async.with_task_group(group => {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      _request,
-      _body,
-      conn,
-    ) => {
-      conn.send_response(200, "OK", extra_headers={
-        "Content-Type": "application/json",
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (_request, _body, conn) => {
+        conn.send_response(200, "OK", extra_headers={
+          "Content-Type": "application/json",
+        })
+        // Result is a string instead of User object
+        conn.write("{\"ok\": true, \"result\": \"not a user object\"}")
       })
-      // Result is a string instead of User object
-      conn.write("{\"ok\": true, \"result\": \"not a user object\"}")
-    }))
+    })
     let bot = Bot::new(token="test_token", base_url="http://127.0.0.1:\{port}")
     let result : Result[User, Error] = Ok(bot.get_me()) catch { e => Err(e) }
     guard result is Err(e) else { fail("Expected error") }
@@ -366,25 +345,23 @@ async test "integration: send_message includes optional fields" {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
     let received_body = StringBuilder::new()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      request,
-      body,
-      conn,
-    ) => {
-      guard request.path.contains("sendMessage") else {
-        conn.send_response(404, "Not Found")
-        return
-      }
-      while body.read_some() is Some(data) {
-        received_body.write_string(@encoding/utf8.decode(data))
-      }
-      conn.send_response(200, "OK", extra_headers={
-        "Content-Type": "application/json",
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (request, body, conn) => {
+        guard request.path.contains("sendMessage") else {
+          conn.send_response(404, "Not Found")
+          return
+        }
+        while body.read_some() is Some(data) {
+          received_body.write_string(@encoding/utf8.decode(data))
+        }
+        conn.send_response(200, "OK", extra_headers={
+          "Content-Type": "application/json",
+        })
+        let chat = Chat::new(id=456L, type_=Private)
+        let message = Message::new(message_id=1, date=1234567890, chat~)
+        conn.write(telegram_success(message))
       })
-      let chat = Chat::new(id=456L, type_=Private)
-      let message = Message::new(message_id=1, date=1234567890, chat~)
-      conn.write(telegram_success(message))
-    }))
+    })
     let bot = Bot::new(token="test_token", base_url="http://127.0.0.1:\{port}")
     let _ = bot.send_message(
       chat_id=456L,
@@ -410,25 +387,23 @@ async test "integration: send_message excludes unset optional fields" {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
     let received_body = StringBuilder::new()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      request,
-      body,
-      conn,
-    ) => {
-      guard request.path.contains("sendMessage") else {
-        conn.send_response(404, "Not Found")
-        return
-      }
-      while body.read_some() is Some(data) {
-        received_body.write_string(@encoding/utf8.decode(data))
-      }
-      conn.send_response(200, "OK", extra_headers={
-        "Content-Type": "application/json",
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (request, body, conn) => {
+        guard request.path.contains("sendMessage") else {
+          conn.send_response(404, "Not Found")
+          return
+        }
+        while body.read_some() is Some(data) {
+          received_body.write_string(@encoding/utf8.decode(data))
+        }
+        conn.send_response(200, "OK", extra_headers={
+          "Content-Type": "application/json",
+        })
+        let chat = Chat::new(id=456L, type_=Private)
+        let message = Message::new(message_id=1, date=1234567890, chat~)
+        conn.write(telegram_success(message))
       })
-      let chat = Chat::new(id=456L, type_=Private)
-      let message = Message::new(message_id=1, date=1234567890, chat~)
-      conn.write(telegram_success(message))
-    }))
+    })
     let bot = Bot::new(token="test_token", base_url="http://127.0.0.1:\{port}")
     // Only required fields
     let _ = bot.send_message(chat_id=456L, text="Hello")
@@ -451,24 +426,22 @@ async test "integration: get_updates with optional parameters" {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
     let received_body = StringBuilder::new()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      request,
-      body,
-      conn,
-    ) => {
-      guard request.path.contains("getUpdates") else {
-        conn.send_response(404, "Not Found")
-        return
-      }
-      while body.read_some() is Some(data) {
-        received_body.write_string(@encoding/utf8.decode(data))
-      }
-      conn.send_response(200, "OK", extra_headers={
-        "Content-Type": "application/json",
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (request, body, conn) => {
+        guard request.path.contains("getUpdates") else {
+          conn.send_response(404, "Not Found")
+          return
+        }
+        while body.read_some() is Some(data) {
+          received_body.write_string(@encoding/utf8.decode(data))
+        }
+        conn.send_response(200, "OK", extra_headers={
+          "Content-Type": "application/json",
+        })
+        let updates : Array[Update] = []
+        conn.write(telegram_success(updates))
       })
-      let updates : Array[Update] = []
-      conn.write(telegram_success(updates))
-    }))
+    })
     let bot = Bot::new(token="test_token", base_url="http://127.0.0.1:\{port}")
     let _ = bot.get_updates(offset=100, limit=10, timeout=30, allowed_updates=[
       "message", "callback_query",
@@ -493,18 +466,16 @@ async test "integration: URL construction with token" {
     let server = @http.Server::new(@socket.Addr::parse("127.0.0.1:0"))
     let port = server.addr().port()
     let received_path = StringBuilder::new()
-    group.spawn_bg(no_wait=true, () => run_mock_server(server, (
-      request,
-      _body,
-      conn,
-    ) => {
-      received_path.write_string(request.path)
-      conn.send_response(200, "OK", extra_headers={
-        "Content-Type": "application/json",
+    group.spawn_bg(no_wait=true, () => {
+      run_mock_server(server, (request, _body, conn) => {
+        received_path.write_string(request.path)
+        conn.send_response(200, "OK", extra_headers={
+          "Content-Type": "application/json",
+        })
+        let user = User::new(id=123L, is_bot=true, first_name="Bot")
+        conn.write(telegram_success(user))
       })
-      let user = User::new(id=123L, is_bot=true, first_name="Bot")
-      conn.write(telegram_success(user))
-    }))
+    })
     let bot = Bot::new(
       token="my_secret_token_123",
       base_url="http://127.0.0.1:\{port}",

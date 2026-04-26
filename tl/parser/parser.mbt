@@ -3,7 +3,7 @@
 pub(all) suberror ParseError {
   UnexpectedToken(pos~ : @ast.Position, expected~ : String, found~ : String)
   UnexpectedEof(pos~ : @ast.Position)
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 /// The parser state for parsing TL token streams.
@@ -67,7 +67,7 @@ fn Parser::expect(
 ///|
 /// Skips over any comment tokens, collecting them for preservation.
 fn Parser::skip_comments(self : Parser) -> Unit {
-  while not(self.is_at_end()) {
+  while !self.is_at_end() {
     match self.peek() {
       LineComment(s) | BlockComment(s) => {
         let token = self.advance()
@@ -84,7 +84,7 @@ pub fn Parser::parse_schema(self : Parser) -> @ast.Schema raise ParseError {
   let types : Array[@ast.Declaration] = []
   let functions : Array[@ast.Combinator] = []
   let mut in_functions = false
-  while not(self.is_at_end()) {
+  while !self.is_at_end() {
     self.skip_comments()
     if self.is_at_end() {
       break
@@ -289,7 +289,7 @@ fn Parser::parse_opt_args(
 /// Parses args until = is reached.
 fn Parser::parse_args(self : Parser) -> Array[@ast.Arg] raise ParseError {
   let result : Array[@ast.Arg] = []
-  while not(self.peek() is Equals) && not(self.is_at_end()) {
+  while !(self.peek() is Equals) && !self.is_at_end() {
     self.skip_comments()
     if self.peek() is Equals {
       break
@@ -320,7 +320,7 @@ fn Parser::parse_arg(self : Parser) -> @ast.Arg raise ParseError {
         let parsed = self.parse_named_arg()
         match parsed {
           @ast.Arg::Named(named) if named.conditional is None &&
-            not(named.bang) &&
+            !named.bang &&
             self.peek() is Star => {
             let _ = self.advance()
             let _ = self.expect(LBracket)
@@ -342,7 +342,7 @@ fn Parser::parse_arg(self : Parser) -> @ast.Arg raise ParseError {
         false
       }
       let term = self.parse_term()
-      if not(bang) && self.peek() is Star {
+      if !bang && self.peek() is Star {
         let _ = self.advance()
         let _ = self.expect(LBracket)
         let inner_args = self.parse_bracket_args()
@@ -557,7 +557,7 @@ fn Parser::parse_grouped_arg(self : Parser) -> @ast.Arg raise ParseError {
   let _ = self.advance() // (
   let names : Array[@ast.LowerIdent] = []
   // Collect names until :
-  while not(self.peek() is Colon) && not(self.is_at_end()) {
+  while !(self.peek() is Colon) && !self.is_at_end() {
     match self.peek() {
       LowerIdent(s) | UpperIdent(s) => {
         let _ = self.advance()
@@ -584,7 +584,7 @@ fn Parser::parse_bracket_args(
   self : Parser,
 ) -> Array[@ast.Arg] raise ParseError {
   let result : Array[@ast.Arg] = []
-  while not(self.peek() is RBracket) && not(self.is_at_end()) {
+  while !(self.peek() is RBracket) && !self.is_at_end() {
     self.skip_comments()
     if self.peek() is RBracket {
       break
@@ -758,7 +758,7 @@ fn Parser::parse_expr_until(
   stops : Array[@lexer.TokenKind],
 ) -> @ast.Expr raise ParseError {
   let items : Array[@ast.Subexpr] = []
-  while not(self.is_at_end()) {
+  while !self.is_at_end() {
     self.skip_comments()
     if self.is_stop_token(stops) {
       break
@@ -807,7 +807,7 @@ fn Parser::parse_result_type(self : Parser) -> @ast.ResultType raise ParseError 
     }
     let _ = self.expect(RAngle)
   } else {
-    while not(self.peek() is Semicolon) && not(self.is_at_end()) {
+    while !(self.peek() is Semicolon) && !self.is_at_end() {
       params.push(self.parse_subexpr())
     }
   }

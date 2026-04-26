@@ -3,14 +3,14 @@ pub(all) enum PaidMedia {
   Preview(PaidMediaPreview)
   Photo(PaidMediaPhoto)
   Video(PaidMediaVideo)
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub struct PaidMediaPreview {
   width : Int?
   height : Int?
   duration : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn PaidMediaPreview::new(
@@ -24,7 +24,7 @@ pub fn PaidMediaPreview::new(
 ///|
 pub struct PaidMediaPhoto {
   photo : Array[PhotoSize]
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn PaidMediaPhoto::new(photo~ : Array[PhotoSize]) -> PaidMediaPhoto {
@@ -34,7 +34,7 @@ pub fn PaidMediaPhoto::new(photo~ : Array[PhotoSize]) -> PaidMediaPhoto {
 ///|
 pub struct PaidMediaVideo {
   video : Video
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn PaidMediaVideo::new(video~ : Video) -> PaidMediaVideo {
@@ -111,7 +111,7 @@ pub impl @json.FromJson for PaidMedia with from_json(json, path) {
 pub struct PaidMediaInfo {
   star_count : Int
   paid_media : Array[PaidMedia]
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn PaidMediaInfo::new(

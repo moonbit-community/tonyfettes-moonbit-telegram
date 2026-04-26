@@ -1,7 +1,7 @@
 ///|
 pub struct MessageId {
   message_id : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn MessageId::new(message_id~ : Int) -> MessageId {

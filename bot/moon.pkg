@@ -11,6 +11,8 @@ import {
   "moonbitlang/async/socket",
 } for "test"
 
+supported_targets = "native"
+
 options(
   targets: { "integration_test.mbt": [ "native" ] },
 )

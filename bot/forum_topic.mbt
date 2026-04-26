@@ -4,7 +4,7 @@ pub struct ForumTopic {
   name : String
   icon_color : Int
   icon_custom_emoji_id : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ForumTopic::new(
@@ -54,7 +54,7 @@ pub struct ForumTopicCreated {
   name : String
   icon_color : Int
   icon_custom_emoji_id : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ForumTopicCreated::new(
@@ -97,7 +97,7 @@ pub impl @json.FromJson for ForumTopicCreated with from_json(json, path) {
 pub struct ForumTopicEdited {
   name : String?
   icon_custom_emoji_id : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ForumTopicEdited::new(

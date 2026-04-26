@@ -1,7 +1,7 @@
 ///|
 pub struct CachedInputMessageContent {
   message_text : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn CachedInputMessageContent::new(
@@ -43,7 +43,7 @@ pub struct InlineQueryResultCachedPhoto {
   show_caption_above_media : Bool?
   reply_markup : InlineKeyboardMarkup?
   input_message_content : CachedInputMessageContent?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultCachedPhoto::new(
@@ -198,7 +198,7 @@ pub struct InlineQueryResultCachedGif {
   show_caption_above_media : Bool?
   reply_markup : InlineKeyboardMarkup?
   input_message_content : CachedInputMessageContent?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultCachedGif::new(
@@ -342,7 +342,7 @@ pub struct InlineQueryResultCachedMpeg4Gif {
   show_caption_above_media : Bool?
   reply_markup : InlineKeyboardMarkup?
   input_message_content : CachedInputMessageContent?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultCachedMpeg4Gif::new(
@@ -481,7 +481,7 @@ pub struct InlineQueryResultCachedSticker {
   sticker_file_id : String
   reply_markup : InlineKeyboardMarkup?
   input_message_content : CachedInputMessageContent?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultCachedSticker::new(
@@ -555,7 +555,7 @@ pub struct InlineQueryResultCachedDocument {
   caption_entities : Array[MessageEntity]?
   reply_markup : InlineKeyboardMarkup?
   input_message_content : CachedInputMessageContent?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultCachedDocument::new(
@@ -694,7 +694,7 @@ pub struct InlineQueryResultCachedVideo {
   show_caption_above_media : Bool?
   reply_markup : InlineKeyboardMarkup?
   input_message_content : CachedInputMessageContent?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultCachedVideo::new(
@@ -842,7 +842,7 @@ pub struct InlineQueryResultCachedVoice {
   caption_entities : Array[MessageEntity]?
   reply_markup : InlineKeyboardMarkup?
   input_message_content : CachedInputMessageContent?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultCachedVoice::new(
@@ -964,7 +964,7 @@ pub struct InlineQueryResultCachedAudio {
   caption_entities : Array[MessageEntity]?
   reply_markup : InlineKeyboardMarkup?
   input_message_content : CachedInputMessageContent?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineQueryResultCachedAudio::new(

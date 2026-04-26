@@ -2,7 +2,7 @@
 pub struct BotCommand {
   command : String
   description : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn BotCommand::new(command~ : String, description~ : String) -> BotCommand {

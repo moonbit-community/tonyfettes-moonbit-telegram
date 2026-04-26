@@ -2,7 +2,7 @@
 pub struct FilePlaceholder {
   file_id : String
   file_unique_id : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn FilePlaceholder::new(
@@ -37,7 +37,7 @@ pub struct MaskPosition {
   x_shift : Double
   y_shift : Double
   scale : Double
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn MaskPosition::new(
@@ -89,7 +89,7 @@ pub struct Sticker {
   custom_emoji_id : String?
   needs_repainting : Bool?
   file_size : Int64?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn Sticker::new(
@@ -245,7 +245,7 @@ pub struct StickerSet {
   sticker_type : String
   stickers : Array[Sticker]
   thumbnail : PhotoSize?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn StickerSet::new(
@@ -296,7 +296,7 @@ pub struct InputSticker {
   emoji_list : Array[String]
   mask_position : MaskPosition?
   keywords : Array[String]?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InputSticker::new(

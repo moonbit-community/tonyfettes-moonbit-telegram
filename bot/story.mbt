@@ -2,7 +2,7 @@
 pub struct Story {
   chat : Chat
   id : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn Story::new(chat~ : Chat, id~ : Int) -> Story {

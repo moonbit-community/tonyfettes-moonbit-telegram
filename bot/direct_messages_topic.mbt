@@ -3,7 +3,7 @@ pub struct DirectMessagesTopic {
   id : Int
   name : String
   icon_color : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn DirectMessagesTopic::new(

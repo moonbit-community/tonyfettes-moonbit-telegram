@@ -4,7 +4,7 @@ pub struct Birthdate {
   day : Int
   month : Int
   year : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn Birthdate::new(day~ : Int, month~ : Int, year? : Int) -> Birthdate {
@@ -43,7 +43,7 @@ pub impl @json.FromJson for Birthdate with from_json(json, path) {
 pub struct ChatLocation {
   location : Location
   address : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChatLocation::new(
@@ -76,7 +76,7 @@ pub impl @json.FromJson for ChatLocation with from_json(json, path) {
 /// Represents a reaction based on an emoji
 pub struct ReactionTypeEmoji {
   emoji : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ReactionTypeEmoji::new(emoji~ : String) -> ReactionTypeEmoji {
@@ -105,7 +105,7 @@ pub impl @json.FromJson for ReactionTypeEmoji with from_json(json, path) {
 /// Represents a reaction based on a custom emoji
 pub struct ReactionTypeCustomEmoji {
   custom_emoji_id : String
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ReactionTypeCustomEmoji::new(
@@ -143,7 +143,7 @@ pub impl @json.FromJson for ReactionTypeCustomEmoji with from_json(json, path) {
 pub(all) enum ReactionType {
   Emoji(ReactionTypeEmoji)
   CustomEmoji(ReactionTypeCustomEmoji)
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub impl @json.ToJson for ReactionType with to_json(self) {
@@ -215,7 +215,7 @@ pub struct ChatFullInfo {
   custom_emoji_sticker_set_name : String?
   linked_chat_id : Int64?
   location : ChatLocation?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChatFullInfo::new(

@@ -166,7 +166,7 @@ test "typer: functions section" {
   let schema = parse_tl(source)
   let table = type_schema(schema)
   assert_true(table.functions.contains("getUser"))
-  assert_true(not(table.constructors.contains("getUser")))
+  assert_true(!table.constructors.contains("getUser"))
 }
 
 ///|

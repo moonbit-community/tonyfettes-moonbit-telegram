@@ -4,7 +4,7 @@ pub struct InputTextMessageContent {
   parse_mode : String?
   entities : Array[MessageEntity]?
   link_preview_options : LinkPreviewOptions?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InputTextMessageContent::new(
@@ -71,7 +71,7 @@ pub struct InputLocationMessageContent {
   live_period : Int?
   heading : Int?
   proximity_alert_radius : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InputLocationMessageContent::new(
@@ -168,7 +168,7 @@ pub struct InputVenueMessageContent {
   foursquare_type : String?
   google_place_id : String?
   google_place_type : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InputVenueMessageContent::new(
@@ -267,7 +267,7 @@ pub struct InputContactMessageContent {
   first_name : String
   last_name : String?
   vcard : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InputContactMessageContent::new(
@@ -342,7 +342,7 @@ pub struct InputInvoiceMessageContent {
   send_phone_number_to_provider : Bool?
   send_email_to_provider : Bool?
   is_flexible : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InputInvoiceMessageContent::new(
@@ -578,7 +578,7 @@ pub(all) enum InputMessageContent {
   Venue(InputVenueMessageContent)
   Contact(InputContactMessageContent)
   Invoice(InputInvoiceMessageContent)
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub impl @json.ToJson for InputMessageContent with to_json(self) {

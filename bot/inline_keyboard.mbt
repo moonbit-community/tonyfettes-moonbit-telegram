@@ -3,7 +3,7 @@ pub struct InlineKeyboardButton {
   text : String
   url : String?
   callback_data : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineKeyboardButton::new(
@@ -51,7 +51,7 @@ pub impl @json.FromJson for InlineKeyboardButton with from_json(json, path) {
 ///|
 pub struct InlineKeyboardMarkup {
   inline_keyboard : Array[Array[InlineKeyboardButton]]
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn InlineKeyboardMarkup::new(

@@ -4,7 +4,7 @@
 // Lowercase identifier for constructors, variables, fields: [a-z][a-z0-9_]*
 pub(all) struct LowerIdent {
   value : String
-} derive(Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn LowerIdent::new(value~ : String) -> LowerIdent {
@@ -16,7 +16,7 @@ pub fn LowerIdent::new(value~ : String) -> LowerIdent {
 ///|
 pub(all) struct UpperIdent {
   value : String
-} derive(Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn UpperIdent::new(value~ : String) -> UpperIdent {
@@ -28,7 +28,7 @@ pub fn UpperIdent::new(value~ : String) -> UpperIdent {
 ///|
 pub(all) struct ConstructorId {
   value : UInt
-} derive(Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ConstructorId::new(value~ : UInt) -> ConstructorId {

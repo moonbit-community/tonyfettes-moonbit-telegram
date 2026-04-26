@@ -5,7 +5,7 @@ pub(all) suberror LexError {
   UnexpectedEof(pos~ : @ast.Position)
   InvalidHexId(pos~ : @ast.Position, value~ : String)
   InvalidNumber(pos~ : @ast.Position, value~ : String)
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 /// The lexer state for tokenizing TL source code.
@@ -144,7 +144,7 @@ fn Lexer::scan_number(self : Lexer) -> Token raise LexError {
     let _ = self.advance()
   }
   let num_str = buf.to_string()
-  let result : Result[Int, _] = try? @strconv.parse_int(num_str)
+  let result : Result[Int, _] = try? @string.parse_int(num_str)
   guard result is Ok(n) else {
     raise LexError::InvalidNumber(pos=start, value=num_str)
   }
@@ -167,7 +167,7 @@ fn Lexer::scan_hex_number(
     // Just # with no hex digits - return Hash token
     return { kind: TokenKind::Hash, span: self.make_span(start) }
   }
-  let result : Result[UInt, _] = try? @strconv.parse_uint(hex_str, base=16)
+  let result : Result[UInt, _] = try? @string.parse_uint(hex_str, base=16)
   guard result is Ok(n) else {
     raise LexError::InvalidHexId(pos=start, value=hex_str)
   }

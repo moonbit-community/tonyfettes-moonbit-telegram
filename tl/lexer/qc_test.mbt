@@ -49,7 +49,7 @@ test "lexer: token spans don't overlap" {
           // Spans overlap if neither is entirely before the other
           let a_before_b = a.span.end.offset <= b.span.start.offset
           let b_before_a = b.span.end.offset <= a.span.start.offset
-          if not(a_before_b) && not(b_before_a) {
+          if !a_before_b && !b_before_a {
             return false // Overlap found!
           }
         }

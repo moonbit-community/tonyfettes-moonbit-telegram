@@ -5,7 +5,7 @@ pub(all) struct ResolvedType {
   constructors : Array[@ast.Combinator]
   is_final : Bool
   is_empty : Bool
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 /// Creates a new resolved type.
@@ -36,7 +36,7 @@ pub(all) struct SymbolTable {
   functions : Map[String, @ast.Combinator]
   /// Built-in types that don't need declarations
   builtins : Map[String, Unit]
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 /// Creates a new empty symbol table with built-in types.

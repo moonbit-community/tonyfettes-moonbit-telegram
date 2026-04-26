@@ -3,7 +3,7 @@ pub struct ChatMemberOwner {
   user : User
   is_anonymous : Bool
   custom_title : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChatMemberOwner::new(
@@ -34,7 +34,7 @@ pub struct ChatMemberAdministrator {
   can_pin_messages : Bool?
   can_manage_topics : Bool?
   custom_title : String?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChatMemberAdministrator::new(
@@ -83,7 +83,7 @@ pub fn ChatMemberAdministrator::new(
 pub struct ChatMemberMember {
   user : User
   until_date : Int?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChatMemberMember::new(
@@ -112,7 +112,7 @@ pub struct ChatMemberRestricted {
   can_pin_messages : Bool
   can_manage_topics : Bool
   until_date : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChatMemberRestricted::new(
@@ -158,7 +158,7 @@ pub fn ChatMemberRestricted::new(
 ///|
 pub struct ChatMemberLeft {
   user : User
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChatMemberLeft::new(user~ : User) -> ChatMemberLeft {
@@ -169,7 +169,7 @@ pub fn ChatMemberLeft::new(user~ : User) -> ChatMemberLeft {
 pub struct ChatMemberBanned {
   user : User
   until_date : Int
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChatMemberBanned::new(
@@ -187,7 +187,7 @@ pub(all) enum ChatMember {
   Restricted(ChatMemberRestricted)
   Left(ChatMemberLeft)
   Banned(ChatMemberBanned)
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub impl @json.ToJson for ChatMember with to_json(self) {
@@ -524,7 +524,7 @@ pub struct ChatPermissions {
   can_invite_users : Bool?
   can_pin_messages : Bool?
   can_manage_topics : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChatPermissions::new(
@@ -726,7 +726,7 @@ pub struct ChatAdministratorRights {
   can_edit_messages : Bool?
   can_pin_messages : Bool?
   can_manage_topics : Bool?
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
 ///|
 pub fn ChatAdministratorRights::new(

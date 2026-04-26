@@ -16,4 +16,4 @@ pub(all) suberror TLTypeError {
   FinalTypeViolation(pos~ : @ast.Span, type_name~ : String)
   NewTypeViolation(pos~ : @ast.Span, type_name~ : String)
   EmptyTypeViolation(pos~ : @ast.Span, type_name~ : String)
-} derive(Show, Eq)
+} derive(Debug, Eq)
